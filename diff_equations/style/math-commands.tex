@@ -1,0 +1,94 @@
+% =================================================================
+%  style/math-commands.tex
+%  Математические пакеты, сокращения, нормы и скобки
+% =================================================================
+
+\usepackage{amsmath,amssymb,amsthm,mathtools,cancel}
+\usepackage{mathrsfs}
+
+% -----------------------------------------------------------------
+% Числовые множества
+% -----------------------------------------------------------------
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\C}{\mathbb{C}}
+\providecommand{\N}{\mathbb{N}}
+
+% -----------------------------------------------------------------
+% Частые символы
+% -----------------------------------------------------------------
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vphi}{\varphi}
+\newcommand{\st}{\;:\;}
+\newcommand{\bigO}{\mathcal{O}}
+\providecommand{\eps}{\varepsilon}
+
+\DeclareMathOperator{\dist}{dist}
+
+% -----------------------------------------------------------------
+% Дифференциальные уравнения
+%   \dd            -> прямое d в дифференциалах
+%   \dder{y}{x}    -> dy/dx
+%   \pder{u}{y}    -> du/dy (частная)
+%   \const         -> const
+% -----------------------------------------------------------------
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dder}[2]{\frac{\dd #1}{\dd #2}}
+\newcommand{\pder}[2]{\frac{\partial #1}{\partial #2}}
+\DeclareMathOperator{\const}{const}
+
+
+% -----------------------------------------------------------------
+% Нормы, модули, скалярное произведение
+%   \Lp{f}      -> ||f||_{L^p}
+%   \Lq{f}      -> ||f||_{L^q}
+%   \norm{f}{2} -> ||f||_{L^2}
+%   \norma{x}   -> ||x||        (растягивающиеся скобки)
+%   \abs{x}     -> |x|
+%   \scal{x}{y} -> <x, y>
+% -----------------------------------------------------------------
+\newcommand{\Lp}[1]{\bigl\|#1\bigr\|_{L^p}}
+\newcommand{\Lq}[1]{\bigl\|#1\bigr\|_{L^q}}
+\newcommand{\norm}[2]{\bigl\|#1\bigr\|_{L^{#2}}}
+
+\providecommand{\norma}[1]{\left\lVert #1 \right\rVert}
+\providecommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\providecommand{\scal}[2]{\left\langle #1,#2 \right\rangle}
+
+% -----------------------------------------------------------------
+% Классические theorem-окружения (нумерация по section).
+% В тексте используются цветные боксы из theorem-boxes.tex;
+% эти оставлены как «тихий» вариант без рамки.
+% -----------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{proposition}[theorem]{Предложение}
+\newtheorem{statement}[theorem]{Утверждение}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Определение}
+\newtheorem{example}[theorem]{Пример}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Замечание}
+
+% -----------------------------------------------------------------
+% Доказательство: «Доказательство.» жирным, в конце — чёрный квадрат
+% -----------------------------------------------------------------
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+	\par\pushQED{\qed}%
+	\normalfont \topsep6\p@\@plus6\p@\relax
+	\trivlist
+	\item\relax\textbf{#1.}\hspace\labelsep\ignorespaces
+}{%
+	\popQED\endtrivlist\@endpefalse
+}
+\makeatother

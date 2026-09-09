@@ -1,0 +1,747 @@
+% !TEX root = ../main.tex
+% =================================================================
+%  sections/lecture01.tex
+%  Лекция 1. Мера. Кольца, алгебры и полукольца. Элементарный интеграл.
+%
+%  Иллюстрации нарисованы TikZ и отмечены комментарием «РИСУНОК N».
+% =================================================================
+
+\part*{Лекция 1}
+
+\section{Мера. Полукольца. Элементарный интеграл}
+
+\begin{Remark}{Обозначения}{обозначения-меры}
+	Всюду в этой лекции: $X$ --- произвольное множество, $2^X$ --- множество
+	всех его подмножеств, $\mathcal{A} \subseteq 2^X$ --- система подмножеств.
+	Запись $\langle a,b\rangle$ означает промежуток с произвольными
+	(открытыми или закрытыми) концами, $a^{c} = X \setminus a$ ---
+	дополнение, $\chi_a$ --- индикатор множества $a$:
+	\[
+	\chi_a(x) =
+	\begin{cases}
+		1, & x \in a,\\
+		0, & x \notin a.
+	\end{cases}
+	\]
+	Знак $\bigsqcup$ используется для объединения попарно непересекающихся
+	множеств.
+\end{Remark}
+
+\subsection{Мера}
+
+\begin{Definition}{Мера}{мера}
+	Пусть $X$ --- множество, $\mathcal{A} \subseteq 2^X$ --- система его
+	подмножеств. Функция
+	\[
+	\mu : \mathcal{A} \to [0, +\infty]
+	\]
+	называется \textbf{мерой} на $\mathcal{A}$, если она
+	\textbf{конечно аддитивна}: как только
+	\[
+	a \in \mathcal{A}, \qquad
+	a = a_1 \cup \ldots \cup a_n, \qquad
+	a_i \in \mathcal{A}, \qquad
+	a_i \cap a_j = \varnothing \ \ \forall i \neq j,
+	\]
+	выполнено
+	\[
+	\mu(a) = \sum_{i=1}^{n} \mu(a_i).
+	\]
+\end{Definition}
+
+\begin{Remark}{Что здесь важно}{про-определение-меры}
+	Аддитивность требуется только для тех разбиений, все части которых сами
+	лежат в $\mathcal{A}$. Система $\mathcal{A}$ не обязана быть замкнутой
+	относительно объединений: например, объединение двух промежутков
+	промежутком, вообще говоря, не является. Именно поэтому дальше и
+	появляются кольца и полукольца --- классы систем, в которых с разбиениями
+	работать удобно.
+\end{Remark}
+
+\subsubsection*{Примеры мер}
+
+\begin{Example}{Длина промежутка}{длина}
+	Пусть $\mathcal{A}$ --- система всех промежутков в $\RR$:
+	\[
+	\langle a,b\rangle, \qquad
+	\langle a,+\infty), \qquad
+	(-\infty,b\rangle, \qquad
+	(-\infty,+\infty) = \RR .
+	\]
+	Положим
+	\[
+	\ell\bigl(\langle a,b\rangle\bigr) = b - a
+	\]
+	(для бесконечных промежутков $\ell = +\infty$). Аддитивность здесь
+	очевидна: если промежуток разбит точками
+	$a = x_0 < x_1 < \ldots < x_n = b$, то сумма длин частей телескопически
+	сворачивается в $b-a$.
+\end{Example}
+
+% ---------------------------------------------------------------
+% РИСУНОК 1: промежуток, разбитый на непересекающиеся промежутки;
+% сумма длин частей равна длине целого.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.15cm, y=1cm, >=Stealth]
+		\draw[ax] (-0.7,0) -- (7.9,0) node[below right] {$\RR$};
+
+		% сами части разбиения, поочерёдно двумя цветами палитры
+		\draw[hlcurve, hlViolet] (0.5,0) -- (2.1,0);
+		\draw[hlcurve, hlBlue]   (2.1,0) -- (3.2,0);
+		\draw[hlcurve, hlViolet] (3.2,0) -- (5.4,0);
+		\draw[hlcurve, hlBlue]   (5.4,0) -- (7.0,0);
+
+		\foreach \x in {0.5, 2.1, 3.2, 5.4, 7.0}
+			\draw[tickmark] (\x,0.13) -- (\x,-0.13);
+
+		\node[slbl, above] at (0.5,0.15) {$x_0 = a$};
+		\node[slbl, above] at (2.1,0.15) {$x_1$};
+		\node[slbl, above] at (3.2,0.15) {$x_2$};
+		\node[slbl, above] at (5.4,0.15) {$x_3$};
+		\node[slbl, above] at (7.0,0.15) {$x_4 = b$};
+
+		% скобки под частями разбиения
+		\foreach \l/\r/\lab in {0.5/2.1/a_1, 2.1/3.2/a_2, 3.2/5.4/a_3, 5.4/7.0/a_4}
+			\draw[decorate, decoration={brace, mirror, amplitude=4pt}, black!55]
+				(\l,-0.2) -- (\r,-0.2) node[midway, below=5pt, slbl] {$\lab$};
+
+		% общая скобка
+		\draw[decorate, decoration={brace, mirror, amplitude=6pt}, black!55]
+			(0.5,-1.0) -- (7.0,-1.0)
+			node[midway, below=7pt, slbl]
+			{$\ell\bigl(\langle a,b\rangle\bigr) = b - a = \sum_{i=1}^{4}\ell(a_i)$};
+	\end{tikzpicture}
+	\caption{Аддитивность длины: промежуток $\langle a,b\rangle$ разбит точками
+		$x_0 < x_1 < \ldots < x_4$ на попарно непересекающиеся промежутки
+		$a_1,\dots,a_4$, и сумма их длин равна $b-a$. Требование определения
+		меры относится ровно к таким картинкам --- и целое, и все части лежат
+		в системе $\mathcal{A}$.}
+	\label{fig:длина-аддитивна}
+\end{figure}
+
+\begin{Example}{Мера Стилтьеса}{стилтьес}
+	Пусть $f : \langle a,b\rangle \to \RR \cup \{-\infty,+\infty\}$ ---
+	возрастающая функция. Для промежутков
+	$\langle c,d\rangle \subseteq \langle a,b\rangle$ положим
+	\[
+	\ell_f\bigl(\langle c,d\rangle\bigr) = f(d) - f(c).
+	\]
+	Возрастание $f$ даёт неотрицательность. Аддитивность --- снова
+	телескопическая сумма: при $x_0 = c$, $x_n = d$
+	\[
+	\bigl(f(x_n) - f(x_{n-1})\bigr) + \bigl(f(x_{n-1}) - f(x_{n-2})\bigr)
+	+ \ldots + \bigl(f(x_1) - f(x_0)\bigr) = f(d) - f(c).
+	\]
+	При $f(x) = x$ получается длина из примера выше.
+\end{Example}
+
+% ---------------------------------------------------------------
+% РИСУНОК 2: мера Стилтьеса. Приращения возрастающей f на частях
+% разбиения складываются в полное приращение f(d) - f(c).
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.5cm, y=1.15cm, >=Stealth]
+		\draw[ax] (-0.35,0) -- (4.0,0) node[below right] {$x$};
+		\draw[ax] (0,-0.35) -- (0,3.5) node[above] {$y$};
+
+		% возрастающая функция f(x) = 0.15 x^2 + 0.35 x
+		\draw[curve, domain=0:3.7, samples=120] plot (\x,{0.15*\x*\x + 0.35*\x});
+		\node[slbl, right] at (3.55,3.05) {$y = f(x)$};
+
+		% проекции точек разбиения на график и на ось Oy
+		\foreach \x/\y in {0.6/0.264, 1.4/0.784, 2.3/1.5985, 3.3/2.7885}{
+			\draw[curveaux, black!45] (\x,0) -- (\x,\y) -- (0,\y);
+			\node[pt] at (\x,\y) {};
+		}
+
+		\node[slbl, below] at (0.6,-0.06) {$x_0 = c$};
+		\node[slbl, below] at (1.4,-0.06) {$x_1$};
+		\node[slbl, below] at (2.3,-0.06) {$x_2$};
+		\node[slbl, below] at (3.3,-0.06) {$x_3 = d$};
+
+		% приращения на оси Oy
+		\draw[hlcurve, hlViolet] (0,0.264)  -- (0,0.784);
+		\draw[hlcurve, hlBlue]   (0,0.784)  -- (0,1.5985);
+		\draw[hlcurve, hlViolet] (0,1.5985) -- (0,2.7885);
+
+		\node[slbl, left] at (-0.08,0.524)  {$\ell_f(a_1)$};
+		\node[slbl, left] at (-0.08,1.191)  {$\ell_f(a_2)$};
+		\node[slbl, left] at (-0.08,2.193)  {$\ell_f(a_3)$};
+
+		\draw[decorate, decoration={brace, amplitude=5pt}, black!55]
+			(-1.02,0.264) -- (-1.02,2.7885)
+			node[midway, left=6pt, slbl, rotate=90, anchor=south]
+			{$f(d) - f(c)$};
+	\end{tikzpicture}
+	\caption{Мера Стилтьеса $\ell_f$: длина промежутка измеряется приращением
+		возрастающей функции $f$. Приращения на частях разбиения (цветные
+		отрезки на оси $Oy$) не перекрываются и в сумме дают полное приращение
+		$f(d)-f(c)$ --- это и есть аддитивность.}
+	\label{fig:мера-стилтьеса}
+\end{figure}
+
+\begin{Remark}{Аккуратность с бесконечностями}{бесконечности-стилтьеса}
+	Значения $\pm\infty$ у $f$ допускаются, но пользоваться ими нужно
+	осторожно: в разности $f(d) - f(c)$ может возникнуть неопределённость
+	$\infty - \infty$. Ниже (в определении элементарного интеграла) мы всюду
+	считаем, что бесконечности разных знаков в одной сумме не встречаются.
+\end{Remark}
+
+\begin{Example}{Площадь прямоугольника}{площадь}
+	Пусть $\mathcal{A}$ --- система прямоугольников
+	\[
+	P = \langle a,b\rangle \times \langle c,d\rangle = I_1 \times I_2
+	\subset \RR^2 ,
+	\]
+	и
+	\[
+	S\bigl(\langle a,b\rangle \times \langle c,d\rangle\bigr)
+	= (b-a)(d-c) = \ell(I_1)\cdot \ell(I_2).
+	\]
+	Здесь аддитивность уже не очевидна: прямоугольник можно разрезать на
+	прямоугольники многими способами.
+\end{Example}
+
+% ---------------------------------------------------------------
+% РИСУНОК 3: прямоугольник P = I_1 x I_2, разбитый на прямоугольники.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.15cm, y=1.15cm, >=Stealth]
+		% клетки разбиения
+		\fill[hlViolet, hlarea] (0,0)   rectangle (1.5,1.1);
+		\fill[hlBlue,   hlarea] (1.5,0) rectangle (2.9,1.1);
+		\fill[hlBlue,   hlarea] (0,1.1) rectangle (1.5,2.4);
+		\fill[hlViolet, hlarea] (1.5,1.1) rectangle (2.9,1.7);
+		\fill[hlGreen,  hlarea] (1.5,1.7) rectangle (2.9,2.4);
+		\fill[hlGreen,  hlarea] (2.9,0) rectangle (4.3,1.7);
+		\fill[hlViolet, hlarea] (2.9,1.7) rectangle (4.3,2.4);
+
+		\draw[thin, black!60] (0,1.1) -- (2.9,1.1);
+		\draw[thin, black!60] (1.5,0) -- (1.5,2.4);
+		\draw[thin, black!60] (1.5,1.7) -- (4.3,1.7);
+		\draw[thin, black!60] (2.9,0) -- (2.9,2.4);
+
+		\draw[thick] (0,0) rectangle (4.3,2.4);
+
+		% стороны прямоугольника
+		\draw[hlcurve, hlViolet] (0,-0.3) -- (4.3,-0.3);
+		\draw[hlcurve, hlBlue]   (-0.3,0) -- (-0.3,2.4);
+		\node[slbl, below] at (2.15,-0.36) {$I_1$};
+		\node[slbl, left]  at (-0.36,1.2)  {$I_2$};
+
+		\node[lbl] at (2.15,2.75) {$P = I_1 \times I_2$};
+	\end{tikzpicture}
+	\caption{Прямоугольник $P = I_1 \times I_2$, разрезанный на попарно
+		непересекающиеся прямоугольники. Утверждение
+		«$S(P) = \sum S(P_k)$ для любого такого разрезания» --- это в точности
+		требование определения меры; в отличие от одномерного случая оно
+		требует доказательства.}
+	\label{fig:площадь-разбиение}
+\end{figure}
+
+\begin{Example}{Объём параллелепипеда}{объём}
+	Пусть $\mathcal{A}_n$ --- система $n$-мерных параллелепипедов
+	\[
+	P = I_1 \times \ldots \times I_n, \qquad I_i = \langle a_i, b_i\rangle,
+	\]
+	и
+	\[
+	V_n(P) = \ell(I_1) \cdot \ldots \cdot \ell(I_n).
+	\]
+\end{Example}
+
+\begin{Theorem}{Объём --- мера}{объём-мера}
+	$V_n$ --- мера на $\mathcal{A}_n$.
+\end{Theorem}
+
+Это будет получено ниже, в следствии~\ref{cor:объём-мера-следствие}
+из теоремы о произведении мер.
+
+\subsection{Считающие меры}
+
+\begin{Example}{Считающие меры}{считающие}
+	\begin{enumerate}
+		\item $X$ --- множество, $\mathcal{A}$ --- система всех конечных
+		подмножеств $X$; для $a \in \mathcal{A}$ полагаем $\mu(a)$ равным
+		количеству точек в $a$.
+
+		\item $\mathcal{A} = 2^X$ и
+		\[
+		\mu(a) =
+		\begin{cases}
+			\text{количество точек в } a, & a \text{ конечно},\\
+			+\infty, & \text{иначе}.
+		\end{cases}
+		\]
+
+		\item $\mathcal{A} = 2^X$, $\varphi : X \to [0,+\infty)$ ---
+		произвольная функция («вес» точки), и
+		\[
+		\mu(a) = \sum_{x \in a} \varphi(x).
+		\]
+		При $\varphi \equiv 1$ получается предыдущий пример.
+	\end{enumerate}
+\end{Example}
+
+\begin{Example}{Конечное вероятностное пространство}{вероятностное}
+	Пусть $X = \Omega = \{1,\ldots,n\}$, $\mathcal{F} = \mathcal{A} = 2^X$ и
+	$P : X \to [0,+\infty)$, причём
+	\[
+	\sum_{x \in X} P(x) = 1 .
+	\]
+	Тогда мера из предыдущего примера с весом $\varphi = P$ --- это
+	вероятность, а $(\Omega,\mathcal{F},P)$ --- конечное вероятностное
+	пространство.
+\end{Example}
+
+\subsection{Кольцо и алгебра}
+
+\begin{Definition}{Кольцо}{кольцо}
+	Система $\mathcal{A} \subseteq 2^X$ называется \textbf{кольцом}, если
+	\[
+	\forall a,b \in \mathcal{A} \colon \quad
+	a \cup b \in \mathcal{A}, \qquad
+	a \cap b \in \mathcal{A}, \qquad
+	a \setminus b \in \mathcal{A} .
+	\]
+\end{Definition}
+
+\begin{Remark}{Откуда название}{кольцо-из-алгебры}
+	Если положить
+	\[
+	a \cdot b = a \cap b, \qquad
+	a + b = (a \setminus b) \cup (b \setminus a) \quad
+	\text{(симметрическая разность)},
+	\]
+	то $\mathcal{A}$ становится кольцом в смысле общей алгебры: нулём служит
+	$\varnothing$, а каждый элемент противоположен сам себе.
+\end{Remark}
+
+\begin{Lemma}{Критерий меры на кольце}{мера-на-кольце}
+	Пусть $\mathcal{A}$ --- кольцо над $X$ и $\mu : \mathcal{A} \to [0,+\infty)$.
+	Тогда
+	\[
+	\mu \text{ --- мера} \iff
+	\mu(a \cup b) = \mu(a) + \mu(b) \quad
+	\forall a,b \in \mathcal{A},\ a \cap b = \varnothing .
+	\]
+\end{Lemma}
+
+\begin{proof}
+	($\Rightarrow$) Очевидно: это определение меры при $n = 2$.
+
+	($\Leftarrow$) Индукция по числу частей. Пусть
+	$a = a_1 \sqcup \ldots \sqcup a_n$, все $a_i \in \mathcal{A}$. Множество
+	$a_1 \cup \ldots \cup a_{n-1}$ лежит в $\mathcal{A}$, поскольку
+	$\mathcal{A}$ --- кольцо, и не пересекается с $a_n$. По условию
+	\[
+	\mu(a) = \mu\bigl(a_1 \cup \ldots \cup a_{n-1}\bigr) + \mu(a_n),
+	\]
+	а к первому слагаемому применимо предположение индукции.
+\end{proof}
+
+\begin{Remark}{Где нужна замкнутость}{зачем-кольцо}
+	В доказательстве существенно, что промежуточное объединение
+	$a_1 \cup \ldots \cup a_{n-1}$ снова лежит в системе. Для полукольца
+	это не так, и там подобное «сведение к двум частям» не проходит.
+\end{Remark}
+
+\begin{Definition}{Алгебра}{алгебра}
+	Кольцо $\mathcal{A}$ над $X$, содержащее само $X$
+	($X \in \mathcal{A}$), называется \textbf{алгеброй}.
+\end{Definition}
+
+\begin{Lemma}{}{алгебра-дополнения}
+	\begin{enumerate}
+		\item Если $\mathcal{A}$ --- алгебра, то она замкнута относительно
+		дополнений: $a \in \mathcal{A} \Rightarrow a^{c} \in \mathcal{A}$.
+
+		\item Пусть $\mathcal{A} \subseteq 2^X$, $X \in \mathcal{A}$ и
+		$\mathcal{A}$ замкнута относительно дополнений. Тогда замкнутость
+		$\mathcal{A}$ относительно \emph{любой одной} из операций
+		$\cup$, $\cap$, $\setminus$ влечёт, что $\mathcal{A}$ --- алгебра.
+	\end{enumerate}
+\end{Lemma}
+
+\begin{proof}
+	\textbf{1.} $a^{c} = X \setminus a \in \mathcal{A}$, так как
+	$X, a \in \mathcal{A}$, а кольцо замкнуто относительно разности.
+
+	\medskip
+	\textbf{2.} Пусть $\mathcal{A}$ замкнута относительно $\cup$. Тогда для
+	любых $a,b \in \mathcal{A}$
+	\[
+	a \cap b = \bigl(a^{c} \cup b^{c}\bigr)^{c} \in \mathcal{A},
+	\qquad
+	a \setminus b = a \cap b^{c} \in \mathcal{A},
+	\]
+	то есть $\mathcal{A}$ --- кольцо, содержащее $X$, значит алгебра.
+
+	Если $\mathcal{A}$ замкнута относительно $\cap$, то аналогично
+	$a \cup b = (a^{c} \cap b^{c})^{c}$.
+
+	Если $\mathcal{A}$ замкнута относительно $\setminus$, то
+	$a \cap b = a \setminus (a \setminus b) \in \mathcal{A}$, и мы попадаем
+	в предыдущий случай.
+\end{proof}
+
+\subsection{Полукольцо}
+
+\begin{Definition}{Полукольцо}{полукольцо}
+	Система $\mathcal{A} \subseteq 2^X$ называется \textbf{полукольцом}, если
+	\begin{enumerate}
+		\item $\varnothing \in \mathcal{A}$;
+		\item $a,b \in \mathcal{A} \Rightarrow a \cap b \in \mathcal{A}$;
+		\item $a,b \in \mathcal{A} \Rightarrow$ разность представима в виде
+		конечного объединения попарно непересекающихся элементов системы:
+		\[
+		a \setminus b = c_1 \sqcup \ldots \sqcup c_n, \qquad
+		c_i \in \mathcal{A}.
+		\]
+	\end{enumerate}
+\end{Definition}
+
+\begin{Example}{Промежутки на прямой}{промежутки-полукольцо}
+	Система промежутков в $\RR$ --- полукольцо, но не кольцо: пересечение
+	двух промежутков --- промежуток, разность --- объединение не более чем
+	двух непересекающихся промежутков, а вот объединение двух промежутков
+	промежутком быть не обязано.
+\end{Example}
+
+% ---------------------------------------------------------------
+% РИСУНОК 4: промежутки образуют полукольцо, но не кольцо:
+% разность распадается на два промежутка, объединение выходит из системы.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.1cm, y=1cm, >=Stealth]
+		% --- верхняя строка: a \ b = два промежутка
+		\draw[ax] (-0.5,0) -- (7.3,0) node[below right] {$\RR$};
+		\draw[hlcurve, hlBlue] (0.4,0) -- (6.4,0);
+		\node[slbl, above] at (0.4,0.12) {$a$};
+		\draw[hlcurve, hlRed] (2.4,0) -- (4.1,0);
+		\node[slbl, above] at (3.25,0.12) {$b$};
+
+		\draw[hlcurve, hlViolet] (0.4,-0.75) -- (2.4,-0.75);
+		\draw[hlcurve, hlViolet] (4.1,-0.75) -- (6.4,-0.75);
+		\foreach \x in {0.4, 2.4, 4.1, 6.4}
+			\draw[curveaux, black!35, thin] (\x,0.05) -- (\x,-0.75);
+		\node[slbl, right] at (6.55,-0.75) {$a \setminus b = c_1 \sqcup c_2$};
+		\node[slbl, below] at (1.4,-0.82) {$c_1$};
+		\node[slbl, below] at (5.25,-0.82) {$c_2$};
+
+		% --- нижняя строка: объединение двух промежутков — не промежуток
+		\begin{scope}[yshift=-2.3cm]
+			\draw[ax] (-0.5,0) -- (7.3,0) node[below right] {$\RR$};
+			\draw[hlcurve, hlGreen] (0.4,0) -- (2.4,0);
+			\draw[hlcurve, hlGreen] (4.1,0) -- (6.4,0);
+			\node[slbl, above] at (1.4,0.12) {$c_1$};
+			\node[slbl, above] at (5.25,0.12) {$c_2$};
+			\node[slbl, above] at (3.25,0.12) {$\notin \mathcal{A}$};
+			\draw[decorate, decoration={brace, mirror, amplitude=4pt}, black!55]
+				(0.4,-0.2) -- (6.4,-0.2)
+				node[midway, below=5pt, slbl] {$c_1 \cup c_2$ --- не промежуток};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Промежутки образуют полукольцо, но не кольцо. Разность двух
+		промежутков распадается на два непересекающихся промежутка --- это
+		пункт~3 определения полукольца (вверху). Объединение же выходит за
+		пределы системы (внизу), поэтому требовать замкнутости относительно
+		$\cup$ было бы слишком сильно.}
+	\label{fig:промежутки-полукольцо}
+\end{figure}
+
+\begin{Theorem}{Произведение полуколец}{произведение-полуколец}
+	Пусть $X, Y$ --- множества, $\mathcal{A}$ и $\mathcal{B}$ --- полукольца
+	на $X$ и $Y$ соответственно. Пусть $\mathcal{C}$ --- система множеств вида
+	\[
+	a \times b, \qquad a \in \mathcal{A},\ b \in \mathcal{B}.
+	\]
+	Тогда $\mathcal{C}$ --- полукольцо на $X \times Y$ (оно называется
+	\textbf{произведением полуколец} $\mathcal{A}$ и $\mathcal{B}$).
+\end{Theorem}
+
+\begin{Corollary}{}{произведение-следствия}
+	\begin{enumerate}
+		\item Прямоугольники $\langle a,b\rangle \times \langle c,d\rangle$
+		образуют полукольцо в $\RR^2$.
+		\item По индукции: параллелепипеды
+		$\langle a_1,b_1\rangle \times \ldots \times \langle a_n,b_n\rangle$
+		образуют полукольцо в $\RR^n$.
+		\item Произведение полуколец --- полукольцо, но, вообще говоря,
+		не кольцо.
+	\end{enumerate}
+\end{Corollary}
+
+\begin{proof}
+	\textbf{Замечание (сведение к случаю $b \subseteq a$).} Для любых $a,b$
+	\[
+	a \setminus b = a \setminus (a \cap b), \qquad a \cap b \subseteq a,
+	\]
+	причём $a \cap b \in \mathcal{C}$ по пункту~2. Поэтому пункт~3
+	достаточно проверять для вложенных множеств.
+
+	\medskip
+	\textbf{1.} $\varnothing = \varnothing \times \varnothing \in \mathcal{C}$,
+	так как $\varnothing \in \mathcal{A}$ и $\varnothing \in \mathcal{B}$.
+
+	\medskip
+	\textbf{2.} Пусть $e_1 = a_1 \times b_1$, $e_2 = a_2 \times b_2$, где
+	$a_i \in \mathcal{A}$, $b_i \in \mathcal{B}$. Тогда
+	\[
+	e_1 \cap e_2 = (a_1 \cap a_2) \times (b_1 \cap b_2),
+	\]
+	а $a_1 \cap a_2 \in \mathcal{A}$ и $b_1 \cap b_2 \in \mathcal{B}$, так что
+	$e_1 \cap e_2 \in \mathcal{C}$.
+
+	\medskip
+	\textbf{3.} Пусть $e_2 \subseteq e_1$ (по замечанию этого достаточно); при
+	$e_2 = \varnothing$ доказывать нечего, поэтому считаем $a_2, b_2$
+	непустыми, и тогда
+	\[
+	e_2 \subseteq e_1 \ \Longrightarrow \ a_2 \subseteq a_1,\quad
+	b_2 \subseteq b_1 .
+	\]
+	По пункту~3 определения полукольца
+	\[
+	a_1 \setminus a_2 = u_1 \sqcup \ldots \sqcup u_n, \quad u_i \in \mathcal{A},
+	\qquad
+	b_1 \setminus b_2 = v_1 \sqcup \ldots \sqcup v_m, \quad v_j \in \mathcal{B}.
+	\]
+	Положим $u_0 = a_2$ и $v_0 = b_2$; тогда
+	\[
+	a_1 = \bigsqcup_{i=0}^{n} u_i, \qquad
+	b_1 = \bigsqcup_{j=0}^{m} v_j ,
+	\]
+	и, значит,
+	\[
+	a_1 \times b_1 = \bigsqcup_{i=0}^{n}\bigsqcup_{j=0}^{m} u_i \times v_j
+	= (u_0 \times v_0) \ \sqcup \bigsqcup_{k=1}^{N} e_k ,
+	\]
+	где через $e_1,\ldots,e_N$ ($N = (n+1)(m+1) - 1$) обозначены все клетки
+	$u_i \times v_j$, кроме $u_0 \times v_0 = a_2 \times b_2 = e_2$. Клетки
+	попарно не пересекаются и лежат в $\mathcal{C}$, поэтому
+	\[
+	(a_1 \times b_1) \setminus (a_2 \times b_2) = \bigsqcup_{k=1}^{N} e_k ,
+	\]
+	что и требовалось.
+\end{proof}
+
+% ---------------------------------------------------------------
+% РИСУНОК 5: ключевая картинка доказательства — разбиение a_1 x b_1
+% на клетки u_i x v_j; выделенная клетка u_0 x v_0 = e_2.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.15cm, y=1.15cm, >=Stealth]
+		% сетка: разрезы по x в 1.2 и 2.6, по y в 0.9 и 1.95
+		\fill[hlViolet, hlarea] (1.2,0.9) rectangle (2.6,1.95);
+		\foreach \l/\r in {0/1.2, 1.2/2.6, 2.6/4.2}
+			\foreach \b/\t in {0/0.9, 0.9/1.95, 1.95/2.8}
+				\draw[thin, black!55] (\l,\b) rectangle (\r,\t);
+		\draw[thick] (0,0) rectangle (4.2,2.8);
+
+		\node[lbl] at (1.9,1.42) {$e_2$};
+
+		% подписи клеток разности
+		\foreach \x/\y/\lab in {
+			0.6/0.45/{u_1\times v_1}, 1.9/0.45/{u_0\times v_1},
+			3.4/0.45/{u_2\times v_1}, 0.6/1.42/{u_1\times v_0},
+			3.4/1.42/{u_2\times v_0}, 0.6/2.37/{u_1\times v_2},
+			1.9/2.37/{u_0\times v_2}, 3.4/2.37/{u_2\times v_2}}
+			\node[slbl, black!65] at (\x,\y) {$\lab$};
+
+		% стороны: u_i на оси абсцисс, v_j на оси ординат
+		\draw[hlcurve, hlBlue]   (0,-0.3)   -- (1.2,-0.3);
+		\draw[hlcurve, hlViolet] (1.2,-0.3) -- (2.6,-0.3);
+		\draw[hlcurve, hlBlue]   (2.6,-0.3) -- (4.2,-0.3);
+		\node[slbl, below] at (0.6,-0.36) {$u_1$};
+		\node[slbl, below] at (1.9,-0.36) {$u_0 = a_2$};
+		\node[slbl, below] at (3.4,-0.36) {$u_2$};
+
+		\draw[hlcurve, hlGreen]  (-0.3,0)    -- (-0.3,0.9);
+		\draw[hlcurve, hlViolet] (-0.3,0.9)  -- (-0.3,1.95);
+		\draw[hlcurve, hlGreen]  (-0.3,1.95) -- (-0.3,2.8);
+		\node[slbl, left] at (-0.36,0.45) {$v_1$};
+		\node[slbl, left] at (-0.36,1.42) {$v_0 = b_2$};
+		\node[slbl, left] at (-0.36,2.37) {$v_2$};
+
+		\node[lbl] at (2.1,3.15) {$e_1 = a_1 \times b_1$};
+	\end{tikzpicture}
+	\caption{Ключевой шаг доказательства теоремы~\ref{thm:произведение-полуколец}.
+		Разбиения $a_1 = \bigsqcup u_i$ и $b_1 = \bigsqcup v_j$ (стороны
+		прямоугольника) порождают разбиение $e_1 = a_1 \times b_1$ на клетки
+		$u_i \times v_j$. Одна из клеток --- это в точности $e_2 = a_2 \times b_2$
+		(фиолетовая), а все остальные дают представление разности
+		$e_1 \setminus e_2$ в виде конечного объединения попарно
+		непересекающихся элементов $\mathcal{C}$.}
+	\label{fig:произведение-полуколец}
+\end{figure}
+
+\begin{Theorem}{Произведение мер}{произведение-мер}
+	Пусть $X, Y$ --- множества, $\mathcal{A}$ и $\mathcal{B}$ --- полукольца
+	на них, $\mathcal{C} = \mathcal{A} \times \mathcal{B}$ --- их
+	произведение. Пусть
+	\[
+	\mu : \mathcal{A} \to [0,+\infty], \qquad
+	\nu : \mathcal{B} \to [0,+\infty]
+	\]
+	--- меры. Тогда функция $\lambda : \mathcal{C} \to [0,+\infty]$,
+	\[
+	\lambda(a \times b) = \mu(a)\,\nu(b), \qquad
+	a \in \mathcal{A},\ b \in \mathcal{B},
+	\]
+	--- мера на $\mathcal{C}$.
+\end{Theorem}
+
+% TODO (сверить с лектором): доказательство теоремы о произведении мер
+% на лекции не приводилось — уточнить, откладывается оно или было устно.
+
+\begin{Corollary}{}{объём-мера-следствие}
+	$V_n$ --- мера на системе $n$-мерных параллелепипедов: длина $\ell$ ---
+	мера на промежутках, а $V_n = \ell \times \ldots \times \ell$ получается
+	$(n-1)$-кратным применением теоремы~\ref{thm:произведение-мер}. В
+	частности, площадь $S$ --- мера на прямоугольниках.
+\end{Corollary}
+
+\subsection{Свойства меры}
+
+\begin{Definition}{Соглашение о нуле и бесконечности}{ноль-на-бесконечность}
+	Всюду далее полагаем
+	\[
+	0 \cdot (\pm\infty) = 0 .
+	\]
+\end{Definition}
+
+\begin{Statement}{Монотонность}{монотонность}
+	Пусть $\mathcal{A}$ --- полукольцо, $\mu$ --- мера на нём,
+	$a, b \in \mathcal{A}$ и $b \subseteq a$. Тогда
+	\[
+	\mu(b) \leq \mu(a).
+	\]
+\end{Statement}
+
+\begin{proof}
+	По пункту~3 определения полукольца
+	$a \setminus b = c_1 \sqcup \ldots \sqcup c_n$, где $c_i \in \mathcal{A}$.
+	Так как $b \subseteq a$, отсюда
+	\[
+	a = b \sqcup c_1 \sqcup \ldots \sqcup c_n ,
+	\]
+	причём все части лежат в $\mathcal{A}$. По аддитивности
+	\[
+	\mu(a) = \mu(b) + \sum_{i=1}^{n} \mu(c_i) \geq \mu(b),
+	\]
+	поскольку все слагаемые неотрицательны.
+\end{proof}
+
+\begin{Statement}{Мера пустого множества}{мера-пустого}
+	Пусть $\mathcal{A}$ --- полукольцо и $\mu$ --- мера на нём. Если
+	существует $a \in \mathcal{A}$ с $\mu(a) < +\infty$, то
+	$\mu(\varnothing) = 0$.
+\end{Statement}
+
+\begin{proof}
+	Так как $\varnothing \subseteq a$, по монотонности
+	$\mu(\varnothing) \leq \mu(a) < +\infty$. С другой стороны,
+	$\varnothing = \varnothing \sqcup \varnothing$ --- разбиение на
+	непересекающиеся элементы $\mathcal{A}$, поэтому
+	\[
+	\mu(\varnothing) = \mu(\varnothing) + \mu(\varnothing).
+	\]
+	Значение конечно, значит его можно вычесть: $\mu(\varnothing) = 0$.
+\end{proof}
+
+\begin{Remark}{Зачем оговорка про конечность}{зачем-конечность}
+	Без неё утверждение неверно: функция $\mu \equiv +\infty$ на любом
+	полукольце аддитивна, но $\mu(\varnothing) = +\infty$. Такие вырожденные
+	примеры и отсекаются условием $\exists a \colon \mu(a) < +\infty$.
+\end{Remark}
+
+\subsection{Элементарный интеграл}
+
+\begin{Definition}{Простая функция}{простая-функция}
+	Пусть $\mathcal{A}$ --- полукольцо на $X$. Функция $f : X \to \RR$
+	называется \textbf{простой}, если
+	\[
+	f = \sum_{i=1}^{n} d_i\, \chi_{a_i},
+	\]
+	где $a_i \in \mathcal{A}$ и $a_i \cap a_j = \varnothing$ при $i \neq j$.
+\end{Definition}
+
+\begin{Definition}{Элементарный интеграл}{элементарный-интеграл}
+	\textbf{Элементарным интегралом} простой функции
+	$f = \sum_{i=1}^{n} d_i \chi_{a_i}$ по мере $\mu$ называется
+	\[
+	I(f) = \sum_{i=1}^{n} d_i\, \mu(a_i).
+	\]
+\end{Definition}
+
+\begin{Remark}{Оговорка о бесконечностях}{интеграл-бесконечности}
+	Считаем, что в сумме $\sum d_i \mu(a_i)$ не встречаются бесконечности
+	разных знаков --- иначе значение $I(f)$ не определено. Соглашение
+	$0\cdot(\pm\infty) = 0$ при этом позволяет писать нулевой коэффициент
+	при множестве бесконечной меры.
+\end{Remark}
+
+% ---------------------------------------------------------------
+% РИСУНОК 6: простая функция и её элементарный интеграл как
+% сумма площадей со знаком.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.25cm, y=0.95cm, >=Stealth]
+		\draw[ax] (-0.4,0) -- (5.6,0) node[below right] {$x$};
+		\draw[ax] (0,-1.5) -- (0,2.5) node[above] {$y$};
+
+		% ступени: a_1, a_2 — положительные, a_3 — отрицательная, a_4 — положительная
+		\fill[hlViolet, hlarea] (0.4,0) rectangle (1.5,1.5);
+		\fill[hlBlue,   hlarea] (1.5,0) rectangle (2.4,0.7);
+		\fill[hlRed,    hlarea] (3.0,0) rectangle (4.0,-1.1);
+		\fill[hlGreen,  hlarea] (4.0,0) rectangle (5.1,2.0);
+
+		\draw[hlcurve, hlViolet] (0.4,1.5)  -- (1.5,1.5);
+		\draw[hlcurve, hlBlue]   (1.5,0.7)  -- (2.4,0.7);
+		\draw[hlcurve, hlRed]    (3.0,-1.1) -- (4.0,-1.1);
+		\draw[hlcurve, hlGreen]  (4.0,2.0)  -- (5.1,2.0);
+
+		\foreach \x in {0.4, 1.5, 2.4, 3.0, 4.0, 5.1}
+			\draw[curveaux, black!30, thin] (\x,0) -- (\x,-1.55);
+
+		\node[slbl] at (0.95,0.75) {$d_1\mu(a_1)$};
+		\node[slbl] at (1.95,0.35) {$d_2\mu(a_2)$};
+		\node[slbl] at (3.5,-0.55) {$d_3\mu(a_3)$};
+		\node[slbl] at (4.55,1.0)  {$d_4\mu(a_4)$};
+
+		% сами множества a_i на оси абсцисс
+		\foreach \l/\r/\lab in {0.4/1.5/a_1, 1.5/2.4/a_2, 3.0/4.0/a_3, 4.0/5.1/a_4}
+			\draw[decorate, decoration={brace, mirror, amplitude=4pt}, black!55]
+				(\l,-1.6) -- (\r,-1.6) node[midway, below=5pt, slbl] {$\lab$};
+
+		\node[slbl] at (2.7,0.75) {$f = 0$};
+	\end{tikzpicture}
+	\caption{Простая функция $f = \sum_{i=1}^{4} d_i \chi_{a_i}$ и её
+		элементарный интеграл. Каждое слагаемое $d_i \mu(a_i)$ --- это
+		«площадь со знаком» соответствующей ступени; вне
+		$a_1 \sqcup \ldots \sqcup a_4$ функция равна нулю и во вклад
+		не входит. Множества $a_i$ попарно не пересекаются, но объединяться
+		в элемент полукольца не обязаны.}
+	\label{fig:простая-функция}
+\end{figure}
+
+\begin{Statement}{Свойства элементарного интеграла}{свойства-интеграла}
+	\begin{enumerate}
+		\item Определение корректно: значение $I(f)$ не зависит от
+		представления $f$ в виде $\sum d_i \chi_{a_i}$.
+		\item Монотонность: если $f \geq g$ --- простые функции, то
+		$I(f) \geq I(g)$.
+		\item Аддитивность: $I(f+g) = I(f) + I(g)$.
+	\end{enumerate}
+\end{Statement}
+
+% TODO (сверить с лектором): доказательства свойств 1–3 на этой лекции
+% не приводились — вероятно, они в начале следующей.

@@ -1,0 +1,39 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% =================================================================
+%  main.tex — сборка конспекта по математическому анализу
+%  Компилировать из корня проекта: latexmk -xelatex main.tex
+%
+%  Структура проекта:
+%    main.tex
+%    style/      — преамбула, разложенная по темам
+%    templates/  — заготовки блоков (в сборку не входят)
+%    sections/   — лекции: lecture01.tex, lecture02.tex, ...
+%    fonts/      — .otf-шрифты CMU (см. style/fonts-geometry.tex)
+% =================================================================
+\documentclass[12pt,a4paper]{article}
+
+\input{style/preamble}
+
+\pagestyle{plain}
+
+\begin{document}
+	
+	% \makecover{<цвет>}{<курс>}{<подзаголовок>}{<лектор>}
+	\makecover
+	{AnalysisColor}
+	{Математический анализ}
+	{Билеты}
+	{Осипов Н.\,Н.}
+	
+	\makestaffandcontents
+	
+	\newpage
+	
+	\lecture{sections/}{lecture01.tex}
+	% \lecture{sections/}{lecture02.tex}
+	
+	% Закомментированная строка — способ временно исключить лекцию:
+	% %\lecture{sections/}{lecture07.tex}
+	
+\end{document}

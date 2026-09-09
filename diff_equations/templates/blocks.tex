@@ -1,0 +1,105 @@
+% !TEX root = ../demo.tex
+% =================================================================
+%  templates/blocks.tex
+%  Каталог всех цветных боксов, пометки required и окружения proof.
+%
+%  Общий синтаксис:
+%     \begin{Имя}[<опции tcolorbox>]{<заголовок>}{<метка>} ... \end{Имя}
+%  Пример: \begin{Theorem}[required]{Формула Стирлинга}{stirling}
+%          ... \end{Theorem}   ->  ссылка \ref{thm:stirling}
+% =================================================================
+
+\subsection{Нумерованные боксы}
+
+\begin{Theorem}{Название теоремы}{demo-thm}
+	Нумеруется внутри section: «Теорема 1.1». Бордовая рамка.
+	Ссылка на этот бокс: \verb|\ref{thm:demo-thm}| $\to$ \ref{thm:demo-thm}.
+\end{Theorem}
+
+\begin{proof}
+	Окружение \verb|proof| набирает «\textbf{Доказательство.}» жирным
+	и ставит $\blacksquare$ в конце.
+\end{proof}
+
+\begin{Lemma}{}{}
+	Лемма делит счётчик с теоремой. Заголовок можно не задавать.
+\end{Lemma}
+
+\begin{Proposition}{Эквивалентные выражения для нормы}{}
+	Предложение, фиолетовая рамка.
+	\[
+	\|\mathcal{A}\| = \sup_{\|x\|_X \le 1} \|\mathcal{A}x\|_Y
+	= \sup_{x \neq 0} \frac{\|\mathcal{A}x\|_Y}{\|x\|_X}.
+	\]
+\end{Proposition}
+
+\begin{Statement}{Покомпонентная непрерывность}{}
+	Утверждение, синяя рамка.
+\end{Statement}
+
+\subsection{Ненумерованные боксы}
+
+\begin{Definition}{Непрерывность отображения}{}
+	Определение, охристая рамка. Номера нет — определения
+	идентифицируются по названию в плашке.
+\end{Definition}
+
+\begin{Example}{}{}
+	Пример, зелёная рамка.
+\end{Example}
+
+\begin{Remark}{Зачем нужны координатные функции}{}
+	Замечание, серая рамка.
+\end{Remark}
+
+\begin{Corollary}{Неравенство Бесселя}{}
+	Следствие, розовая рамка.
+	\[
+	\sum_{k=1}^{\infty} c_k^2 \le \|x\|^2.
+	\]
+\end{Corollary}
+
+\subsection{Пометка обязательного пункта: \texttt{[required]}}
+
+Необязательный аргумент \verb|[required]| добавляет утолщённую красную
+левую границу и красное \textbf{(!)} у заголовка. Работает с любым боксом.
+
+\begin{Definition}[required]{Линейный оператор}{}
+	Пусть $X, Y$~--- линейные пространства над $\RR$. Отображение
+	$\mathcal{A}\colon X \to Y$ называется \textbf{линейным оператором}, если
+	\[
+	\mathcal{A}(x + \lambda y) = \mathcal{A}x + \lambda\,\mathcal{A}y
+	\qquad \forall x, y \in X,\ \forall \lambda \in \RR.
+	\]
+\end{Definition}
+
+\begin{Theorem}[required]{Формула Стирлинга}{}
+	\[
+	n!=\sqrt{2\pi n}\left(\frac{n}{e}\right)^n\left(1+O\!\left(\frac1n\right)\right),
+	\qquad n\to\infty.
+	\]
+\end{Theorem}
+
+\subsection{Бокс со списком внутри}
+
+\begin{Remark}{}{}
+	Внутри бокса нормально работают списки и выключные формулы.
+	\begin{enumerate}
+		\item Первый пункт.
+		\item Второй пункт: $\displaystyle \sum_{k=1}^{N} c_k^2 \le \|x\|^2$.
+		\item Третий пункт.
+	\end{enumerate}
+\end{Remark}
+
+\subsection{Доказательство}
+
+\begin{Statement}{Пример утверждения}{demo-stmt}
+	Формулировка, на которую можно сослаться.
+\end{Statement}
+
+\begin{proof}
+	Окружение \verb|proof| — без рамки: «\textbf{Доказательство.}» жирным
+	в подбор, $\blacksquare$ в конце ставится автоматически.
+	Заголовок всегда один и тот же: доказательство идёт сразу за своим
+	утверждением, уточнять нечего.
+\end{proof}

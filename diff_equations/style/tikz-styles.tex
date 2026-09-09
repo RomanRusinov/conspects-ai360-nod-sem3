@@ -1,0 +1,40 @@
+% =================================================================
+%  style/tikz-styles.tex
+%  TikZ и наборы стилей для иллюстраций матанализа.
+%  pgfplots в эталоне не используется: графики рисуются
+%  через \draw plot (\x,{...}) внутри обычного tikzpicture.
+% =================================================================
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns,calc}
+
+\tikzset{
+	% --- оси и сетка ---
+	ax/.style        = {thick, -{Stealth[length=3mm]}},
+	gridline/.style  = {step=0.5, gray!25, very thin},
+	tickmark/.style  = {thick},
+	% --- кривые ---
+	curve/.style     = {thick, smooth, black!60},
+	curvehl/.style   = {ultra thick, Purple},
+	curveaux/.style  = {thick, dashed},
+	% --- заливки-штриховки под кривой / прямоугольники сумм ---
+	hatchA/.style    = {pattern=north east lines, pattern color=violet, opacity=0.35},
+	hatchB/.style    = {pattern=north east lines, pattern color=blue,   opacity=0.25},
+	hatchGray/.style = {pattern=north east lines, pattern color=black!60, opacity=0.25},
+	% --- векторы и проекции ---
+	vecarr/.style    = {->, very thick},
+	vecaux/.style    = {->, dashed},
+	pt/.style        = {circle, fill, inner sep=1.3pt},
+	% --- подписи ---
+	llbl/.style       = {font=\large},
+	lbl/.style       = {font=\small},
+	slbl/.style      = {font=\footnotesize},
+}
+
+% -----------------------------------------------------------------
+% Прямой угол в точке (#1) со сторонами вдоль осей:
+%     \rightangle{(P)}       — по умолчанию влево-вверх
+% -----------------------------------------------------------------
+\newcommand{\rightangle}[2][0.28]{%
+	\draw #2 ++(-#1,0) -- ++(0,#1) -- ++(#1,0);%
+}

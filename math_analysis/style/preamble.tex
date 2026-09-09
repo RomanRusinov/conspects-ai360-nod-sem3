@@ -1,0 +1,26 @@
+% =================================================================
+%  style/preamble.tex
+%  Единая точка подключения стиля конспекта.
+%  В главном файле достаточно одной строки:
+%      \input{style/preamble}
+%  (пути указаны относительно корня проекта — компилируйте оттуда)
+% =================================================================
+
+% xcolor грузится первым и с опциями: tikz и tcolorbox подтягивают его
+% сами, и повторный \usepackage[...]{xcolor} дал бы «Option clash».
+\usepackage[dvipsnames]{xcolor}
+
+\input{style/fonts-geometry}   % шрифты, язык, геометрия, интервалы
+\input{style/math-commands}    % amsmath, нормы, обычные theorem-окружения
+\input{style/tikz-styles}      % tikz и наборы стилей иллюстраций
+\input{style/highlight}      % палитра хайлайтов и команды \hlY, \hlB, ...
+\input{style/theorem-boxes}    % цветные боксы + пометка required (грузит hyperref)
+\input{style/cover}            % обложка, составители, оглавление
+
+% -----------------------------------------------------------------
+% Импорт лекций/билетов:
+%     \lecture{sections/}{lecture01.tex}   (синоним: \ticket)
+% -----------------------------------------------------------------
+\usepackage{import}
+\newcommand{\ticket}[2]{\import{#1}{#2}\bigskip}
+\newcommand{\lecture}[2]{\import{#1}{#2}\bigskip}

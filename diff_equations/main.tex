@@ -1,0 +1,47 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% =================================================================
+%  main.tex — сборка конспекта по дифференциальным уравнениям
+%  Компилировать из корня папки: latexmk -xelatex main.tex
+%
+%  Структура проекта:
+%    main.tex
+%    style/      — преамбула, разложенная по темам
+%    templates/  — заготовки блоков (в сборку не входят)
+%    sections/   — лекции: lecture01.tex, lecture02.tex, ...
+%    ../fonts/   — .otf-шрифты CMU (см. style/fonts-geometry.tex)
+% =================================================================
+\documentclass[12pt,a4paper]{article}
+
+\input{style/preamble}
+
+\pagestyle{plain}
+
+\begin{document}
+	
+	% \makecover{<цвет>}{<курс>}{<подзаголовок>}{<лектор>}
+	\makecover
+	{DiffEqColor}
+	{Дифференциальные \\ уравнения \\ и динамические \\ системы}
+	{Лекции}
+	{Пилюгин С.\,Ю.}
+	
+	\makestaffandcontents
+	
+	\newpage
+
+	\subsection*{Литература}
+
+	\begin{enumerate}
+		\item В.\,И.~Арнольд. \emph{Обыкновенные дифференциальные уравнения}.
+		\item Ю.\,Н.~Бибиков. \emph{Общий курс обыкновенных дифференциальных уравнений}.
+		\item С.\,Ю.~Пилюгин. \emph{Пространства динамических систем}, 2008.
+	\end{enumerate}	
+
+	\lecture{sections/}{lecture01.tex}
+	% \lecture{sections/}{lecture02.tex}
+	
+	% Закомментированная строка — способ временно исключить лекцию:
+	% %\lecture{sections/}{lecture07.tex}
+	
+\end{document}

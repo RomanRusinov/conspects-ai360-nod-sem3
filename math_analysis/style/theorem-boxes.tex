@@ -1,0 +1,160 @@
+% =================================================================
+%  style/theorem-boxes.tex
+%  Цветные theorem-like боксы конспекта (tcolorbox)
+%
+%  Синтаксис у всех боксов одинаков:
+%      \begin{Theorem}{<заголовок или пусто>}{<метка или пусто>}
+%          ...
+%      \end{Theorem}
+%  Необязательный первый аргумент — дополнительные опции tcolorbox,
+%  через него подключается пометка обязательного пункта:
+%      \begin{Definition}[required]{Линейный оператор}{}
+%  Ссылка на бокс с меткой foo: \ref{thm:foo} (префикс зависит от бокса:
+%  thm, lem, prop, stmt, def, ex, rem, cor).
+% =================================================================
+
+% xcolor уже загружен в style/preamble.tex с опцией [dvipsnames];
+% здесь он нужен только как зависимость.
+\usepackage{xcolor}
+
+\usepackage[most]{tcolorbox}
+% breakable оставлен загруженным на случай, если какому-то боксу
+% всё же понадобится разрыв: ему хватит локального breakable.
+\tcbuselibrary{breakable,skins,theorems}
+\usepackage{enumitem}
+
+% -----------------------------------------------------------------
+% Ссылки
+% -----------------------------------------------------------------
+\definecolor{linkcolor}{HTML}{47528F}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=linkcolor,
+	urlcolor=linkcolor,
+	citecolor=linkcolor,
+	linktoc=section
+}
+
+% -----------------------------------------------------------------
+% Палитра боксов: <имя>Frame — рамка и плашка заголовка,
+%                 <имя>Back  — исходный «бумажный» фон (сейчас
+%                 фон боксов строится как Frame!7!white)
+% -----------------------------------------------------------------
+\definecolor{thmBack}{HTML}{FCF8F9}   \definecolor{thmFrame}{HTML}{8D4455}  % Теорема
+\definecolor{lemBack}{HTML}{FCF8FA}   \definecolor{lemFrame}{HTML}{B56C89}  % Лемма
+\definecolor{stmtBack}{HTML}{F7FAFD}  \definecolor{stmtFrame}{HTML}{5279A5} % Утверждение
+\definecolor{exBack}{HTML}{F7FBF8}    \definecolor{exFrame}{HTML}{5A8F75}   % Пример
+\definecolor{defBack}{HTML}{FFFDF8}   \definecolor{defFrame}{HTML}{B68A2E}  % Определение
+\definecolor{propBack}{HTML}{FAF8FE}  \definecolor{propFrame}{HTML}{7769A8} % Предложение
+\definecolor{remBack}{HTML}{FAFAFA}   \definecolor{remFrame}{HTML}{7E7E7E}  % Замечание
+\definecolor{corBack}{HTML}{FDF8F8}   \definecolor{corFrame}{HTML}{C48383}  % Следствие
+
+% -----------------------------------------------------------------
+% Базовый стиль бокса
+% -----------------------------------------------------------------
+\tcbset{
+	conspectbox/.style={
+		enhanced,
+		unbreakable,
+		colback=white,
+		boxrule=0.8pt,
+		arc=2.8mm,
+		outer arc=2.8mm,
+		left=8pt,
+		right=8pt,
+		top=6pt,
+		bottom=6pt,
+		before skip=10pt,
+		after skip=10pt,
+		fonttitle=\bfseries,
+		coltitle=white,
+		attach boxed title to top left={
+			xshift=6pt,
+			yshift*=-\tcboxedtitleheight/2
+		},
+		boxed title style={
+			boxrule=0pt,
+			arc=3mm,
+			outer arc=3mm,
+			left=7pt,
+			right=7pt,
+			top=2.3pt,
+			bottom=2.3pt,
+		},
+	}
+}
+
+% -----------------------------------------------------------------
+% Вспомогательный макрос: новый бокс в общем стиле.
+%   #1 — опции счётчика, #2 — имя окружения, #3 — подпись,
+%   #4 — цвет, #5 — префикс метки
+% -----------------------------------------------------------------
+% leftrule=1.9pt даёт утолщённую левую границу, которая идёт по самой
+% рамке и потому корректно вписывается в скругления. borderline west
+% для этого не годится: он рисует прямую вертикаль во всю высоту
+% ограничивающего прямоугольника и торчит за скруглённые концы.
+\newcommand{\newconspectbox}[5][auto counter, number within=section]{%
+	\newtcbtheorem[#1]{#2}{#3}{
+		conspectbox,
+		colback=#4!7!white,
+		colframe=#4,
+		colbacktitle=#4,
+		leftrule=1.9pt
+	}{#5}%
+}
+
+% -----------------------------------------------------------------
+% Нумерованные боксы (сквозная нумерация внутри section)
+% -----------------------------------------------------------------
+\newconspectbox{Theorem}{Теорема}{thmFrame}{thm}
+\newconspectbox{Lemma}{Лемма}{lemFrame}{lem}
+\newconspectbox{Proposition}{Предложение}{propFrame}{prop}
+\newconspectbox{Statement}{Утверждение}{stmtFrame}{stmt}
+
+% -----------------------------------------------------------------
+% Ненумерованные боксы
+% -----------------------------------------------------------------
+\newconspectbox[no counter]{Definition}{Определение}{defFrame}{def}
+\newconspectbox[no counter]{Example}{Пример}{exFrame}{ex}
+\newconspectbox[no counter]{Remark}{Замечание}{remFrame}{rem}
+\newconspectbox[no counter]{Corollary}{Следствие}{corFrame}{cor}
+
+% -----------------------------------------------------------------
+% Пометка «обязательный пункт»: утолщённая красная левая граница
+% и красное (!) на уровне заголовка.
+% Подключается через необязательный аргумент бокса:
+%     \begin{Definition}[required]{Линейный оператор}{}
+%     \begin{Theorem}[required]{Формула Стирлинга}{stirling}
+% -----------------------------------------------------------------
+\definecolor{reqcolor}{HTML}{C81E2E}
+
+% Красная полоса рисуется поверх левой границы и обрезается по
+% скруглённому контуру рамки (arc=2.8mm из conspectbox) — иначе
+% прямая вертикаль торчала бы за скруглённые концы.
+\newcommand{\conspectreqband}{%
+	\begin{scope}
+		\clip[rounded corners=2.8mm] (frame.south west) rectangle (frame.north east);
+		\fill[reqcolor] (frame.south west) rectangle ([xshift=1.9pt]frame.north west);
+	\end{scope}%
+}
+
+\tcbset{
+	required/.style={
+		overlay={
+			\conspectreqband
+			\node[
+			anchor=north east,
+			inner sep=0pt,
+			font=\bfseries\large,
+			text=reqcolor
+			] at ([xshift=-8pt, yshift=-12pt]frame.north west) {(!)};
+		},
+	}
+}
+
+% -----------------------------------------------------------------
+% Как добавить свой бокс, например «Приём» цвета stmtFrame:
+%   \newconspectbox[no counter]{Trick}{Приём}{stmtFrame}{trick}
+% -----------------------------------------------------------------

@@ -1,0 +1,26 @@
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+*.bbl
+*.blg
+
+# Asymptote
+*.pre
+*_.tex
+*-[0-9]*.asy
+*-[0-9]*.pdf
+
+# собранный документ
+main.pdf
+algorithms.pdf
+
+# системное
+.DS_Store

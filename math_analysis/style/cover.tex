@@ -1,0 +1,182 @@
+% =================================================================
+%  style/cover.tex
+%  Обложка, страница составителей и оглавление
+%
+%  Использование в теле документа:
+%     \makecover{AnalysisColor}{Математический анализ}%
+%               {Билеты}{Фамилия И.\,О.}
+%     \makestaffandcontents
+% =================================================================
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{xcolor}
+
+% -----------------------------------------------------------------
+% Цвета обложек по предметам
+% -----------------------------------------------------------------
+\definecolor{AlgosColor}{HTML}{15162B}     % алгоритмы
+\definecolor{AlgebraColor}{HTML}{301010}   % алгебра
+\definecolor{AnalysisColor}{HTML}{102619}  % анализ
+\definecolor{DiscreteColor}{HTML}{231030}  % дискретная математика
+\definecolor{MetaColor}{HTML}{6672B8}
+\definecolor{LineColor}{HTML}{D8D8E6}
+\definecolor{SoftText}{HTML}{7A7A92}
+\definecolor{SoftGray}{HTML}{CFCFE6}
+
+% -----------------------------------------------------------------
+% Шапка обложки и город/год — правьте под свой курс
+% -----------------------------------------------------------------
+\newcommand{\coverheader}{СПбГУ \ $\cdot$ \ МКН \ $\cdot$ \ СП \ $\cdot$ \ 1 КУРС}
+\newcommand{\coverplaceyear}{Санкт-Петербург, 2026}
+
+% -----------------------------------------------------------------
+% \makecover{<цвет фона>}{<название курса>}{<подзаголовок>}{<лектор>}
+% -----------------------------------------------------------------
+\newcommand{\makecover}[4]{%
+	\thispagestyle{empty}
+	
+	\begin{titlepage}
+		\begingroup
+		\sffamily
+		
+		\begin{tikzpicture}[remember picture, overlay]
+			\fill[#1] (current page.south west) rectangle (current page.north east);
+			
+			% Диагональная «сетка» поверх фона
+			\begin{scope}[white, line width=0.4pt]
+				\foreach \i in {0,1,...,25} {
+					\draw[opacity=0.07] ($(current page.north west)+(0,-\i*1.2)$) --
+					($(current page.north east)+(-\i*2,-28)$);
+				}
+				\foreach \i in {0,1,...,20} {
+					\draw[opacity=0.05] ($(current page.south east)+(0,\i*1.8)$) --
+					($(current page.south west)+(\i*3.5,18)$);
+				}
+				\foreach \i in {0,5,...,30} {
+					\draw[opacity=0.15] ($(current page.north east)+(-\i,0)$) --
+					($(current page.south west)+(0,\i)$);
+				}
+			\end{scope}
+			
+			% Верхняя строка
+			\node[anchor=north west, white, inner sep=0pt]
+			at ($(current page.north west)+(2cm,-1.5cm)$) {%
+				\fontsize{16}{18}\selectfont\bfseries \coverheader
+			};
+			
+			% Заголовок и подзаголовок
+			\node[anchor=west, white, inner sep=0pt, text width=18cm, align=left]
+			at ($(current page.west)+(2cm,5cm)$) {%
+				{\fontsize{52}{58}\fontseries{bx}\selectfont #2\par}
+				\vspace{0.7cm}
+				{\fontsize{30}{36}\selectfont\bfseries #3\par}
+			};
+			
+			% Лектор
+			\node[anchor=west, white, inner sep=0pt, text width=10cm, align=left]
+			at ($(current page.west)+(2cm,1.1cm)$) {%
+				{\fontsize{20}{20}\selectfont\bfseries Лектор}
+				{\fontsize{22}{24}\selectfont #4}
+			};
+			
+			% Город и год
+			\node[anchor=south, white, inner sep=0pt]
+			at ($(current page.south)+(0,2cm)$) {%
+				{\fontsize{18}{20}\selectfont \coverplaceyear}
+			};
+		\end{tikzpicture}
+		\endgroup
+	\end{titlepage}
+	
+	\clearpage
+}
+
+% -----------------------------------------------------------------
+% Карточки составителей
+%   \leadperson{<имя>}{<github>}{<роль>}   — крупная карточка с ролью
+%   \nameghblock{<имя>}{<github>}          — имя + ссылка на github
+%   \nameonlyblock{<имя>}                  — только имя
+% -----------------------------------------------------------------
+\newcommand{\leadperson}[3]{%
+	\begin{minipage}[t]{0.42\textwidth}
+		\centering
+		\parbox[t][2.7em][t]{0.95\linewidth}{%
+			\centering
+			{\fontsize{10.5}{12.5}\selectfont\color{SoftText} #3\par}
+		}%
+		
+		\vspace{0.08cm}
+		{\fontsize{15.5}{18}\selectfont #1\par}
+		\vspace{0.10cm}
+		{\fontsize{12}{14}\selectfont\color{MetaColor}\href{https://github.com/#2}{@#2}\par}
+	\end{minipage}%
+}
+
+\newcommand{\nameghblock}[2]{%
+	\begin{minipage}[t]{0.30\textwidth}
+		\centering
+		{\fontsize{14.5}{17}\selectfont #1\par}
+		\vspace{0.08cm}
+		{\fontsize{11.5}{13}\selectfont\color{MetaColor}\href{https://github.com/#2}{@#2}\par}
+	\end{minipage}%
+}
+
+\newcommand{\nameonlyblock}[1]{%
+	\begin{minipage}[t]{0.30\textwidth}
+		\centering
+		{\fontsize{14.5}{17}\selectfont #1\par}
+	\end{minipage}%
+}
+
+% -----------------------------------------------------------------
+% Страница «Составители» + оглавление.
+% Список людей правится прямо здесь.
+% -----------------------------------------------------------------
+\newcommand{\makestaffandcontents}{%
+	\clearpage
+	\thispagestyle{empty}
+	\begingroup
+	\sffamily
+	
+	{\centering
+		{\fontsize{22}{26}\selectfont\bfseries Составители\par}
+		\par}
+	
+	\vspace{0.72cm}
+	
+	% --- ведущие роли ---
+	\begin{center}
+		\leadperson{Имя Фамилия}{github-login}{координация проекта, техническая редакция, вёрстка}
+		\hspace{0.05\textwidth}
+		\leadperson{Имя Фамилия}{github-login}{проверка и научное редактирование}
+	\end{center}
+	
+	\vspace{0.62cm}
+	
+	% --- остальные участники: по одному, по два или по три в ряд ---
+	\begin{center}
+		\nameghblock{Имя Фамилия}{github-login}
+	\end{center}
+	
+	\vspace{0.92cm}
+	
+	% --- разделитель ---
+	\noindent{\color{LineColor}\rule{\textwidth}{0.55pt}}
+	
+	\vspace{0.62cm}
+	
+	{\fontsize{13}{16}\selectfont
+		\setcounter{tocdepth}{1}
+		\tableofcontents
+	}
+	
+	\vfill
+	
+	{\centering
+		{\fontsize{11.5}{13}\selectfont\color{SoftText} \coverplaceyear\par}
+		\par}
+	
+	\endgroup
+	\clearpage
+}

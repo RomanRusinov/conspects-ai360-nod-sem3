@@ -1,0 +1,105 @@
+% !TEX root = ../demo.tex
+% =================================================================
+%  templates/lists-and-math.tex
+%  Текстовые и математические конструкции конспекта по матанализу
+% =================================================================
+
+\subsection{Списки}
+
+\begin{itemize}
+	\item Ограниченность: $\|\mathcal{A}\| < +\infty$.
+	\item Непрерывность в точке.
+	\item Равномерная непрерывность.
+\end{itemize}
+
+\begin{enumerate}
+	\item Зафиксируем $\eps > 0$.
+	\item Подберём $\delta > 0$ по определению непрерывности.
+	\item Оценим приращение и перейдём к пределу.
+\end{enumerate}
+
+\subsection{Выделения в тексте}
+
+\textbf{Жирным} вводится термин; \emph{курсивом} --- уточняющий акцент;
+\texttt{моноширинным} --- имена команд. Тире набирается \verb|---| (---),
+кавычки --- \verb|<<...>>| (<<так>>), а тире после термина в эталоне
+идёт как \verb|~---| (без разрыва): пусть $X$~--- банахово пространство.
+
+\subsection{Кванторы, пределы, оценки}
+
+\[
+\lim_{\substack{y\to x\\ y\in\Omega}} f(y) = f(x),
+\qquad
+\forall \eps>0\ \exists \delta>0 \st |y-x|<\delta \Rightarrow |f(y)-f(x)|<\eps.
+\]
+
+Двусторонняя оценка --- типовая конструкция матанализа:
+\[
+|a_k| \le \sqrt{\sum_{j=1}^{n} a_j^2} = |a| \le \sqrt{n}\,\max_{1\le j\le n}|a_j|.
+\]
+
+Цепочка неравенств с интегралами:
+\[
+\int_{n-1}^{n}\ln x\,dx \;<\; \ln n \;<\; \int_{n}^{n+1}\ln x\,dx .
+\]
+
+\subsection{Нормы и скалярные произведения}
+
+Макросы из \texttt{style/math-commands.tex}:
+\[
+\norma{x},\qquad \abs{x},\qquad \scal{x}{y},\qquad
+\Lp{f},\qquad \Lq{g},\qquad \norm{f}{2}.
+\]
+
+\subsection{Сокращение дробей: пакет \texttt{cancel}}
+
+\[
+\frac{\cancel{(x-a)}\,g(x)}{\cancel{(x-a)}} = g(x),
+\qquad
+\cancelto{0}{\frac{1}{n}} \ \text{при } n\to\infty.
+\]
+
+\subsection{Разбор случаев и системы}
+
+\[
+f(x) =
+\begin{cases}
+	x\sin\frac1x, & x \neq 0,\\
+	0,            & x = 0;
+\end{cases}
+\qquad
+\begin{cases}
+	\|\mathcal{A}x\|_Y \le C\|x\|_X,\\
+	C \ge 0 .
+\end{cases}
+\]
+
+\subsection{Многострочная выкладка}
+
+\begin{align*}
+	\Bigl\| x - \sum_{k=1}^{N}\lambda_k e_k \Bigr\|^2
+	&= \|x\|^2 - 2\sum_{k=1}^{N}\lambda_k c_k + \sum_{k=1}^{N}\lambda_k^2 \\
+	&= \|x\|^2 - \sum_{k=1}^{N} c_k^2 + \sum_{k=1}^{N}(\lambda_k - c_k)^2 .
+\end{align*}
+
+\subsection{Ссылки}
+
+На бокс: \verb|\ref{thm:demo-thm}| $\to$ \ref{thm:demo-thm}.
+На другой билет --- просто текстом: см. вопрос~38.
+
+\subsection{Хайлайты}
+
+Шесть цветов палитры из \texttt{style/highlight.tex} и короткие команды к ним:
+\hlY{жёлтый}, \hlB{синий}, \hlG{зелёный}, \hlR{красный},
+\hlO{оранжевый}, \hlV{фиолетовый}. Произвольный цвет палитры ---
+\verb|\hlc{hlBlue}{текст}|.
+
+Те же команды работают внутри формул:
+\[
+c_k = \hlR{\sum_{t=0}^{n-1} a_t\, b_{k-t}}, \qquad
+\hlY{k = 0,\dots,2n-2}.
+\]
+
+Заливка рассчитана на короткий фрагмент и \emph{не переносится} на следующую
+строку: длинный кусок либо разбивают на несколько \verb|\hl...|, либо
+выделяют боксом.

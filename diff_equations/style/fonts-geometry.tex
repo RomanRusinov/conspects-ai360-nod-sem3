@@ -1,0 +1,93 @@
+% =================================================================
+%  style/fonts-geometry.tex
+%  Шрифты, язык, геометрия страницы, базовая вёрстка
+%  Требует компиляции XeLaTeX (см. первую строку main.tex)
+% =================================================================
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+% -----------------------------------------------------------------
+% Шрифты: Computer Modern Unicode.
+% В эталоне подключаются локальные .otf из папки ../fonts/.
+% Переключатель ниже позволяет собрать конспект и без этой папки.
+% -----------------------------------------------------------------
+\newif\ifuselocalfonts
+% Автовыбор: если шрифты лежат рядом — берём их, иначе системные.
+\IfFileExists{../fonts/cmunrm.otf}{\uselocalfontstrue}{\uselocalfontsfalse}
+% Принудительно — раскомментируйте нужную строку
+% (и поправьте Path=, если папка fonts/ лежит не на уровень выше):
+% \uselocalfontstrue
+% \uselocalfontsfalse
+
+\ifuselocalfonts
+	\setmainfont{cmunrm.otf}[
+	Path           = ../fonts/,
+	BoldFont       = cmunbx.otf,
+	ItalicFont     = cmunti.otf,
+	BoldItalicFont = cmunbi.otf
+	]
+	\setsansfont{cmunss.otf}[
+	Path           = ../fonts/,
+	BoldFont       = cmunsx.otf,
+	ItalicFont     = cmunsi.otf,
+	BoldItalicFont = cmunbso.otf
+	]
+	\setmonofont{cmuntt.otf}[
+	Path           = ../fonts/,
+	BoldFont       = cmuntb.otf,
+	ItalicFont     = cmunit.otf,
+	BoldItalicFont = cmuntx.otf
+	]
+\else
+	% Запасной вариант: системные шрифты с кириллицей.
+	% Latin Modern сюда не годится — в нём нет кириллических глифов.
+	\IfFontExistsTF{CMU Serif}{%
+		\setmainfont{CMU Serif}
+		\setsansfont{CMU Sans Serif}
+		\setmonofont{CMU Typewriter Text}
+	}{%
+		\setmainfont{DejaVu Serif}
+		\setsansfont{DejaVu Sans}
+		\setmonofont{DejaVu Sans Mono}
+	}
+\fi
+
+% -----------------------------------------------------------------
+% Геометрия и абзацы
+% -----------------------------------------------------------------
+\usepackage[left=18mm, top=18mm, right=18mm, bottom=18mm]{geometry}
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{anyfontsize}
+
+% Иллюстрации оформляются как в эталоне по алгоритмам:
+%     \begin{figure}[H] \centering ... \caption{...} \label{fig:...} \end{figure}
+% [H] (пакет float) ставит рисунок ровно там, где он написан.
+\usepackage{graphicx}
+\usepackage{float}      % даёт [H] для figure
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf, width=0.92\textwidth, skip=6pt}
+
+% -----------------------------------------------------------------
+% Интервалы вокруг выключных формул и списков
+% -----------------------------------------------------------------
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+\setlist[enumerate]{itemsep=3pt, topsep=3pt}
+
+% Рисунки нумеруются внутри \section — согласованно с боксами (Рис. 1.1)
+\usepackage{chngcntr}
+\counterwithin{figure}{section}

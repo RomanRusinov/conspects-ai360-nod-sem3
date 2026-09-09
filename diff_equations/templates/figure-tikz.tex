@@ -1,0 +1,143 @@
+% !TEX root = ../demo.tex
+% =================================================================
+%  templates/figure-tikz.tex
+%  Иллюстрации. В эталоне по матанализу картинки НЕ плавающие:
+%  они ставятся ровно по месту внутри \begin{center}...\end{center},
+%  без \caption и без \label. Стили — из style/tikz-styles.tex.
+% =================================================================
+
+\subsection{График функции с осями и сеткой}
+
+\begin{center}
+	\begin{tikzpicture}[x=1.1cm, y=3.2cm, >=Stealth]
+		\pgfmathsetmacro{\n}{6}
+		\pgfmathsetmacro{\nminus}{\n-1}
+		\pgfmathsetmacro{\nplus}{\n+1}
+		\pgfmathsetmacro{\yn}{ln(\n)/ln(10)}
+		\pgfmathsetmacro{\yplus}{ln(\nplus)/ln(10)}
+		
+		\draw[gridline] (-0.6,-1.05) grid (8.6,1.15);
+		\draw[ax] (-0.6,0) -- (8.6,0);
+		\draw[ax] (0,-1.05) -- (0,1.15);
+		
+		\foreach \x/\lab in {1/1,2/2,3/3,\nminus/{$n-1$},\n/{$n$},\nplus/{$n+1$}}{
+			\draw[tickmark] (\x,0.03) -- (\x,-0.03);
+			\node[below] at (\x,0) {\lab};
+		}
+		\node[below] at (4.1,0) {$\dots$};
+		
+		\draw[curve, domain=0.15:8.2, samples=240] plot (\x,{ln(\x)/ln(10)});
+		\fill (1,0) circle (1.6pt);
+		
+		% прямоугольник нижней суммы
+		\fill[hatchA] (\nminus,0) rectangle (\n,\yn);
+		\draw[curvehl] (\nminus,0) rectangle (\n,\yn);
+		\node[violet] at ({(\nminus+\n)/2},{\yn/2}) {$\ln n\cdot 1$};
+		
+		% прямоугольник верхней суммы
+		\fill[hatchB] (\n,0) rectangle (\nplus,\yplus);
+		\draw[curveaux] (\n,0) rectangle (\nplus,\yplus);
+		
+		\draw[-{Stealth[length=2mm]}] (8.1,0.98) -- (7.2,{ln(7.2)/ln(10)});
+		\node[right] at (8.1,0.98) {$\ln x$};
+	\end{tikzpicture}
+\end{center}
+
+Пояснение к рисунку идёт обычным абзацем сразу после него --- подписи
+\verb|\caption| в этом конспекте не используются.
+
+\subsection{Векторы и ортогональная проекция}
+
+\begin{center}
+	\begin{tikzpicture}[>=Stealth, scale=1.2]
+		\draw[->] (-1,0) -- (4.4,0) node[right] {$\operatorname{span}\{e_k\}_{k=1}^{N}$};
+		\coordinate (O) at (0,0);
+		\coordinate (P) at (3,0);
+		\coordinate (X) at (3,2);
+		\draw[vecarr] (O) -- (X) node[above left] {$x$};
+		\draw[vecarr] (O) -- (P) node[below=5pt] {$\sum_{k=1}^{N} c_k e_k$};
+		\draw[vecaux] (P) -- (X) node[midway, right] {$x - \sum c_k e_k$};
+		\rightangle{(P)}
+		\fill (O) circle (1.3pt);
+	\end{tikzpicture}
+\end{center}
+
+\subsection{Площадь под кривой и разбиение отрезка}
+
+\begin{center}
+	\begin{tikzpicture}[x=1.6cm, y=1.6cm, >=Stealth]
+		\draw[ax] (-0.3,0) -- (4.6,0) node[right] {$x$};
+		\draw[ax] (0,-0.3) -- (0,2.4) node[above] {$y$};
+		
+		% ступеньки нижней суммы
+		\foreach \i in {0,...,3}{
+			\pgfmathsetmacro{\xa}{0.5+\i*0.9}
+			\pgfmathsetmacro{\xb}{\xa+0.9}
+			\pgfmathsetmacro{\h}{0.25*(\xa)*(\xa)+0.3}
+			\fill[hatchGray] (\xa,0) rectangle (\xb,\h);
+			\draw[thin] (\xa,0) rectangle (\xb,\h);
+		}
+		
+		\draw[curvehl, domain=0.2:4.3, samples=200, smooth]
+		plot (\x,{0.25*\x*\x+0.3});
+		\node[violet, above left] at (4.3,{0.25*4.3*4.3+0.3}) {$f$};
+		
+		\foreach \x/\lab in {0.5/{$a$}, 4.1/{$b$}}{
+			\draw[tickmark] (\x,0.06) -- (\x,-0.06);
+			\node[below] at (\x,0) {\lab};
+		}
+	\end{tikzpicture}
+\end{center}
+
+\subsection{Окрестность точки на прямой}
+
+\begin{center}
+	\begin{tikzpicture}[x=1.4cm, >=Stealth]
+		\draw[ax] (-0.4,0) -- (5.2,0) node[right] {$\RR$};
+		\fill[hatchA] (2,-0.12) rectangle (3.6,0.12);
+		\draw[curvehl] (2,-0.12) -- (2,0.12);
+		\draw[curvehl] (3.6,-0.12) -- (3.6,0.12);
+		\node[pt] at (2.8,0) {};
+		\node[below=6pt] at (2.8,0) {$x$};
+		\node[below=6pt] at (2,0) {$x-\delta$};
+		\node[below=6pt] at (3.6,0) {$x+\delta$};
+		\node[above=4pt] at (2.8,0.12) {$U_\delta(x)$};
+	\end{tikzpicture}
+\end{center}
+
+\subsection{Два графика рядом (scope + xshift)}
+
+\begin{center}
+	\begin{tikzpicture}[x=0.9cm, y=0.9cm, >=Stealth]
+		\begin{scope}
+			\draw[ax] (-0.3,0) -- (3.4,0);
+			\draw[ax] (0,-1.4) -- (0,1.6);
+			\draw[curve, domain=0.15:3.2, samples=200] plot (\x,{sin(deg(3*\x))});
+			\node[below] at (1.6,-1.5) {равномерная сходимость};
+		\end{scope}
+		\begin{scope}[xshift=5cm]
+			\draw[ax] (-0.3,0) -- (3.4,0);
+			\draw[ax] (0,-1.4) -- (0,1.6);
+			\draw[curve, domain=0.15:3.2, samples=200] plot (\x,{sin(deg(9*\x))/(0.4+\x)});
+			\node[below] at (1.6,-1.5) {поточечная сходимость};
+		\end{scope}
+	\end{tikzpicture}
+\end{center}
+
+\subsection{Хайлайты в иллюстрациях}
+
+\begin{center}
+	\begin{tikzpicture}[x=1.2cm, y=1.2cm, >=Stealth]
+		\draw[->] (-0.2,0) -- (3.8,0) node[right] {$x$};
+		\draw[->] (0,-0.2) -- (0,2.3) node[above] {$y$};
+		\fill[hlGreen, hlarea] (0.6,0) rectangle (2.4,1.32);
+		\draw[hlRed, hlcurve, domain=0.15:3.6, samples=120, smooth]
+		plot (\x,{0.55*\x});
+		\node[hlBlue, hlmark] at (2.4,1.32) {};
+		\node[slbl, above left] at (2.4,1.32) {$(x_0,y_0)$};
+	\end{tikzpicture}
+\end{center}
+
+Цвета палитры доступны в tikz напрямую, а стили \texttt{hlcurve} (толстая
+выделенная кривая), \texttt{hlarea} (полупрозрачная заливка) и
+\texttt{hlmark} (отмеченная точка) заданы в \texttt{style/highlight.tex}.
