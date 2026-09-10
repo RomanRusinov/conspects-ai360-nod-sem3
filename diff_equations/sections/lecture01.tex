@@ -151,7 +151,7 @@ $x$ --- независимая переменная, $y$ --- искомая фу
 		\draw[-{Stealth[length=2mm]}, Purple] (0.15,2.1) -- (1.1,1.85);
 	\end{tikzpicture}
 	\caption{Начальное условие $y(x_0) = y_0$ выделяет из семейства
-		$y = Ce^{kx}$ (серое) ровно одну интегральную кривую (фиолетовая):
+		$y = Ce^{kx}$ (синее) ровно одну интегральную кривую (фиолетовая):
 		константа определяется однозначно, $C = y_0 e^{-kx_0}$, и решение
 		задачи Коши имеет вид $y(x) = y_0 e^{k(x-x_0)}$.}
 	\label{fig:задача-коши}
@@ -333,7 +333,7 @@ y'(x_0) = f\bigl(x_0, y(x_0)\bigr) = f(x_0,y_0),
 		\foreach \i in {-2.25,-1.95,...,2.26}{
 			\foreach \j in {-2.25,-1.95,...,2.26}{
 				\pgfmathsetmacro{\ang}{atan(\i-\j)}
-				\draw[black!45, line width=0.35pt, shift={(\i,\j)}, rotate=\ang]
+				\draw[curvehatch, shift={(\i,\j)}, rotate=\ang]
 				(-0.11,0) -- (0.11,0);
 			}
 		}
@@ -379,7 +379,7 @@ y'(x_0) = f\bigl(x_0, y(x_0)\bigr) = f(x_0,y_0),
 y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 \]
 
-\textbf{Тип 2:} уравнения с разделяющимися переменными (дальше)
+\textbf{Тип 2:} уравнения с разделяющимися переменными --- см.\ п.~\ref{sec:разделяющиеся-переменные}
 
 Есть еще типы, но мы пока говорим об этих двух.
 
@@ -631,7 +631,7 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 		\foreach \xx in {0.25,0.70,...,2.6}{
 			\foreach \yy in {0.25,0.70,...,3.0}{
 				\pgfmathsetmacro{\ang}{atan(\yy)}
-				\draw[black!40, line width=0.45pt, shift={(\xx,\yy)}, rotate=\ang]
+				\draw[curvehatch, shift={(\xx,\yy)}, rotate=\ang]
 				(-0.16,0) -- (0.16,0);
 			}
 		}
@@ -837,3 +837,496 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 
 
 
+
+% =================================================================
+%  Вторая часть лекции 1: интегрируемые типы уравнений
+% =================================================================
+
+\subsection{Уравнения с разделяющимися переменными}\label{sec:разделяющиеся-переменные}
+
+\begin{Definition}{Уравнение с разделяющимися переменными}{разделяющиеся-переменные}
+	\textbf{Уравнением с разделяющимися переменными} называется уравнение
+	\[
+	y' = m(x)\,n(y), \qquad (x,y) \in G, \qquad G = (a,b)\times(\alpha,\beta).
+	\]
+\end{Definition}
+
+% ---------------------------------------------------------------
+% РИСУНОК 9: прямоугольная область G = (a,b) x (alpha,beta)
+% на плоскости (x,y)
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.3cm, y=1.2cm, >=Stealth]
+		\draw[ax] (-0.35,0) -- (4.2,0) node[below right] {$x$};
+		\draw[ax] (0,-0.35) -- (0,3.1) node[above] {$y$};
+		
+		% штриховка области G = (a,b) x (alpha,beta)
+		\begin{scope}
+			\clip (0.8,0.7) rectangle (3.4,2.6);
+			\foreach \s in {-1.5,-1.25,...,3.5}{
+				\draw[curvehatch] (\s,0.7) -- ++(1.9,1.9);
+			}
+		\end{scope}
+		% границы области — пунктиром: G открыто
+		\draw[curveaux] (0.8,0.7) rectangle (3.4,2.6);
+		
+		% проекции углов на оси и засечки
+		\draw[curvehatch] (0.8,0.7) -- (0.8,0);
+		\draw[curvehatch] (3.4,0.7) -- (3.4,0);
+		\draw[curvehatch] (0.8,0.7) -- (0,0.7);
+		\draw[curvehatch] (0.8,2.6) -- (0,2.6);
+		\foreach \x in {0.8,3.4} \draw[tickmark] (\x,0.06) -- (\x,-0.06);
+		\foreach \y in {0.7,2.6} \draw[tickmark] (0.06,\y) -- (-0.06,\y);
+		\node[slbl, below] at (0.8,-0.06) {$a$};
+		\node[slbl, below] at (3.4,-0.06) {$b$};
+		\node[slbl, left]  at (-0.06,0.7) {$\alpha$};
+		\node[slbl, left]  at (-0.06,2.6) {$\beta$};
+		
+		% точка (x_0,y_0)
+		\node[pt] at (2.1,1.75) {};
+		\node[slbl, above right, fill=white, inner sep=1pt] at (2.13,1.78) {$(x_0,y_0)$};
+		\node[slbl, below right, fill=white, inner sep=1pt] at (0.9,2.55) {$G$};
+	\end{tikzpicture}
+	\caption{Область $G = (a,b)\times(\alpha,\beta)$, в которой
+		рассматривается уравнение с разделяющимися переменными.}
+	\label{fig:область-прямоугольник}
+\end{figure}
+
+Фиксируем $(x_0,y_0) \in G$.
+
+\subsubsection*{Случай 1: $n(y_0) = 0$}
+
+Тогда $y(x) \equiv y_0$ --- решение на $(a,b)$:
+\[
+0 = y'(x) = m(x)\,n(y(x)) = m(x)\,n(y_0) = 0 .
+\]
+
+\subsubsection*{Случай 2: $n(y) \neq 0$}
+
+Пусть $\exists\, J \subset (\alpha,\beta)$ --- интервал, на котором
+$n(y) \neq 0$ для всех $y \in J$. Пусть $y(x)$ --- решение на $I$, причём
+$(x, y(x)) \in I \times J$.
+
+Тогда $n(y(x)) \neq 0$ на $I$, и уравнение можно поделить:
+\[
+\frac{y'(x)}{n(y(x))} = m(x).
+\]
+
+% ---------------------------------------------------------------
+% РИСУНОК 10: интервал I на оси x с отмеченными точками x_0 и x
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.3cm, y=1.0cm, >=Stealth]
+		\draw[ax] (-0.5,0) -- (5.2,0) node[below right] {$x$};
+		
+		% интервал I: жирный отрезок с открытыми концами
+		\draw[very thick] (1.0,0) -- (4.3,0);
+		\foreach \e in {1.0,4.3}{
+			\node[circle, draw, fill=white, inner sep=1.4pt] at (\e,0) {};
+		}
+		\node[slbl, below] at (2.65,-0.5) {$I$};
+		
+		% точки x_0 и x внутри I
+		\node[pt] at (1.8,0) {};
+		\node[pt] at (3.6,0) {};
+		\node[slbl, below] at (1.8,-0.1) {$x_0$};
+		\node[slbl, below] at (3.6,-0.1) {$x$};
+		
+		% направление интегрирования
+		\draw[->, curvehl] (1.8,0.18) to[bend left=22] (3.6,0.18);
+	\end{tikzpicture}
+	\caption{Интервал $I$, на котором рассматривается решение: точки $x_0$
+		и $x$ лежат в $I$; стрелка --- направление интегрирования от $x_0$
+		до~$x$.}
+	\label{fig:интервал-I}
+\end{figure}
+
+Интегрируем от $x_0$ до $x$:
+\[
+\int_{x_0}^{x} \frac{y'(t)}{n(y(t))}\,\dd t = \int_{x_0}^{x} m(s)\,\dd s .
+\]
+
+Замена $y(t) = z$, $y'(t)\,\dd t = \dd z$:
+\[
+\int_{y(x_0)}^{y(x)} \frac{\dd z}{n(z)} = \int_{x_0}^{x} m(s)\,\dd s .
+\]
+
+Вводим первообразные
+\[
+M(x) = \int m(x)\,\dd x \ \text{ на } (a,b), \qquad
+N(y) = \int \frac{\dd y}{n(y)} \ \text{ на } J .
+\]
+
+Получаем
+\[
+N\bigl(y(x)\bigr) - N\bigl(y(x_0)\bigr) = M(x) - M(x_0).
+\]
+
+\subsubsection*{Интеграл уравнения с разделяющимися переменными}
+
+\begin{Statement}{Интеграл уравнения с разделяющимися переменными}{интеграл-разделяющиеся}
+	Функция $u(x,y) = N(y) - M(x)$ --- интеграл уравнения $y' = m(x)n(y)$
+	в $(a,b) \times J$.
+\end{Statement}
+
+\begin{proof}
+	\begin{enumerate}
+		\item $u \in C^1$ как разность первообразных непрерывных функций;
+		\item $\pder{u}{y} = \dfrac{1}{n(y)} \neq 0$ на $J$;
+		\item вдоль решения
+		$u\bigl(x,y(x)\bigr) = N\bigl(y(x)\bigr) - M(x)
+		= N\bigl(y(x_0)\bigr) - M(x_0) = \const$.
+	\end{enumerate}
+\end{proof}
+
+\begin{Remark}{Проверка по критерию}{}
+	То же самое видно из критерия предыдущего пункта:
+	\[
+	\pder{u}{x} + \pder{u}{y}\, f
+	= -m(x) + \frac{1}{n(y)}\,m(x)n(y) \equiv 0 .
+	\]
+\end{Remark}
+
+\subsection{Замены переменных}
+
+Пусть $y' = f(x,y)$.
+
+\begin{Example}{$y' = f(\alpha x + \beta y)$}{замена-линейная}
+	Пусть
+	\[
+	y' = f(\alpha x + \beta y), \qquad \alpha\beta \neq 0 .
+	\]
+	Замена $z = \alpha x + \beta y$ даёт
+	\[
+	\dder{z}{x} = \frac{\dd (\alpha x + \beta y)}{\dd x}
+	= \alpha + \beta\,\dder{y}{x} = \alpha + \beta f(z)
+	\]
+	--- уравнение с разделяющимися переменными относительно $z$. Обратный
+	переход: $y = \dfrac{z - \alpha x}{\beta}$.
+\end{Example}
+
+\begin{Example}{$y' = m(x)n(y)$}{замена-N}
+	Замена $z = N(y) = \displaystyle\int \frac{\dd y}{n(y)}$ там,
+	где $n(y) \neq 0$. Пусть $y(x)$ --- решение, тогда
+	\[
+	\dder{z}{x} = \dder{}{x} N\bigl(y(x)\bigr)
+	= N'\bigl(y(x)\bigr)\cdot y'(x)
+	= \frac{1}{n(y(x))}\cdot y'(x)
+	= \frac{1}{n(y(x))}\cdot m(x)n\bigl(y(x)\bigr) = m(x).
+	\]
+	Отсюда $\dder{z}{x} = m(x)$, то есть $N(y) = M(x) + C$.
+\end{Example}
+
+\subsection{Линейное уравнение первого порядка}
+
+\begin{Definition}{Линейное уравнение первого порядка}{линейное}
+	\textbf{Линейным уравнением первого порядка} называется уравнение
+	\[
+	y' = p(x)\,y + q(x), \qquad p,q \in C(a,b),
+	\]
+	рассматриваемое в полосе $G = (a,b)\times\RR$.
+\end{Definition}
+
+% ---------------------------------------------------------------
+% РИСУНОК 11: полоса G = (a,b) x R
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.3cm, y=1.0cm, >=Stealth]
+		\draw[ax] (-0.45,0) -- (4.4,0) node[below right] {$x$};
+		\draw[ax] (0,-2.0) -- (0,2.5) node[above] {$y$};
+		
+		% штриховка полосы G = (a,b) x R
+		\begin{scope}
+			\clip (1.1,-1.8) rectangle (3.2,2.2);
+			\foreach \s in {-3.0,-2.75,...,3.3}{
+				\draw[curvehatch] (\s,-1.8) -- ++(4.0,4.0);
+			}
+		\end{scope}
+		% границы полосы — пунктиром, полоса не ограничена по y
+		\draw[curveaux] (1.1,-2.2) -- (1.1,2.6);
+		\draw[curveaux] (3.2,-2.2) -- (3.2,2.6);
+		
+		\foreach \x in {1.1,3.2} \draw[tickmark] (\x,0.07) -- (\x,-0.07);
+		\node[slbl, below left]  at (1.1,-0.06) {$a$};
+		\node[slbl, below right] at (3.2,-0.06) {$b$};
+		\node[slbl, fill=white, inner sep=1pt] at (2.15,1.85) {$G$};
+	\end{tikzpicture}
+	\caption{Полоса $G = (a,b)\times\RR$ --- область, в которой
+		рассматривается линейное уравнение.}
+	\label{fig:полоса}
+\end{figure}
+
+Здесь $f(x,y) = p(x)y + q(x)$, причём
+\[
+f \in C(G), \qquad \pder{f}{y} = p(x) \in C(G),
+\]
+поэтому по теоремам~\ref{thm:существование} и~\ref{thm:единственность}
+$G$ --- область существования и единственности.
+
+\subsubsection*{Однородное линейное уравнение}
+
+При $q(x) \equiv 0$ уравнение
+\[
+y' = p(x)y
+\]
+является уравнением с разделяющимися переменными.
+
+Есть решение $y(x) \equiv 0$ на $(a,b)$.
+
+Пусть $y(x) > 0$, $y(x_0) = y_0$. Тогда
+\[
+\int_{x_0}^{x}\frac{y'(t)}{y(t)}\,\dd t = \int_{x_0}^{x} p(s)\,\dd s,
+\]
+\[
+\ln y(x) - \ln y(x_0) = \int_{x_0}^{x} p(s)\,\dd s,
+\]
+\[
+y(x) = y(x_0)\,e^{\int_{x_0}^{x} p(s)\,\dd s}.
+\]
+Аналогично для $y(x) < 0$ (там $\ln|y|$).
+
+Множество всех решений:
+\[
+y(x) = C\,e^{\int_{x_0}^{x} p(s)\,\dd s} = C\,e^{\int p(x)\,\dd x}.
+\]
+
+\begin{Remark}{Решение не меняет знак}{}
+	Если бы $y(x_1) = 0$ в какой-то точке, то по теореме единственности
+	$y \equiv 0$: через $(x_1,0)$ проходит нулевое решение.
+\end{Remark}
+
+\subsubsection*{Неоднородное уравнение. Метод Лагранжа (вариация постоянной)}
+
+Идея: делаем $C = C(x)$. Формально --- замена, новая искомая функция $v(x)$:
+\[
+y(x) = v(x)\,e^{\int p(x)\,\dd x}.
+\]
+
+Тогда
+\[
+y' = v'e^{\int p\,\dd x} + v\,p\,e^{\int p\,\dd x},
+\]
+и, подставляя в уравнение,
+\[
+v'e^{\int p\,\dd x} + v\,p\,e^{\int p\,\dd x}
+= p(x)y + q(x) = p(x)\,v\,e^{\int p\,\dd x} + q(x).
+\]
+
+Слагаемые с $v$ сокращаются:
+\[
+v'e^{\int p\,\dd x} = q(x)
+\implies v' = q(x)e^{-\int p\,\dd x}
+\implies v = \int q(x)e^{-\int p(x)\,\dd x}\,\dd x .
+\]
+
+Итого
+\[
+y(x) = e^{\int p(x)\,\dd x}\left(\int q(x)e^{-\int p(x)\,\dd x}\,\dd x + C\right).
+\]
+
+\begin{Remark}{Одна и та же первообразная}{}
+	В обоих местах формулы берётся \textbf{одна и та же} первообразная
+	$\int p(x)\,\dd x$.
+\end{Remark}
+
+Решение задачи Коши с начальными данными $(x_0,y_0)$:
+\[
+y(x) = e^{\int_{x_0}^{x} p(t)\,\dd t}
+\left(y_0 + \int_{x_0}^{x} e^{-\int_{x_0}^{s} p(t)\,\dd t}\,q(s)\,\dd s\right).
+\]
+
+\subsection{Уравнения, сводящиеся к линейному}
+
+\begin{Definition}{Уравнение Бернулли}{бернулли}
+	\textbf{Уравнением Бернулли} называется уравнение
+	\[
+	y' = p(x)y + q(x)y^{m}.
+	\]
+\end{Definition}
+
+Линейное при $m = 0$ и $m = 1$ --- эти случаи исключаем.
+
+Если $m > 0$, есть решение $y \equiv 0$. При $m < 0$ решения $y \equiv 0$ нет:
+$y^{m}$ не определено при $y = 0$.
+
+При $y \neq 0$ делим на $y^{m}$:
+\[
+\frac{y'}{y^{m}} = p(x)y^{1-m} + q(x).
+\]
+
+Замена $z = y^{1-m}$:
+\[
+z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
+\]
+откуда
+\[
+\frac{1}{1-m}\,z' = p(x)z + q(x)
+\]
+--- линейное уравнение относительно $z$.
+
+\begin{Definition}{Специальное уравнение Риккати}{риккати}
+	\textbf{Специальным уравнением Риккати} называется уравнение
+	\[
+	y' = ay^{2} + bx^{\alpha}, \qquad a,b \neq 0 .
+	\]
+\end{Definition}
+
+\begin{Remark}{Даниил Бернулли}{}
+	Уравнение интегрируется в элементарных функциях (в квадратурах) при
+	\[
+	\alpha = \frac{-4k}{2k-1}, \qquad k \in \ZZ .
+	\]
+\end{Remark}
+
+\begin{Remark}{Жозеф Лиувилль, 1841}{}
+	Уравнение не интегрируется в элементарных функциях, если $\alpha$ не
+	является числом Бернулли и $\alpha \neq -2$.
+\end{Remark}
+
+\subsection{Уравнения в симметричной форме (уравнение Пфаффа)}
+
+\begin{Definition}{Дифференциальная 1-форма}{форма}
+	\textbf{Дифференциальной 1-формой} называется выражение
+	\[
+	F = m(x,y)\,\dd x + n(x,y)\,\dd y, \qquad m,n \in C^1(G),
+	\qquad m^2 + n^2 \neq 0 \ \text{ на } G .
+	\]
+	Последнее условие означает, что коэффициенты нигде не обращаются в нуль
+	одновременно.
+\end{Definition}
+
+\begin{Definition}{Регулярная гладкая кривая}{регулярная-кривая}
+	Кривая $\gamma(t) = \bigl(\gamma_1(t), \gamma_2(t)\bigr)$, $t \in (a,b)$,
+	называется \textbf{регулярной гладкой}, если существуют непрерывные
+	$\dot\gamma_1(t)$, $\dot\gamma_2(t)$ и
+	\[
+	\bigl(\dot\gamma_1(t)\bigr)^2 + \bigl(\dot\gamma_2(t)\bigr)^2 \neq 0 .
+	\]
+\end{Definition}
+
+\begin{Definition}{Интегральная кривая формы}{интегральная-кривая-формы}
+	Регулярная гладкая кривая
+	$\gamma(t) = \bigl(\gamma_1(t), \gamma_2(t)\bigr)$, $t \in (a,b)$,
+	называется \textbf{интегральной кривой формы} $F$, если
+	\[
+	m\bigl(\gamma(t)\bigr)\,\dot\gamma_1(t)
+	+ n\bigl(\gamma(t)\bigr)\,\dot\gamma_2(t) \equiv 0 .
+	\]
+\end{Definition}
+
+\begin{Definition}{Уравнение Пфаффа}{пфафф}
+	\textbf{Уравнением Пфаффа} называется соотношение $F = 0$ ---
+	дифференциальное уравнение первого порядка в симметричной форме.
+\end{Definition}
+
+\subsubsection*{Связь с обыкновенным дифференциальным уравнением}
+
+\textbf{В одну сторону.} Пусть
+$\gamma(t) = \bigl(\gamma_1(t),\gamma_2(t)\bigr)$ --- интегральная кривая
+формы $F$.
+
+Фиксируем $t_0 \in (a,b)$ такое, что $\dot\gamma_1(t_0) \neq 0$. По
+непрерывности $\exists\,(\alpha,\beta) \ni t_0$: $\dot\gamma_1(t) \neq 0$
+для всех $t \in (\alpha,\beta)$.
+
+\begin{Remark}{Почему $n(\gamma(t)) \neq 0$}{}
+	Тогда автоматически $n\bigl(\gamma(t)\bigr) \neq 0$: иначе из
+	$m\dot\gamma_1 + n\dot\gamma_2 = 0$ при $n = 0$ следовало бы
+	$m\dot\gamma_1 = 0$, то есть $m = 0$, что противоречит
+	условию $m^2 + n^2 \neq 0$.
+\end{Remark}
+
+% ---------------------------------------------------------------
+% РИСУНОК 12: кривая gamma и участок, где она однозначно
+% проектируется на ось x
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.25cm, y=1.15cm, >=Stealth]
+		\draw[ax] (-0.45,0) -- (3.6,0) node[below right] {$x$};
+		\draw[ax] (0,-2.5) -- (0,2.6) node[above] {$y$};
+		
+		% кривая gamma(t) = (0.55 t^2 + 0.6, t)
+		\draw[curve, domain=-2:2, samples=120, variable=\t]
+		plot ({0.55*\t*\t + 0.6}, {\t});
+		\node[slbl, right] at (2.85,-1.95) {$\gamma$};
+		
+		% точка с вертикальной касательной: там \dot\gamma_1 = 0
+		\draw[curvehatch] (0.6,-0.55) -- (0.6,0.55);
+		\node[slbl, left, fill=white, inner sep=1pt] at (0.55,-0.75) {$\dot\gamma_1 = 0$};
+		
+		% участок, на котором \dot\gamma_1 \neq 0
+		\draw[curvehl, domain=0.5:1.85, samples=80, variable=\t]
+		plot ({0.55*\t*\t + 0.6}, {\t});
+		
+		% проекция участка на ось Ox
+		\draw[curveaux] (0.7375,0.5) -- (0.7375,0);
+		\draw[curveaux] (2.4824,1.85) -- (2.4824,0);
+		\draw[very thick] (0.7375,0) -- (2.4824,0);
+		
+		% точка gamma(t_0) и её проекция
+		\draw[curveaux] (1.392,1.2) -- (1.392,0);
+		\node[pt] at (1.392,1.2) {};
+		\node[slbl, left, fill=white, inner sep=1pt] at (1.35,1.32) {$\gamma(t_0)$};
+		\node[pt] at (1.392,0) {};
+		\node[slbl, below] at (1.392,-0.08) {$x_0$};
+	\end{tikzpicture}
+	\caption{Участок кривой $\gamma$, на котором $\dot\gamma_1 \neq 0$
+		(выделен): там кривая однозначно проектируется на ось $Ox$ и является
+		графиком функции $y(x)$. В точке, где $\dot\gamma_1 = 0$, касательная
+		вертикальна и такой записи нет --- поэтому переход к уравнению
+		$y' = -m/n$ возможен лишь локально.}
+	\label{fig:проекция-кривой}
+\end{figure}
+
+Положим $x_0 = \gamma_1(t_0)$. Существует обратная функция:
+\[
+x = \gamma_1(t) \iff t = \gamma_1^{-1}(x).
+\]
+
+Вводим $y(x)$:
+\[
+y = \gamma_2(t) = \gamma_2\bigl(\gamma_1^{-1}(x)\bigr).
+\]
+
+Тогда
+\[
+\dder{y}{x} = \dot\gamma_2(t)\cdot\dder{}{x}\gamma_1^{-1}(x)
+= \dot\gamma_2(t)\cdot\frac{1}{\dot\gamma_1\bigl(\gamma_1^{-1}(x)\bigr)}
+= \frac{\dot\gamma_2(t)}{\dot\gamma_1(t)}
+= -\frac{m\bigl(\gamma(t)\bigr)}{n\bigl(\gamma(t)\bigr)}
+= -\frac{m\bigl(x,y(x)\bigr)}{n\bigl(x,y(x)\bigr)} .
+\]
+
+Значит $y(x)$ --- решение уравнения
+\begin{equation}\label{eq:пфафф-в-нормальной-форме}
+	y' = -\frac{m(x,y)}{n(x,y)} .
+\end{equation}
+
+\textbf{Обратно.} Пусть $y(x)$ --- решение~\eqref{eq:пфафф-в-нормальной-форме}. Берём $\gamma_1(t) = t$,
+$\gamma_2(t) = y(t)$. Тогда $\dot\gamma_1 = 1 \neq 0$ (кривая регулярна) и
+\[
+\dot\gamma_2 = \dder{y}{t} = \dder{y}{x} = -\frac{m(x,y)}{n(x,y)}
+= -\frac{m\bigl(\gamma(t)\bigr)}{n\bigl(\gamma(t)\bigr)},
+\]
+то есть $m(\gamma)\dot\gamma_1 + n(\gamma)\dot\gamma_2 \equiv 0$ ---
+кривая $\gamma$ интегральная для формы $F$.
+
+\begin{Statement}{Итог}{пфафф-совокупность}
+	Запись $F = 0$ --- это запись совокупности двух уравнений:
+	\[
+	\dder{y}{x} = -\frac{m}{n} \quad (\text{там, где } n \neq 0),
+	\qquad
+	\dder{x}{y} = -\frac{n}{m} \quad (\text{там, где } m \neq 0).
+	\]
+\end{Statement}
+
+\begin{Remark}{Преимущество симметричной формы}{}
+	Условие $m^2 + n^2 \neq 0$ гарантирует, что в каждой точке работает хотя
+	бы одно из этих уравнений. В этом и состоит преимущество симметричной
+	формы: она не выделяет $x$ и $y$ и описывает кривые, которые в обычной
+	форме $y' = f(x,y)$ имеют вертикальные касательные.
+\end{Remark}
