@@ -154,6 +154,36 @@
 }
 
 % -----------------------------------------------------------------
+% Пометка «добавлено составителем»: то, чего не было на лекции
+% (пояснение, определение, пример). Серая полоса слева и знак (+).
+% Подключается так же, как required:
+%     \begin{Definition}[addon]{Поле направлений}{поле-направлений}
+% -----------------------------------------------------------------
+\definecolor{addoncolor}{HTML}{7E7E7E}
+
+\newcommand{\conspectaddonband}{%
+	\begin{scope}
+		\clip[rounded corners=2.8mm] (frame.south west) rectangle (frame.north east);
+		\fill[addoncolor] (frame.south west) rectangle ([xshift=1.9pt]frame.north west);
+	\end{scope}%
+}
+
+\tcbset{
+	addon/.style={
+		overlay unbroken and first={
+			\conspectaddonband
+			\node[
+			anchor=north east,
+			inner sep=0pt,
+			font=\bfseries\large,
+			text=addoncolor
+			] at ([xshift=-8pt, yshift=-12pt]frame.north west) {$(+)$};
+		},
+		overlay middle and last={\conspectaddonband},
+	}
+}
+
+% -----------------------------------------------------------------
 % Как добавить свой бокс, например «Приём» цвета stmtFrame:
 %   \newconspectbox[no counter]{Trick}{Приём}{stmtFrame}{trick}
 % -----------------------------------------------------------------

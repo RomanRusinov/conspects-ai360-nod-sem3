@@ -1,0 +1,59 @@
+% =================================================================
+%  figures/attic/fig07-integral-surface-tikz.tex
+%  Прежний, TikZ-вариант рисунка 1.6 (поверхность z = u(x,y) = y e^{-kx}).
+%  В сборку не входит: сейчас используется figures/fig07-integral-surface.pdf
+%  (Asymptote). Оставлен как запасной вариант — при необходимости
+%  скопировать содержимое обратно в sections/lecture01.tex.
+% =================================================================
+
+--- прежний вариант рисунка 7 (TikZ-аксонометрия), оставлен на всякий случай ---
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+		x={(0.95cm,-0.42cm)}, y={(1.05cm,0.30cm)}, z={(0cm,1.05cm)},
+		>=Stealth]
+
+		% горизонтальная плоскость z = C_2
+		\fill[black!10, opacity=0.45]
+		(0,0,0.8) -- (2,0,0.8) -- (2,3,0.8) -- (0,3,0.8) -- cycle;
+
+		\draw[ax] (0,0,0) -- (2.6,0,0) node[below] {$x$};
+		\draw[ax] (0,0,0) -- (0,3.6,0) node[right] {$y$};
+		\draw[ax] (0,0,0) -- (0,0,3.4) node[above] {$z$};
+
+		% каркас поверхности z = y e^{-x}
+		\foreach \yy in {1,2,3}{
+			\draw[curveaux, black!35, domain=0:2, samples=60]
+			plot (\x, \yy, {\yy*exp(-\x)});
+		}
+		\foreach \xx in {0,0.5,1,1.5,2}{
+			\draw[curveaux, black!35] (\xx,0,0) -- (\xx,3,{3*exp(-\xx)});
+		}
+		% границы поверхности
+		\draw[black!55, thin, domain=0:2, samples=60] plot (\x,3,{3*exp(-\x)});
+		\draw[black!55, thin] (0,0,0) -- (0,3,3);
+		\draw[black!55, thin] (2,0,0) -- (2,3,{3*exp(-2)});
+
+		% линии уровня u = C на поверхности и их проекции на Oxy
+		\draw[curve, domain=0:2.00, samples=60] plot (\x,{0.4*exp(\x)},0.4);
+		\draw[curve, domain=0:2.00, samples=60] plot (\x,{0.4*exp(\x)},0);
+		\draw[curve, domain=0:0.83, samples=60] plot (\x,{1.3*exp(\x)},1.3);
+		\draw[curve, domain=0:0.83, samples=60] plot (\x,{1.3*exp(\x)},0);
+
+		\draw[curvehl, domain=0:1.32, samples=60] plot (\x,{0.8*exp(\x)},0.8);
+		\draw[curvehl, domain=0:1.32, samples=60] plot (\x,{0.8*exp(\x)},0);
+		\draw[curveaux, black!55] (0,0.8,0.8) -- (0,0.8,0);
+		\draw[curveaux, black!55] (1.32,2.99,0.8) -- (1.32,2.99,0);
+
+		\node[slbl, black!60] at (2.35,0,0.8) {$z = C_2$};
+		\node[Purple, slbl] at (1.55,3.35,0.8) {$u = C_2$};
+		\node[Purple, slbl] at (1.60,3.40,0) {$y = C_2 e^{kx}$};
+	\end{tikzpicture}
+	\caption{Интеграл $u(x,y) = y e^{-kx}$ уравнения $y' = ky$ как поверхность
+		$z = u(x,y)$. Сечение поверхности горизонтальной плоскостью $z = C$ даёт
+		линию уровня интеграла; её проекция на плоскость $Oxy$ (внизу) --- в
+		точности интегральная кривая $y = C e^{kx}$. Пункт~3 определения интеграла
+		означает, что вдоль каждой такой кривой «высота» $u$ не меняется, а
+		константа $C$ служит номером кривой в семействе.}
+	\label{fig:интеграл-поверхность}
+\end{figure}
