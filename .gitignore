@@ -11,6 +11,7 @@
 *.xdv
 *.bbl
 *.blg
+*.tmp
 
 # Asymptote
 *.pre
