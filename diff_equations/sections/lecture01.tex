@@ -8,12 +8,14 @@
 %  style/tikz-styles.tex, внешние картинки — в figures/.
 % =================================================================
 
+\part*{Лекция 1}
+
 \section{Основные понятия. Задача Коши. Интеграл уравнения}
 
 Всюду далее независимая переменная --- $x$ (позже $t$), искомая функция ---
 $y(x)$ (позже $x(t)$).
 
-\subsection{Дифференциальное уравнение и его решение}
+\subsection{Дифференциальное уравнение и его решение}\label{sec:основные-понятия}
 
 \begin{Definition}{Дифференциальное уравнение}{ду}
 	\textbf{Дифференциальное уравнение} --- уравнение вида
@@ -85,7 +87,7 @@ $x$ --- независимая переменная, $y$ --- искомая фу
 		\end{scope}
 		
 		% C = 0 — стационарное решение, совпадает с осью Ox
-		\draw[curve, very thick] (-2.1,0) -- (2.65,0);
+		\draw[curve] (-2.1,0) -- (2.65,0);
 		\node[slbl, below] at (1.9,-0.08) {$C = 0$};
 		
 		\node[lbl] at (-1.6,1.15) {$C > 0$};
@@ -113,7 +115,7 @@ $x$ --- независимая переменная, $y$ --- искомая фу
 \end{Definition}
 
 \begin{Example}{Задача Коши для $y' = ky$}{коши-экспонента}
-	Для $y' = ky$ и точки $(x_0,y_0)$ решением задачи Коши будет
+	Для $y' = ky$ и точки $(x_0,y_0)$ решением задачи Коши (рис.~\ref{fig:задача-коши}) будет
 	\[
 	y(x) = y_0\, e^{k(x - x_0)}.
 	\]
@@ -136,7 +138,7 @@ $x$ --- независимая переменная, $y$ --- искомая фу
 				\draw[curve, domain=-2.1:2.65, samples=120] plot (\x,{\c*exp(\x)});
 				\draw[curve, domain=-2.1:2.65, samples=120] plot (\x,{-\c*exp(\x)});
 			}
-			\draw[curve, very thick] (-2.1,0) -- (2.65,0);
+			\draw[curve] (-2.1,0) -- (2.65,0);
 			% решение задачи Коши: C = y_0 e^{-x_0} при x_0 = 0.6, y_0 = 1
 			\draw[curvehl, domain=-2.1:2.65, samples=120] plot (\x,{exp(\x-0.6)});
 		\end{scope}
@@ -222,7 +224,7 @@ $x$ --- независимая переменная, $y$ --- искомая фу
 	\end{tikzpicture}
 	\caption{Через точку $(0,0)$ проходит бесконечно много решений уравнения
 		$y' = 3\sqrt[3]{y^{2}}$, в том числе решение $y_2 \equiv 0$ и решение
-		$y_1$ (равное $x^3$ при $x \ge 0$). Поскольку $\forall \varepsilon > 0: x^3 \neq 0$ на интервале $(0,\varepsilon)$,
+		$y_1$ (равное $x^3$ при $x \ge 0$). Поскольку $\forall \eps > 0: x^3 \neq 0$ на интервале $(0,\eps)$,
 		$y_1$ и $y_2$ не совпадают ни в какой окрестности точки~$0$.}
 	\label{fig:неединственность}
 \end{figure}
@@ -271,7 +273,7 @@ y'(x_0) = f\bigl(x_0, y(x_0)\bigr) = f(x_0,y_0),
 		\node[Purple, slbl, above left] at (3.1,2.85) {$y(x)$};
 		
 		% касательная в точке x_0 = 1.8: k = 0.36*1.8 + 0.25 = 0.898
-		\draw[curve, thick] (0.6,0.3032) -- (3.15,2.5936);
+		\draw[curve] (0.6,0.3032) -- (3.15,2.5936);
 		\node[Blue, slbl, right] at (3.18,2.55) {касательная};
 		
 		% точка касания и проекции на оси
@@ -301,7 +303,8 @@ y'(x_0) = f\bigl(x_0, y(x_0)\bigr) = f(x_0,y_0),
 	\ell(x,y) = \bigl\{(\xi,\eta) \in \RR^2 \colon
 	\eta - y = f(x,y)\,(\xi - x)\bigr\}.
 	\]
-	Изображают его, рисуя в точках $(x,y)$ короткие штрихи с наклоном $f(x,y)$. (рис.~\ref{fig:поле-направлений})
+	Изображают его, рисуя в точках $(x,y)$ короткие штрихи с наклоном
+	$f(x,y)$ (рис.~\ref{fig:поле-направлений}).
 	
 	\medskip
 	Говорят, что кривая \textbf{касается поля направлений} в точке $(x_0,y_0)$,
@@ -399,9 +402,10 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 \end{Definition}
 
 \begin{Example}{Интеграл уравнения $y' = ky$}{интеграл-экспонента}
-	Пусть $y' = ky$, $G = \RR^2$ (пример из п.~1.1). Положим
+	Пусть $y' = ky$, $G = \RR^2$ (пример из п.~\ref{sec:основные-понятия}).
+	Положим
 	\[
-	u(x,y) = y\,e^{-kx}, \qquad H = G = \RR^2 .
+	u(x,y) = y\,e^{-kx}, \qquad H = G = \RR^2.
 	\]
 	Проверим три пункта определения.
 	\begin{enumerate}
@@ -501,7 +505,7 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 \begin{Statement}{Необходимое и достаточное условие интеграла}{нид-интеграл}
 	Функция $u$ является интегралом тогда и только тогда, когда
 	\[
-	\pder{u}{x}(x,y) + \pder{u}{y}(x,y)\, f(x,y) \equiv 0 .
+	\pder{u}{x}(x,y) + \pder{u}{y}(x,y)\, f(x,y) \equiv 0.
 	\]
 \end{Statement}
 
@@ -535,7 +539,7 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 	\medskip
 	\textbf{Шаг 2 (достаточность).} Пусть в $H$ выполнено
 	\[
-	\pder{u}{x}(x,y) + \pder{u}{y}(x,y)\, f(x,y) \equiv 0 .
+	\pder{u}{x}(x,y) + \pder{u}{y}(x,y)\, f(x,y) \equiv 0.
 	\]
 	Возьмём произвольное решение $y(x)$, $x \in (a,b)$, график которого лежит
 	в $H$, и положим
@@ -557,6 +561,9 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 	Лагранжа $\varphi \equiv \const$ на $(a,b)$. Это и есть пункт 3 определения,
 	поэтому $u$ --- интеграл в $H$.
 \end{proof}
+
+Геометрически это тождество означает ортогональность градиента $\nabla u$
+направлению поля (рис.~\ref{fig:градиент-поле}).
 
 % ---------------------------------------------------------------
 % РИСУНОК 7: геометрический смысл тождества u_x + u_y f = 0:
@@ -631,7 +638,7 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 	Тогда существуют открытые $I \ni x_0$, $J \ni y_0$ и единственная
 	$z(x) \in C^1(I)$ с $z(x_0) = y_0$, причём для всех $(x,y) \in I \times J$
 	\[
-	F(x,y) = 0 \iff y = z(x) .
+	F(x,y) = 0 \iff y = z(x).
 	\]
 \end{Theorem}
 
@@ -690,6 +697,9 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 	$(\alpha,\beta)$.
 \end{proof}
 
+Взаимное расположение области $H$, окрестности $H_0$ и линии уровня показано
+на рис.~\ref{fig:интеграл-окрестность}.
+
 % ---------------------------------------------------------------
 % РИСУНОК 8: окрестность H_0 = I x J, линия уровня u(x,y) = u(x_0,y_0)
 % и совпадающая с ней интегральная кривая y = Y(x)
@@ -702,13 +712,13 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 		\draw[ax] (0,-0.4) -- (0,3.6) node[above] {$y$};
 		
 		% область H, в которой u — интеграл
-		\draw[curve, black!45]
+		\draw[region]
 		plot[smooth cycle, tension=0.85]
 		coordinates {(0.7,0.8) (2.2,0.5) (3.6,1.0) (3.85,2.45) (2.5,3.25) (1.05,2.6)};
 		\node[slbl, black!60, fill=white, inner sep=1pt] at (1.5,0.85) {$H$};
 		
 		% линия уровня u(x,y) = u(x_0,y_0) — целиком внутри H
-		\draw[curve, black!45, domain=1.55:3.55, samples=100]
+		\draw[region, domain=1.55:3.55, samples=100]
 		plot (\x,{1.75 + 0.55*(\x-2.5) - 0.25*(\x-2.5)*(\x-2.5)});
 		\draw[-{Stealth[length=2mm]}, black!55] (4.0,2.5) -- (3.45,2.1);
 		\node[slbl, black!60, right] at (3.98,2.55) {$u(x,y) = u(x_0,y_0)$};
@@ -767,12 +777,12 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 	\[
 	\dder{}{x}\Bigl[x^2 + y(x)^2\Bigr]
 	= 2x + 2\,y(x)\,y'(x)
-	= 2x + 2\,y(x)\cdot\Bigl(-\frac{x}{y(x)}\Bigr) = 0 .
+	= 2x + 2\,y(x)\cdot\Bigl(-\frac{x}{y(x)}\Bigr) = 0.
 	\]
 	Значит $u$ --- интеграл в $H$, и общий интеграл --- это семейство
 	окружностей
 	\[
-	x^2 + y^2 = C, \qquad C > 0 .
+	x^2 + y^2 = C, \qquad C > 0.
 	\]
 	Решения получаются разрешением относительно $y$: в $H$ это верхние
 	полуокружности $y = \sqrt{C - x^2}$, $|x| < \sqrt{C}$.
@@ -843,7 +853,7 @@ y(x) = y_0 + \int_{x_0}^{x} f(t)\,\dd t, \qquad x_0,\, x \in (a,b).
 
 Тогда $y(x) \equiv y_0$ --- решение на $(a,b)$: слева $y'(x) \equiv 0$, справа
 \[
-m(x)\,n\bigl(y(x)\bigr) = m(x)\,n(y_0) = 0 .
+m(x)\,n\bigl(y(x)\bigr) = m(x)\,n(y_0) = 0.
 \]
 
 \subsubsection*{Случай 2: $n(y) \neq 0$}
@@ -859,18 +869,18 @@ $(x, y(x)) \in I \times J$.
 
 Интегрируем от $x_0$ до $x$:
 \[
-\int_{x_0}^{x} \frac{y'(t)}{n(y(t))}\,\dd t = \int_{x_0}^{x} m(s)\,\dd s .
+\int_{x_0}^{x} \frac{y'(t)}{n(y(t))}\,\dd t = \int_{x_0}^{x} m(s)\,\dd s.
 \]
 
 Замена $y(t) = z$, $y'(t)\,\dd t = \dd z$:
 \[
-\int_{y(x_0)}^{y(x)} \frac{\dd z}{n(z)} = \int_{x_0}^{x} m(s)\,\dd s .
+\int_{y(x_0)}^{y(x)} \frac{\dd z}{n(z)} = \int_{x_0}^{x} m(s)\,\dd s.
 \]
 
 Вводим первообразные
 \[
 M(x) = \int m(x)\,\dd x \ \text{ на } (a,b), \qquad
-N(y) = \int \frac{\dd y}{n(y)} \ \text{ на } J .
+N(y) = \int \frac{\dd y}{n(y)} \ \text{ на } J.
 \]
 
 Получаем
@@ -899,7 +909,7 @@ N\bigl(y(x)\bigr) - N\bigl(y(x_0)\bigr) = M(x) - M(x_0).
 	То же самое видно из критерия утверждения~\ref{stmt:нид-интеграл}:
 	\[
 	\pder{u}{x} + \pder{u}{y}\, f
-	= -m(x) + \frac{1}{n(y)}\,m(x)n(y) \equiv 0 .
+	= -m(x) + \frac{1}{n(y)}\,m(x)n(y) \equiv 0.
 	\]
 \end{Remark}
 
@@ -910,7 +920,7 @@ N\bigl(y(x)\bigr) - N\bigl(y(x_0)\bigr) = M(x) - M(x_0).
 \begin{Example}{$y' = f(\alpha x + \beta y)$}{замена-линейная}
 	Пусть
 	\[
-	y' = f(\alpha x + \beta y), \qquad \alpha\beta \neq 0 .
+	y' = f(\alpha x + \beta y), \qquad \alpha\beta \neq 0.
 	\]
 	Замена $z = \alpha x + \beta y$ даёт
 	\[
@@ -1034,7 +1044,7 @@ v'e^{\int p\,\dd x} + v\,p\,e^{\int p\,\dd x}
 \[
 v'e^{\int p\,\dd x} = q(x)
 \implies v' = q(x)e^{-\int p\,\dd x}
-\implies v = \int q(x)e^{-\int p(x)\,\dd x}\,\dd x .
+\implies v = \int q(x)e^{-\int p(x)\,\dd x}\,\dd x.
 \]
 
 Итого
@@ -1102,7 +1112,7 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 	то есть линейное уравнение $z' = -z + 1$ с решениями
 	$z(x) = 1 + Ce^{-x}$. Возвращаясь к $y$:
 	\[
-	y(x) = \frac{1}{1 + Ce^{-x}} .
+	y(x) = \frac{1}{1 + Ce^{-x}}.
 	\]
 	Для задачи Коши с $y(0) = y_0 \in (0,1)$ получаем $C = 1/y_0 - 1 > 0$;
 	такое решение монотонно растёт от~$0$ к~$1$ --- это логистическая кривая,
@@ -1113,14 +1123,14 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 \begin{Definition}{Специальное уравнение Риккати}{риккати}
 	\textbf{Специальным уравнением Риккати} называется уравнение
 	\[
-	y' = ay^{2} + bx^{\alpha}, \qquad a,b \neq 0 .
+	y' = ay^{2} + bx^{\alpha}, \qquad a,b \neq 0.
 	\]
 \end{Definition}
 
 \begin{Remark}{Даниил Бернулли}{}
 	Уравнение интегрируется в элементарных функциях (в квадратурах) при
 	\[
-	\alpha = \frac{-4k}{2k-1}, \qquad k \in \ZZ .
+	\alpha = \frac{-4k}{2k-1}, \qquad k \in \ZZ.
 	\]
 \end{Remark}
 
@@ -1135,7 +1145,7 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 	\textbf{Дифференциальной 1-формой} называется выражение
 	\[
 	F = m(x,y)\,\dd x + n(x,y)\,\dd y, \qquad m,n \in C^1(G),
-	\qquad m^2 + n^2 \neq 0 \ \text{ на } G .
+	\qquad m^2 + n^2 \neq 0 \ \text{ на } G.
 	\]
 	Последнее условие означает, что коэффициенты нигде не обращаются в нуль
 	одновременно.
@@ -1146,7 +1156,7 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 	называется \textbf{регулярной гладкой}, если существуют непрерывные
 	$\dot\gamma_1(t)$, $\dot\gamma_2(t)$ и
 	\[
-	\bigl(\dot\gamma_1(t)\bigr)^2 + \bigl(\dot\gamma_2(t)\bigr)^2 \neq 0 .
+	\bigl(\dot\gamma_1(t)\bigr)^2 + \bigl(\dot\gamma_2(t)\bigr)^2 \neq 0.
 	\]
 \end{Definition}
 
@@ -1156,7 +1166,7 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 	называется \textbf{интегральной кривой формы} $F$, если
 	\[
 	m\bigl(\gamma(t)\bigr)\,\dot\gamma_1(t)
-	+ n\bigl(\gamma(t)\bigr)\,\dot\gamma_2(t) \equiv 0 .
+	+ n\bigl(\gamma(t)\bigr)\,\dot\gamma_2(t) \equiv 0.
 	\]
 \end{Definition}
 
@@ -1241,12 +1251,12 @@ y = \gamma_2(t) = \gamma_2\bigl(\gamma_1^{-1}(x)\bigr).
 = \dot\gamma_2(t)\cdot\frac{1}{\dot\gamma_1\bigl(\gamma_1^{-1}(x)\bigr)}
 = \frac{\dot\gamma_2(t)}{\dot\gamma_1(t)}
 = -\frac{m\bigl(\gamma(t)\bigr)}{n\bigl(\gamma(t)\bigr)}
-= -\frac{m\bigl(x,y(x)\bigr)}{n\bigl(x,y(x)\bigr)} .
+= -\frac{m\bigl(x,y(x)\bigr)}{n\bigl(x,y(x)\bigr)}.
 \]
 
 Значит $y(x)$ --- решение уравнения
 \begin{equation}\label{eq:пфафф-в-нормальной-форме}
-	y' = -\frac{m(x,y)}{n(x,y)} .
+	y' = -\frac{m(x,y)}{n(x,y)}.
 \end{equation}
 
 \textbf{Обратно.} Пусть $y(x)$ --- решение~\eqref{eq:пфафф-в-нормальной-форме}.
@@ -1279,7 +1289,7 @@ y = \gamma_2(t) = \gamma_2\bigl(\gamma_1^{-1}(x)\bigr).
 	Рассмотрим форму
 	\[
 	F = x\,\dd x + y\,\dd y, \qquad
-	G = \RR^2 \setminus \{(0,0)\} .
+	G = \RR^2 \setminus \{(0,0)\}.
 	\]
 	Здесь $m = x$, $n = y$, и условие $m^2 + n^2 = x^2 + y^2 \neq 0$
 	выполнено во всей области $G$.
