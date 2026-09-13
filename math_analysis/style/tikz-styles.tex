@@ -14,9 +14,11 @@
 	gridline/.style  = {step=0.5, gray!25, very thin},
 	tickmark/.style  = {thick},
 	% --- кривые ---
-	curve/.style     = {thick, smooth},
-	curvehl/.style   = {very thick, violet},
-	curveaux/.style  = {thick, dashed},
+	curve/.style     = {thick, smooth, Blue},
+	curvehl/.style   = {ultra thick, Purple},
+	curveaux/.style  = {thick, dashed, black!50},
+	% серые штрихи: поле направлений и штриховка областей
+	curvehatch/.style = {black!45, line width=0.4pt},
 	% --- заливки-штриховки под кривой / прямоугольники сумм ---
 	hatchA/.style    = {pattern=north east lines, pattern color=violet, opacity=0.35},
 	hatchB/.style    = {pattern=north east lines, pattern color=blue,   opacity=0.25},
@@ -26,6 +28,7 @@
 	vecaux/.style    = {->, dashed},
 	pt/.style        = {circle, fill, inner sep=1.3pt},
 	% --- подписи ---
+	llbl/.style       = {font=\large},
 	lbl/.style       = {font=\small},
 	slbl/.style      = {font=\footnotesize},
 }
