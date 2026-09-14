@@ -7,6 +7,7 @@
 *.lot
 *.fls
 *.fdb_latexmk
+*.synctex(busy)
 *.synctex.gz
 *.xdv
 *.bbl
