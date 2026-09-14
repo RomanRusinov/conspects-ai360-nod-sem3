@@ -1151,4 +1151,155 @@ z' = (1-m)\,y^{-m}\,y' = (1-m)\frac{y'}{y^{m}},
 \end{Definition}
 
 \begin{Definition}{}{интегральная-кривая-формы}
-	Регулярная глад
+	Регулярная гладкая кривая
+	$\gamma(t) = \bigl(\gamma_1(t), \gamma_2(t)\bigr)$, $t \in (a,b)$,
+	называется \textbf{интегральной кривой формы} $F$, если
+	\[
+	m\bigl(\gamma(t)\bigr)\,\dot\gamma_1(t)
+	+ n\bigl(\gamma(t)\bigr)\,\dot\gamma_2(t) \equiv 0.
+	\]
+\end{Definition}
+
+\begin{Definition}{}{пфафф}
+	\textbf{Уравнением Пфаффа} называется соотношение $F = 0$ ---
+	дифференциальное уравнение первого порядка в симметричной форме.
+\end{Definition}
+
+\subsubsection*{Связь с обыкновенным дифференциальным уравнением}
+
+\textbf{В одну сторону.} Пусть
+$\gamma(t) = \bigl(\gamma_1(t),\gamma_2(t)\bigr)$ --- интегральная кривая
+формы $F$.
+
+Фиксируем $t_0 \in (a,b)$ такое, что $\dot\gamma_1(t_0) \neq 0$. По
+непрерывности $\exists\,(\alpha,\beta) \ni t_0$: $\dot\gamma_1(t) \neq 0$
+для всех $t \in (\alpha,\beta)$ (рис.~\ref{fig:проекция-кривой}).
+
+\begin{Remark}{Почему $n(\gamma(t)) \neq 0$}{}
+	Тогда автоматически $n\bigl(\gamma(t)\bigr) \neq 0$: иначе из
+	$m\dot\gamma_1 + n\dot\gamma_2 = 0$ при $n = 0$ следовало бы
+	$m\dot\gamma_1 = 0$, то есть $m = 0$, что противоречит
+	условию $m^2 + n^2 \neq 0$.
+\end{Remark}
+
+% ---------------------------------------------------------------
+% РИСУНОК 11: кривая gamma и участок, где она однозначно
+% проектируется на ось x
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.25cm, y=1.15cm, >=Stealth]
+		\draw[ax] (-0.45,0) -- (3.6,0) node[below right] {$x$};
+		\draw[ax] (0,-2.5) -- (0,2.6) node[above] {$y$};
+		
+		% кривая gamma(t) = (0.55 t^2 + 0.6, t)
+		\draw[curve, domain=-2:2, samples=120, variable=\t]
+		plot ({0.55*\t*\t + 0.6}, {\t});
+		\node[slbl, right] at (2.85,-1.95) {$\gamma$};
+		
+		% точка с вертикальной касательной: там \dot\gamma_1 = 0
+		\draw[curvehatch] (0.6,-0.55) -- (0.6,0.55);
+		\node[slbl, left, fill=white, inner sep=1pt] at (0.55,-0.75) {$\dot\gamma_1 = 0$};
+		
+		% участок, на котором \dot\gamma_1 \neq 0
+		\draw[curvehl, domain=0.5:1.85, samples=80, variable=\t]
+		plot ({0.55*\t*\t + 0.6}, {\t});
+		
+		% проекция участка на ось Ox
+		\draw[curveaux] (0.7375,0.5) -- (0.7375,0);
+		\draw[curveaux] (2.4824,1.85) -- (2.4824,0);
+		\draw[very thick] (0.7375,0) -- (2.4824,0);
+		
+		% точка gamma(t_0) и её проекция
+		\draw[curveaux] (1.392,1.2) -- (1.392,0);
+		\node[pt] at (1.392,1.2) {};
+		\node[slbl, left, fill=white, inner sep=1pt] at (1.35,1.32) {$\gamma(t_0)$};
+		\node[pt] at (1.392,0) {};
+		\node[slbl, below] at (1.392,-0.08) {$x_0$};
+	\end{tikzpicture}
+	\caption{Участок кривой $\gamma$, на котором $\dot\gamma_1 \neq 0$
+		(выделен): там кривая однозначно проектируется на ось $Ox$ и является
+		графиком функции $y(x)$. В точке, где $\dot\gamma_1 = 0$, касательная
+		вертикальна и такой записи нет --- поэтому переход к уравнению
+		$y' = -m/n$ возможен лишь локально.}
+	\label{fig:проекция-кривой}
+\end{figure}
+
+Положим $x_0 = \gamma_1(t_0)$. Существует обратная функция:
+\[
+x = \gamma_1(t) \iff t = \gamma_1^{-1}(x).
+\]
+
+Вводим $y(x)$:
+\[
+y = \gamma_2(t) = \gamma_2\bigl(\gamma_1^{-1}(x)\bigr).
+\]
+
+Тогда
+\[
+\dder{y}{x} = \dot\gamma_2(t)\cdot\dder{}{x}\gamma_1^{-1}(x)
+= \dot\gamma_2(t)\cdot\frac{1}{\dot\gamma_1\bigl(\gamma_1^{-1}(x)\bigr)}
+= \frac{\dot\gamma_2(t)}{\dot\gamma_1(t)}
+= -\frac{m\bigl(\gamma(t)\bigr)}{n\bigl(\gamma(t)\bigr)}
+= -\frac{m\bigl(x,y(x)\bigr)}{n\bigl(x,y(x)\bigr)}.
+\]
+
+Значит $y(x)$ --- решение уравнения
+\begin{equation}\label{eq:пфафф-в-нормальной-форме}
+	y' = -\frac{m(x,y)}{n(x,y)}.
+\end{equation}
+
+\textbf{Обратно.} Пусть $y(x)$ --- решение~\eqref{eq:пфафф-в-нормальной-форме}.
+Берём $\gamma_1(t) = t$, $\gamma_2(t) = y(t)$. Тогда $\dot\gamma_1 = 1 \neq 0$
+(кривая регулярна) и
+\[
+\dot\gamma_2 = \dder{y}{t} = \dder{y}{x} = -\frac{m(x,y)}{n(x,y)}
+= -\frac{m\bigl(\gamma(t)\bigr)}{n\bigl(\gamma(t)\bigr)},
+\]
+то есть $m(\gamma)\dot\gamma_1 + n(\gamma)\dot\gamma_2 \equiv 0$ ---
+кривая $\gamma$ интегральная для формы $F$.
+
+\begin{Statement}{Итог}{пфафф-совокупность}
+	Запись $F = 0$ --- это запись совокупности двух уравнений:
+	\[
+	\dder{y}{x} = -\frac{m}{n} \quad (\text{там, где } n \neq 0),
+	\qquad
+	\dder{x}{y} = -\frac{n}{m} \quad (\text{там, где } m \neq 0).
+	\]
+\end{Statement}
+
+\begin{Remark}{Преимущество симметричной формы}{}
+	Условие $m^2 + n^2 \neq 0$ гарантирует, что в каждой точке работает хотя
+	бы одно из этих уравнений. В этом и состоит преимущество симметричной
+	формы: она не выделяет $x$ и $y$ и описывает кривые, которые в обычной
+	форме $y' = f(x,y)$ имеют вертикальные касательные.
+\end{Remark}
+
+\begin{Example}{Окружности в симметричной форме}{пфафф-окружности}
+	Рассмотрим форму
+	\[
+	F = x\,\dd x + y\,\dd y, \qquad
+	G = \RR^2 \setminus \{(0,0)\}.
+	\]
+	Здесь $m = x$, $n = y$, и условие $m^2 + n^2 = x^2 + y^2 \neq 0$
+	выполнено во всей области $G$.
+
+	\medskip
+	Кривая $\gamma(t) = (R\cos t,\, R\sin t)$, $R > 0$, регулярна
+	($\dot\gamma_1^2 + \dot\gamma_2^2 = R^2 \neq 0$) и
+	\[
+	m\bigl(\gamma(t)\bigr)\dot\gamma_1(t)
+	+ n\bigl(\gamma(t)\bigr)\dot\gamma_2(t)
+	= R\cos t\cdot(-R\sin t) + R\sin t\cdot R\cos t \equiv 0,
+	\]
+	то есть каждая окружность $x^2 + y^2 = R^2$ --- интегральная кривая
+	формы $F$.
+
+	\medskip
+	Там, где $y \neq 0$, уравнение $F = 0$ переходит в $y' = -x/y$ ---
+	это уравнение из п.~\ref{sec:интеграл-уравнения}, и в полуплоскости
+	$y > 0$ оно даёт лишь верхние полуокружности. Симметричная форма
+	описывает окружность целиком: в точках $(\pm R, 0)$, где касательная
+	вертикальна, работает второе уравнение
+	$\dder{x}{y} = -\dfrac{y}{x}$.
+\end{Example}
