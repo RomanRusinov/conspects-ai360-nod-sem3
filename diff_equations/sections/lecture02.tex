@@ -1,0 +1,833 @@
+% !TEX root = ../diff_equations.tex
+% =================================================================
+%  sections/lecture02.tex
+%  Лекция 2. Полные дифференциалы. Системы. Теоремы Пеано и Пикара.
+% =================================================================
+
+\part*{Лекция 2}
+
+\section{Полные дифференциалы. Системы. Теоремы Пеано и Пикара}
+
+\subsection{Уравнения в полных дифференциалах}\label{sec:полные-дифференциалы}
+
+Пусть $F = m(x,y)\,\dd x + n(x,y)\,\dd y$.
+
+\begin{Definition}{}{точная-форма}
+	Форма $F$ называется \textbf{точной}, если
+	\[
+	\exists\, u(x,y) \in C^2(G) \colon \qquad
+	F = \pder{u}{x}\,\dd x + \pder{u}{y}\,\dd y.
+	\]
+\end{Definition}
+
+\begin{Definition}{}{полные-дифференциалы}
+	Уравнение $F = 0$ с точной формой $F$ называется \textbf{уравнением
+	в полных дифференциалах}.
+\end{Definition}
+
+\begin{Theorem}{Точная форма даёт интеграл}{точная-интеграл}
+	Пусть $F$ --- точная форма. Тогда в окрестности любой точки
+	$(x_0,y_0) \in G$ функция $u$ --- интеграл уравнения
+	\[
+	\dder{y}{x} = -\frac{m}{n}
+	\qquad\text{или}\qquad
+	\dder{x}{y} = -\frac{n}{m}.
+	\]
+\end{Theorem}
+
+\begin{proof}
+	Пусть $n(x_0,y_0) \neq 0$; тогда $n(x,y) \neq 0$ в некоторой окрестности
+	$V$ точки $(x_0,y_0)$.
+
+	Пусть $y(x)$ --- решение уравнения $y' = -\dfrac{m}{n}$ на
+	$(\alpha,\beta)$, для которого $(x,y(x)) \in V$ при $x \in (\alpha,\beta)$.
+	Тогда
+	\[
+	\dder{}{x} u\bigl(x,y(x)\bigr)
+	= \pder{u}{x}\bigl(x,y(x)\bigr) + \pder{u}{y}\bigl(x,y(x)\bigr)\, y'(x)
+	= m\bigl(x,y(x)\bigr) + n\bigl(x,y(x)\bigr)\cdot
+	\Bigl(-\frac{m}{n}\bigl(x,y(x)\bigr)\Bigr) \equiv 0.
+	\]
+\end{proof}
+
+\subsubsection*{Условие точности формы}
+
+\begin{Statement}{Необходимое условие точности}{условие-точности}
+	Если форма $F$ точна, то $m,n \in C^1$ и
+	\begin{equation}\label{eq:условие-точности}
+		\pder{m}{y}
+		= \frac{\partial^2 u}{\partial x\,\partial y}
+		= \frac{\partial^2 u}{\partial y\,\partial x}
+		= \pder{n}{x}.
+	\end{equation}
+\end{Statement}
+
+\begin{Remark}{Когда условие достаточно}{}
+	Условие~\eqref{eq:условие-точности} достаточно, если $G$ --- односвязная
+	область.
+\end{Remark}
+
+\subsubsection*{Частный случай: прямоугольник}
+
+Пусть $G = (a,b)\times(\alpha,\beta)$ и $(x_0,y_0) \in G$
+(рис.~\ref{fig:путь-интегрирования}).
+
+Ищем $u$ из условия $\pder{u}{x} = m$:
+\[
+u = \int_{x_0}^{x} m(s,y)\,\dd s + \vphi(y), \qquad \vphi \in C^1.
+\]
+
+Тогда
+\[
+\pder{u}{y}
+= \int_{x_0}^{x} \pder{m}{y}(s,y)\,\dd s + \vphi'(y)
+= \int_{x_0}^{x} \pder{n}{x}(s,y)\,\dd s + \vphi'(y)
+= n(x,y) - n(x_0,y) + \vphi'(y),
+\]
+где во втором равенстве использовано~\eqref{eq:условие-точности}.
+
+Требуем, чтобы это выражение равнялось $n(x,y)$:
+\[
+n(x,y) - n(x_0,y) + \vphi'(y) = n(x,y)
+\iff \vphi'(y) = n(x_0,y),
+\qquad
+\vphi(y) = \int_{y_0}^{y} n(x_0,t)\,\dd t.
+\]
+
+Итого
+\[
+u(x,y) = \int_{x_0}^{x} m(s,y)\,\dd s + \int_{y_0}^{y} n(x_0,t)\,\dd t.
+\]
+
+% ---------------------------------------------------------------
+% РИСУНОК 1: прямоугольник G = (a,b) x (alpha,beta) и путь интегрирования:
+% ломаная (x_0,y_0) -> (x_0,y) -> (x,y). Заливка области — hlBlue.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.5cm, y=1.3cm, >=Stealth]
+		\draw[ax] (-0.35,0) -- (4.3,0) node[below right] {$x$};
+		\draw[ax] (0,-0.35) -- (0,3.2) node[above] {$y$};
+
+		% область G
+		\fill[hlBlue, hlarea] (0.7,0.6) rectangle (3.6,2.7);
+		\draw[curvebd] (0.7,0.6) rectangle (3.6,2.7);
+		\node[slbl, below right] at (0.8,2.65) {$G$};
+
+		% путь интегрирования: вверх по x = x_0, затем вправо
+		\draw[curvehl, -{Stealth[length=2.4mm]}] (1.2,1.0) -- (1.2,2.1);
+		\draw[curvehl, -{Stealth[length=2.4mm]}] (1.2,2.1) -- (2.9,2.1);
+
+		\node[pt] at (1.2,1.0) {};
+		\node[pt] at (2.9,2.1) {};
+		\node[slbl, below left, fill=white, inner sep=1pt]
+			at (1.2,1.0) {$(x_0,y_0)$};
+		\node[slbl, above right] at (2.9,2.1) {$(x,y)$};
+
+		% проекции на оси
+		\draw[curveaux] (1.2,1.0) -- (0,1.0);
+		\draw[curveaux] (1.2,2.1) -- (0,2.1);
+		\draw[curveaux] (1.2,0.6) -- (1.2,0);
+		\draw[curveaux] (2.9,2.1) -- (2.9,0);
+		\node[slbl, left]  at (-0.06,1.0) {$y_0$};
+		\node[slbl, left]  at (-0.06,2.1) {$y$};
+		\node[slbl, below] at (1.2,-0.06) {$x_0$};
+		\node[slbl, below] at (2.9,-0.06) {$x$};
+	\end{tikzpicture}
+	\caption{Прямоугольная область $G = (a,b)\times(\alpha,\beta)$ и путь
+		интегрирования: сначала вдоль прямой $x = x_0$ от $y_0$ до $y$, затем
+		по горизонтали до точки $(x,y)$. Первому участку отвечает слагаемое
+		$\int_{y_0}^{y} n(x_0,t)\,\dd t$, второму ---
+		$\int_{x_0}^{x} m(s,y)\,\dd s$.}
+	\label{fig:путь-интегрирования}
+\end{figure}
+
+\subsubsection*{Интегрирующий множитель}
+
+\begin{Definition}{}{интегрирующий-множитель}
+	Функция $\mu(x,y) \in C^1$, $\mu \neq 0$, называется
+	\textbf{интегрирующим множителем} формы $F = m\,\dd x + n\,\dd y$, если
+	форма $\mu F = \mu m\,\dd x + \mu n\,\dd y$ точна. По
+	условию~\eqref{eq:условие-точности} это равносильно тождеству
+	\[
+	\pder{}{y}(\mu m) \equiv \pder{}{x}(\mu n).
+	\]
+\end{Definition}
+
+\subsection{Системы дифференциальных уравнений}\label{sec:системы}
+
+Пусть $x_1(t), \dots, x_n(t)$ --- искомые функции, а $m_1, \dots, m_n$ ---
+натуральные числа.
+
+\begin{Definition}{}{система-старшие}
+	\textbf{Системой, разрешённой относительно старших производных},
+	называется система
+	\[
+	x_i^{(m_i)} = f_i\bigl(t,\, x_1, \dot x_1, \dots, x_1^{(m_1-1)},\,
+	\dots,\, x_n, \dot x_n, \dots, x_n^{(m_n-1)}\bigr),
+	\qquad i = 1,\dots,n.
+	\]
+	Число $m = m_1 + \dots + m_n$ называется \textbf{порядком} системы.
+\end{Definition}
+
+\subsubsection*{Частные случаи}
+
+\begin{Definition}{}{нормальная-система}
+	При $m_1 = \dots = m_n = 1$ система называется \textbf{нормальной}:
+	\[
+	\dot x_i = f_i(t, x_1, \dots, x_n), \qquad i = 1,\dots,n.
+	\]
+\end{Definition}
+
+При $n = 1$ получается дифференциальное уравнение порядка $m$:
+\begin{equation}\label{eq:уравнение-порядка-m}
+	x^{(m)} = f\bigl(t,\, x, \dot x, \dots, x^{(m-1)}\bigr).
+\end{equation}
+
+\subsubsection*{Сведение уравнения порядка $m$ к нормальной системе}
+
+Вспомогательная система с искомыми функциями $y_1, \dots, y_m$:
+\begin{equation}\label{eq:вспомогательная-система}
+	\begin{cases}
+		\dot y_1 = y_2,\\
+		\dot y_2 = y_3,\\
+		\ \ \vdots\\
+		\dot y_m = f(t, y_1, \dots, y_m).
+	\end{cases}
+\end{equation}
+
+\begin{Statement}{Соответствие решений}{сведение-к-системе}
+	\begin{enumerate}
+		\item Если $x(t)$ --- решение~\eqref{eq:уравнение-порядка-m}, то
+		$y_1 = x$, $y_2 = \dot x$, \dots, $y_m = x^{(m-1)}$ ---
+		решение~\eqref{eq:вспомогательная-система}.
+		\item Если $y_1(t), \dots, y_m(t)$ ---
+		решение~\eqref{eq:вспомогательная-система}, то $x = y_1$ ---
+		решение~\eqref{eq:уравнение-порядка-m}, причём $\dot x = y_2$, \dots,
+		$x^{(m-1)} = y_m$.
+	\end{enumerate}
+\end{Statement}
+
+\subsection{Векторная запись}\label{sec:векторная-запись}
+
+Дальше рассматриваются нормальные системы. Обозначения:
+\[
+x = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix} \in \RR^n,
+\qquad
+\dot x = \begin{pmatrix} \dot x_1 \\ \vdots \\ \dot x_n \end{pmatrix},
+\qquad
+\int x(t)\,\dd t
+= \begin{pmatrix} \int x_1\,\dd t \\ \vdots \\ \int x_n\,\dd t \end{pmatrix}.
+\]
+
+Будем рассматривать норму $\abs{x} = \max_{1 \leqslant i \leqslant n} \abs{x_i}.$
+
+\begin{Statement}{Оценка интеграла}{оценка-интеграла}
+	\[
+	\abs{\int_a^b x(t)\,\dd t} \leqslant \abs{\int_a^b \abs{x(t)}\,\dd t}.
+	\]
+\end{Statement}
+
+Полагая
+\[
+f(t,x) = \begin{pmatrix}
+	f_1(t, x_1, \dots, x_n) \\ \vdots \\ f_n(t, x_1, \dots, x_n)
+\end{pmatrix},
+\]
+нормальную систему записывают в векторном виде
+\begin{equation}\label{eq:нормальная-система}
+	\dot x = f(t,x), \qquad f \in C(G), \qquad G \subset \RR^{n+1}_{t,x}.
+\end{equation}
+
+\begin{Definition}{}{решение-системы}
+	Функция $x \colon (a,b) \to \RR^n$ называется \textbf{решением}
+	системы~\eqref{eq:нормальная-система}, если
+	\begin{enumerate}
+		\item $\exists\, \dot x(t)$, $t \in (a,b)$;
+		\item $(t, x(t)) \in G$, $t \in (a,b)$;
+		\item $\dot x(t) \equiv f\bigl(t, x(t)\bigr)$, $t \in (a,b)$.
+	\end{enumerate}
+\end{Definition}
+
+\begin{Definition}{}{коши-система}
+	Пусть $(t_0, x_0) \in G$. Функция $x(t)$ --- \textbf{решение задачи Коши}
+	с начальными данными $(t_0,x_0)$, если
+	\begin{enumerate}
+		\item $x(t)$ --- решение на некотором $(a,b) \ni t_0$;
+		\item $x(t_0) = x_0$.
+	\end{enumerate}
+\end{Definition}
+
+\begin{Definition}{}{точка-единственности-система}
+	Точка $(t_0,x_0) \in G$ --- \textbf{точка единственности}, если для любых
+	решений $x_1(t)$, $x_2(t)$ задачи Коши с начальными данными $(t_0,x_0)$
+	\[
+	\exists\,(\alpha,\beta) \ni t_0 \colon \quad
+	x_1(t) \equiv x_2(t), \quad t \in (\alpha,\beta).
+	\]
+\end{Definition}
+
+\subsection{Теорема Пеано}\label{sec:пеано}
+
+\begin{Theorem}{Пеано}{пеано}
+	Пусть $f \in C(G)$. Тогда для любой точки $(t_0,x_0) \in G$ существует
+	решение задачи Коши с начальными данными $(t_0,x_0)$.
+\end{Theorem}
+
+\subsubsection*{Эквивалентное интегральное уравнение}
+
+\begin{equation}\label{eq:эиу}
+	x(t) = x_0 + \int_{t_0}^{t} f\bigl(s, x(s)\bigr)\,\dd s.
+\end{equation}
+
+\begin{Definition}{}{решение-эиу}
+	Функция $x \colon (a,b) \to \RR^n$ --- \textbf{решение}
+	уравнения~\eqref{eq:эиу}, если
+	\begin{enumerate}
+		\item $x \in C(a,b)$;
+		\item $(t, x(t)) \in G$, $t \in (a,b)$;
+		\item равенство~\eqref{eq:эиу} выполнено на $(a,b)$.
+	\end{enumerate}
+\end{Definition}
+
+\begin{Lemma}{Эквивалентность задачи Коши и интегрального уравнения}{эквивалентность-эиу}
+	Функция $x(t)$ --- решение задачи Коши с начальными данными $(t_0,x_0)$
+	на $(a,b)$ тогда и только тогда, когда $x(t)$ --- решение
+	уравнения~\eqref{eq:эиу} на $(a,b)$.
+\end{Lemma}
+
+\begin{proof}
+	\textbf{Необходимость.} Пункты 1--2 определения решения задачи Коши дают
+	пункты 1--2 определения решения~\eqref{eq:эиу}. Далее,
+	$\dot x(t) = f\bigl(t, x(t)\bigr)$ при $t \in (a,b)$; интегрируя от $t_0$
+	до $t$, получаем
+	\[
+	\int_{t_0}^{t} \dot x(s)\,\dd s = \int_{t_0}^{t} f\bigl(s, x(s)\bigr)\,\dd s,
+	\qquad
+	x(t) - x(t_0) = \int_{t_0}^{t} f\bigl(s, x(s)\bigr)\,\dd s,
+	\]
+	а так как $x(t_0) = x_0$, это и есть~\eqref{eq:эиу}.
+
+	\medskip
+	\textbf{Достаточность.} Из $x \in C(a,b)$ следует, что
+	$f\bigl(t, x(t)\bigr)$ непрерывна на $(a,b)$, поэтому интеграл
+	$\int_{t_0}^{t} f\bigl(s,x(s)\bigr)\,\dd s$ принадлежит $C^1(a,b)$ ---
+	это пункт 1 определения решения. Пункт 2 совпадает с пунктом 2
+	определения решения~\eqref{eq:эиу}. Дифференцируя~\eqref{eq:эиу},
+	получаем $\dot x(t) = f\bigl(t, x(t)\bigr)$, а подстановка $t = t_0$ даёт
+	$x(t_0) = x_0$.
+\end{proof}
+
+\subsubsection*{Промежуток Пеано}
+
+\begin{Definition}{}{промежуток-пеано}
+	Пусть $\alpha, \beta > 0$ таковы, что
+	\[
+	R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
+	\abs{x - x_0} \leqslant \beta\bigr\} \subset G,
+	\]
+	и пусть $M > 0$ таково, что $\abs{f(t,x)} \leqslant M$ в $R$. Положим
+	\[
+	h = \min\Bigl(\alpha,\ \frac{\beta}{M}\Bigr).
+	\]
+	Отрезок $[t_0 - h,\ t_0 + h]$ называется \textbf{промежутком Пеано}
+	(рис.~\ref{fig:промежуток-пеано}).
+\end{Definition}
+
+% ---------------------------------------------------------------
+% РИСУНОК 2: прямоугольник R вокруг (t_0,x_0), конус наклонов
+% |x-x_0| <= M|t-t_0| и промежуток Пеано на оси t.
+% Параметры: t_0 = 2.4, x_0 = 1.6, alpha = 1.5, beta = 0.9, M = 1,
+% так что h = beta/M = 0.9 < alpha. Масштабы по осям равны: важен наклон M.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.6cm, y=1.6cm, >=Stealth]
+		\draw[ax] (-0.3,0) -- (4.6,0) node[below right] {$t$};
+		\draw[ax] (0,-0.3) -- (0,3.05) node[above] {$x$};
+
+		% прямоугольник R
+		\fill[hlBlue, hlarea] (0.9,0.7) rectangle (3.9,2.5);
+
+		% конус |x - x_0| <= M|t - t_0|, пересечённый с R
+		\fill[hlPurple, hlarea] (0.9,0.7) -- (1.5,0.7) -- (2.4,1.6)
+			-- (1.5,2.5) -- (0.9,2.5) -- cycle;
+		\fill[hlPurple, hlarea] (3.9,0.7) -- (3.3,0.7) -- (2.4,1.6)
+			-- (3.3,2.5) -- (3.9,2.5) -- cycle;
+
+		% R замкнут, поэтому граница сплошная
+		\draw[region] (0.9,0.7) rectangle (3.9,2.5);
+		\node[slbl, below left] at (3.85,2.45) {$R$};
+
+		% выносные линии
+		\draw[curveaux] (0,1.6) -- (3.9,1.6);
+		\foreach \t in {1.5,2.4,3.3} \draw[curveaux] (\t,0) -- (\t,2.5);
+		\draw[curveaux] (0.9,0) -- (0.9,0.7);
+		\draw[curveaux] (3.9,0) -- (3.9,0.7);
+		\draw[curveaux] (0,0.7) -- (0.9,0.7);
+		\draw[curveaux] (0,2.5) -- (0.9,2.5);
+
+		% промежуток Пеано
+		\draw[curvehl] (1.5,0) -- (3.3,0);
+
+		\node[pt] at (2.4,1.6) {};
+		\node[slbl, above right] at (2.46,1.66) {$(t_0,x_0)$};
+
+		\foreach \y in {0.7,1.6,2.5} \draw[tickmark] (0.07,\y) -- (-0.07,\y);
+		\node[slbl, left] at (-0.09,2.5) {$x_0+\beta$};
+		\node[slbl, left] at (-0.09,1.6) {$x_0$};
+		\node[slbl, left] at (-0.09,0.7) {$x_0-\beta$};
+
+		\node[slbl, above, fill=white, inner sep=1pt] at (1.5,0.12) {$t_0-h$};
+		\node[slbl, above, fill=white, inner sep=1pt] at (2.4,0.12) {$t_0$};
+		\node[slbl, above, fill=white, inner sep=1pt] at (3.3,0.12) {$t_0+h$};
+		\node[slbl, below] at (0.9,-0.12) {$t_0-\alpha$};
+		\node[slbl, below] at (3.9,-0.12) {$t_0+\alpha$};
+	\end{tikzpicture}
+	\caption{Прямоугольник $R$ (голубой) и конус
+		$\abs{x - x_0} \leqslant M\abs{t - t_0}$ (фиолетовый): график решения
+		не может выйти из конуса, потому что $\abs{\dot x} \leqslant M$. Конус
+		покидает $R$ через верхнюю и нижнюю стороны при
+		$\abs{t - t_0} = \beta/M$, поэтому длина промежутка Пеано
+		(выделенный отрезок на оси $t$) равна $h = \min(\alpha, \beta/M)$.}
+	\label{fig:промежуток-пеано}
+\end{figure}
+
+\begin{Statement}{Существование решения интегрального уравнения}{существование-эиу}
+	Существует решение уравнения~\eqref{eq:эиу} на промежутке
+	$[t_0,\ t_0 + h]$.
+\end{Statement}
+
+\subsubsection*{Ломаные Эйлера}
+
+Фиксируем натуральное $N$ и положим
+\[
+t_k = t_0 + \frac{k}{N}\,h, \qquad k = 0, \dots, N.
+\]
+
+\textbf{Ломаная Эйлера} $g(t) = g_N(t)$ строится по звеньям
+(рис.~\ref{fig:ломаная-эйлера}). При $t \in [t_0, t_1]$
+\[
+g(t) = x_0 + f(t_0, x_0)(t - t_0),
+\]
+а если $k < N$ и $(t_k, g(t_k)) \in G$, то
+\[
+g(t) = g(t_k) + f\bigl(t_k, g(t_k)\bigr)(t - t_k),
+\qquad t \in [t_k, t_{k+1}].
+\]
+
+Производная в узлах определяется равенствами
+\[
+\dot g(t_0) = f(t_0, x_0),
+\qquad
+\dot g(t_k) = f\bigl(t_k, g(t_k)\bigr)
+\quad\text{при } k > 0,
+\]
+если $g$ определена на $[t_k, t_{k+1}]$.
+
+% ---------------------------------------------------------------
+% РИСУНОК 3: ломаная Эйлера: три звена с разными наклонами,
+% узлы t_0 < t_1 < t_2 < t_3 равноотстоят с шагом h/N.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.3cm, y=1.3cm, >=Stealth]
+		\draw[ax] (-0.4,0) -- (4.4,0) node[below right] {$t$};
+		\draw[ax] (0,-0.4) -- (0,2.6) node[above] {$x$};
+
+		% звенья ломаной
+		\draw[curvehl] (0.6,0.8) -- (1.6,1.25) -- (2.6,1.55) -- (3.6,2.25);
+		\foreach \p in {(0.6,0.8), (1.6,1.25), (2.6,1.55), (3.6,2.25)}{
+			\node[pt] at \p {};
+		}
+
+		% проекции узлов на ось t
+		\foreach \t/\lab in {0.6/{$t_0$}, 1.6/{$t_1$}, 2.6/{$t_2$}, 3.6/{$t_3$}}{
+			\draw[curveaux] (\t,0) -- (\t,{0.8 + 0.45*(\t-0.6)});
+			\node[slbl, below] at (\t,-0.06) {\lab};
+		}
+		\draw[curveaux] (0.6,0.8) -- (0,0.8);
+		\node[slbl, left] at (-0.06,0.8) {$x_0$};
+		\node[slbl, above left, fill=white, inner sep=1pt] at (3.55,2.3) {$g_N$};
+	\end{tikzpicture}
+	\caption{Ломаная Эйлера: на каждом отрезке $[t_k, t_{k+1}]$ она идёт по
+		прямой с угловым коэффициентом $f\bigl(t_k, g(t_k)\bigr)$, вычисленным
+		в левом конце отрезка. Узлы делят промежуток Пеано на $N$ равных
+		частей длины $h/N$.}
+	\label{fig:ломаная-эйлера}
+\end{figure}
+
+\begin{Lemma}{Свойства ломаной Эйлера}{ломаная-свойства}
+	Для всех $k = 1, \dots, N$:
+	\begin{enumerate}
+		\item $g(t)$ определена на $[t_0, t_k]$;
+		\item $\abs{g(t) - x_0} \leqslant M\abs{t - t_0}$ на $[t_0, t_k]$;
+		\item $g(t) = x_0 + \displaystyle\int_{t_0}^{t} \dot g(s)\,\dd s$
+		на $[t_0, t_k]$.
+	\end{enumerate}
+\end{Lemma}
+
+\begin{proof}
+	Индукция по $k$; при $k = 1$ все три пункта очевидны. Пусть они верны
+	на $[t_0, t_k]$; докажем их на $[t_0, t_{k+1}]$. Обозначим
+	$g_k = g(t_k)$.
+
+	\medskip
+	\textbf{Пункт 1.} Так как $t_k - t_0 \leqslant h \leqslant \alpha$ и
+	\[
+	\abs{g_k - x_0} \leqslant M\abs{t_k - t_0} \leqslant Mh \leqslant \beta,
+	\]
+	точка $(t_k, g_k)$ лежит в $R \subset G$. Значит, $f(t_k, g_k)$
+	определена, $\abs{f(t_k,g_k)} \leqslant M$, и $g(t)$ определена на
+	$[t_k, t_{k+1}]$.
+
+	\medskip
+	\textbf{Пункт 2.} При $t \in [t_k, t_{k+1}]$
+	\[
+	\abs{g(t) - x_0} \leqslant M(t - t_k) + M(t_k - t_0) = M(t - t_0).
+	\]
+
+	\medskip
+	\textbf{Пункт 3.} При $t \in [t_k, t_{k+1}]$
+	\[
+	g(t) = g(t_k) + f\bigl(t_k, g(t_k)\bigr)(t - t_k)
+	= x_0 + \int_{t_0}^{t_k} \dot g(s)\,\dd s + \int_{t_k}^{t} \dot g(s)\,\dd s
+	= x_0 + \int_{t_0}^{t} \dot g(s)\,\dd s.
+	\]
+\end{proof}
+
+\subsubsection*{Лемма Арцела --- Асколи}
+
+\begin{Definition}{}{арцела-условия}
+	Последовательность $g_N(t)$, $N = 1, 2, \dots$, на отрезке $[a,b]$
+	называется \textbf{равномерно ограниченной}, если
+	\[
+	\exists\, K \colon \quad \abs{g_N(t)} \leqslant K, \quad t \in [a,b],
+	\quad N = 1, 2, \dots,
+	\]
+	и \textbf{равностепенно непрерывной}, если
+	\[
+	\forall \eps > 0\ \exists\, \delta > 0 \colon \quad
+	t, t' \in [a,b],\ \abs{t - t'} \leqslant \delta
+	\implies \abs{g_N(t) - g_N(t')} \leqslant \eps \quad \forall N.
+	\]
+\end{Definition}
+
+\begin{Lemma}{Арцела --- Асколи}{арцела-асколи}
+	Если последовательность $\{g_N(t)\}$ равномерно ограничена и
+	равностепенно непрерывна на $[a,b]$, то из неё можно выбрать равномерно
+	сходящуюся подпоследовательность.
+\end{Lemma}
+
+\begin{Lemma}{Ломаные Эйлера удовлетворяют условиям Арцела --- Асколи}{ломаные-компактность}
+	Последовательность ломаных Эйлера равномерно ограничена и равностепенно
+	непрерывна на $[t_0,\ t_0+h]$.
+\end{Lemma}
+
+\begin{proof}
+	Для ломаных Эйлера $\abs{g_N(t) - x_0} \leqslant M(t - t_0) \leqslant Mh$, откуда
+	\[
+	\abs{g_N(t)} \leqslant \abs{x_0} + Mh,
+	\]
+	то есть последовательность равномерно ограничена.
+
+	\medskip
+	Пусть $\eps > 0$ и $\delta = \dfrac{\eps}{M}$. Тогда для
+	$t, t' \in [t_0,\ t_0+h]$ с $\abs{t - t'} \leqslant \delta$
+	\[
+	\abs{g_N(t) - g_N(t')}
+	= \abs{\int_{t}^{t'} \dot g_N(s)\,\dd s}
+	\leqslant M\abs{t - t'} \leqslant M\delta = \eps.
+	\]
+\end{proof}
+
+\subsubsection*{Предельная функция --- решение интегрального уравнения}
+
+Считаем, что $g_N(t) \rightrightarrows g(t)$ на $[t_0,\ t_0+h]$.
+
+\begin{Statement}{Предел ломаных Эйлера}{предел-ломаных}
+	Функция $g(t)$ --- решение уравнения~\eqref{eq:эиу} на $[t_0,\ t_0+h]$.
+\end{Statement}
+
+\textbf{Пункт 1.} Все $g_N \in C[t_0,\ t_0+h]$, поэтому и
+$g \in C[t_0,\ t_0+h]$.
+
+\textbf{Пункт 2.} Из $(t, g_N(t)) \in R$ следует $(t, g(t)) \in R \subset G$
+при $t \in [t_0,\ t_0+h]$.
+
+\textbf{Пункт 3.} Запишем
+\[
+g_N(t) = x_0 + \int_{t_0}^{t} \dot g_N(s)\,\dd s
+= x_0
++ \underbrace{\int_{t_0}^{t} f\bigl(s, g_N(s)\bigr)\,\dd s}_{I_1}
++ \underbrace{\int_{t_0}^{t}
+	\bigl[\dot g_N(s) - f\bigl(s, g_N(s)\bigr)\bigr]\,\dd s}_{I_2}.
+\]
+
+Так как $f\bigl(t, g_N(t)\bigr) \rightrightarrows f\bigl(t, g(t)\bigr)$ на
+$[t_0,\ t_0+h]$, имеем $I_1 \to \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s$.
+Остаётся проверить, что $I_2 \to 0$ при $N \to \infty$.
+
+Фиксируем $\eps > 0$. Функция $f$ равномерно непрерывна на компакте $R$,
+поэтому существует $\delta > 0$ такое, что
+\[
+(t,x), (t',x') \in R,\quad \abs{t - t'} \leqslant \delta,\
+\abs{x - x'} \leqslant \delta
+\implies \abs{f(t,x) - f(t',x')} \leqslant \eps.
+\]
+
+При больших $N$ выполнено $\dfrac{h}{N} < \delta$ и
+$\dfrac{Mh}{N} < \delta$, поэтому для $s \in [t_k, t_{k+1})$
+\[
+\abs{s - t_k} < \delta,
+\qquad
+\abs{g_N(s) - g_N(t_k)} \leqslant M\abs{s - t_k} \leqslant \frac{M}{N}h < \delta.
+\]
+
+Но $\dot g_N(s) = f\bigl(t_k, g_N(t_k)\bigr)$ при $s \in [t_k, t_{k+1})$,
+значит $\abs{\dot g_N(s) - f\bigl(s, g_N(s)\bigr)} < \eps$ и
+$\abs{I_2} \leqslant \eps h \xrightarrow[N \to \infty]{} 0$.
+
+Переходя в равенстве для $g_N(t)$ к пределу, получаем
+\[
+g(t) = x_0 + \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s,
+\qquad t \in [t_0,\ t_0+h],
+\]
+то есть $g$ --- решение уравнения~\eqref{eq:эиу}; вместе с
+леммой~\ref{lem:эквивалентность-эиу} это доказывает
+теорему~\ref{thm:пеано}.
+
+\subsection{Условие Липшица}\label{sec:липшиц}
+
+\begin{Definition}{}{липшиц}
+	Говорят, что $f \in \mathrm{Lip}_x(G)$, если существует
+	\textbf{константа Липшица} $L \geqslant 0$ такая, что
+	\[
+	\forall (t,x), (t,x') \in G \abs{f(t,x) - f(t,x')} \leqslant L\abs{x - x'}
+	\]
+	(рис.~\ref{fig:липшиц}).
+\end{Definition}
+
+% ---------------------------------------------------------------
+% РИСУНОК 4: условие Липшица: две точки (t,x) и (t,x') на одной
+% вертикали внутри области G.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=1.3cm, y=1.2cm, >=Stealth]
+		\draw[ax] (-0.4,0) -- (4.3,0) node[below right] {$t$};
+		\draw[ax] (0,-0.4) -- (0,3.1) node[above] {$x$};
+
+		% область G
+		\draw[curvebd] plot[smooth cycle, tension=0.85]
+		coordinates {(0.8,0.8) (2.3,0.5) (3.7,1.1) (3.9,2.4) (2.4,3.0) (1.0,2.4)};
+		\node[slbl, fill=white, inner sep=1pt] at (1.3,1.0) {$G$};
+
+		% вертикаль t = const и две точки на ней
+		\draw[curveaux] (2.3,0.65) -- (2.3,2.85);
+		\node[pt] at (2.3,2.25) {};
+		\node[pt] at (2.3,1.25) {};
+		\draw[curvehl] (2.3,1.25) -- (2.3,2.25);
+
+		\draw[curveaux] (2.3,2.25) -- (0,2.25);
+		\draw[curveaux] (2.3,1.25) -- (0,1.25);
+		\draw[curveaux] (2.3,0.65) -- (2.3,0);
+		\node[slbl, left]  at (-0.06,2.25) {$x$};
+		\node[slbl, left]  at (-0.06,1.25) {$x'$};
+		\node[slbl, below] at (2.3,-0.06) {$t$};
+		\node[slbl, right, fill=white, inner sep=1pt]
+			at (2.35,1.75) {$\abs{x-x'}$};
+	\end{tikzpicture}
+	\caption{Условие Липшица сравнивает значения $f$ в точках с одной и той же
+		первой координатой: приращение $f$ по $x$ оценивается через расстояние
+		$\abs{x - x'}$ с одной константой $L$ для всей области~$G$.}
+	\label{fig:липшиц}
+\end{figure}
+
+\begin{Definition}{}{липшиц-лок}
+	Говорят, что $f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$, если
+	\[
+	\forall (t_0,x_0) \in G\ \exists\ \text{окрестность } \mathcal{U}
+	\text{ точки } (t_0,x_0) \colon \quad f \in \mathrm{Lip}_x(\mathcal{U}).
+	\]
+\end{Definition}
+
+\begin{Definition}{}{операторная-норма}
+	\textbf{Операторной нормой} матрицы $A$ называется
+	\[
+	\norma{A} = \max_{\abs{x} = 1} \abs{Ax},
+	\qquad\text{откуда}\qquad
+	\abs{Ax} \leqslant \norma{A}\cdot\abs{x} \quad \forall x.
+	\]
+	\textbf{Матрица Якоби} отображения $f$ по переменной $x$ ---
+	\[
+	\pder{f}{x} = \Bigl(\pder{f_i}{x_j}\Bigr), \qquad i,j = 1,\dots,n.
+	\]
+\end{Definition}
+
+\begin{Lemma}{Непрерывная матрица Якоби даёт локальное условие Липшица}{якоби-липшиц}
+	Если $\pder{f}{x} \in C(G)$, то $f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$.
+\end{Lemma}
+
+\begin{proof}
+	Пусть $(t_0,x_0) \in G$ и $\alpha, \beta > 0$ таковы, что
+	\[
+	R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
+	\abs{x - x_0} \leqslant \beta\bigr\} \subset G.
+	\]
+	Из $\pder{f}{x} \in C(G)$ следует, что найдётся $L \geqslant 0$ с
+	$\norma{\pder{f}{x}} \leqslant L$ в $R$.
+
+	\medskip
+	Положим $g(s) = f\bigl(t,\ sx + (1-s)x'\bigr)$, $s \in [0,1]$. Тогда
+	\[
+	f(t,x) - f(t,x') = g(1) - g(0) = \int_0^1 \pder{g}{s}(s)\,\dd s
+	= \int_0^1 \pder{f}{x}\bigl(t,\ sx + (1-s)x'\bigr)\cdot(x - x')\,\dd s,
+	\]
+	откуда
+	\[
+	\abs{f(t,x) - f(t,x')}
+	\leqslant \abs{\int_0^1 \norma{\pder{f}{x}}\cdot\abs{x - x'}\,\dd s}
+	\leqslant L\abs{x - x'}.
+	\]
+\end{proof}
+
+\begin{Lemma}{Условие Липшица на компакте}{липшиц-компакт}
+	Пусть $f \in C(G)$, $f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$ и
+	$K \subset G$ --- компакт. Тогда $f \in \mathrm{Lip}_x(K)$.
+\end{Lemma}
+
+\begin{proof}
+	Пусть это не так. Тогда для любого $L_n > 0$ найдутся точки
+	$(t_n, x_n), (t_n, x'_n) \in K$, $n = 1, 2, \dots$, с
+	\begin{equation}\label{eq:липшиц-противоречие}
+		\abs{f(t_n, x_n) - f(t_n, x'_n)} > L_n \abs{x_n - x'_n}.
+	\end{equation}
+	Возьмём $L_n \to \infty$ при $n \to \infty$. Выберем сходящуюся
+	подпоследовательность (пусть это сама $(t_n, x_n)$):
+	$(t_n, x_n) \to (t_0, x_0) \in K$, а из неё --- подпоследовательность
+	с $(t_n, x'_n) \to (t_0, x'_0) \in K$.
+
+	\medskip
+	\textbf{Случай 1: $x_0 = x'_0$.} У точки $(t_0, x_0) = (t_0, x'_0)$ есть
+	окрестность $\mathcal{U}$, в которой $f \in \mathrm{Lip}_x(\mathcal{U})$,
+	то есть существует $L$ с
+	\[
+	\abs{f(t,x) - f(t,x')} \leqslant L\abs{x - x'}
+	\qquad\text{для } (t,x), (t,x') \in \mathcal{U}.
+	\]
+	При больших $n$ обе точки лежат в $\mathcal{U}$ --- противоречие
+	с~\eqref{eq:липшиц-противоречие}.
+
+	\medskip
+	\textbf{Случай 2: $x_0 \neq x'_0$.} Рассмотрим
+	\[
+	g(t,x,y) = \frac{\abs{f(t,x) - f(t,y)}}{\abs{x - y}}.
+	\]
+	Функция $g$ непрерывна в окрестности точки $(t_0, x_0, x'_0)$, а потому
+	ограничена в некоторой окрестности $\mathcal{U}$: существует $L > 0$ с
+	\[
+	\abs{f(t_n, x_n) - f(t_n, x'_n)} \leqslant L\abs{x_n - x'_n}
+	\qquad\text{при больших } n,
+	\]
+	что снова противоречит~\eqref{eq:липшиц-противоречие}.
+\end{proof}
+
+\subsection{Лемма Гронуолла}\label{sec:гронуолл}
+
+\begin{Lemma}{Гронуолла}{гронуолл}
+	Пусть $\vphi(t) \geqslant 0$, $\vphi \in C(a,b)$, $t_0 \in (a,b)$ и
+	$\lambda, \mu \geqslant 0$, причём
+	\[
+	\vphi(t) \leqslant \lambda + \mu\abs{\int_{t_0}^{t} \vphi(s)\,\dd s},
+	\qquad t \in (a,b).
+	\]
+	Тогда
+	\[
+	\vphi(t) \leqslant \lambda e^{\mu\abs{t - t_0}}, \qquad t \in (a,b).
+	\]
+\end{Lemma}
+
+\begin{proof}
+	Разберём случай $t \geqslant t_0$. Положим
+	\[
+	\Phi(t) = \lambda + \mu\int_{t_0}^{t} \vphi(s)\,\dd s,
+	\qquad\text{так что}\qquad \vphi(t) \leqslant \Phi(t).
+	\]
+	Тогда $\dot\Phi(t) = \mu\vphi(t) \leqslant \mu\Phi(t)$, откуда
+	\[
+	e^{-\mu(t - t_0)}\dot\Phi - \mu e^{-\mu(t-t_0)}\Phi \leqslant 0,
+	\qquad
+	\dder{}{t}\Bigl(e^{-\mu(t-t_0)}\Phi\Bigr) \leqslant 0.
+	\]
+	Значит, функция $e^{-\mu(t-t_0)}\Phi(t)$ не возрастает, поэтому
+	\[
+	e^{-\mu(t-t_0)}\Phi(t) \leqslant \Phi(t_0) = \lambda,
+	\qquad
+	\vphi(t) \leqslant \Phi(t) \leqslant \lambda e^{\mu(t - t_0)}.
+	\]
+
+	\medskip
+	Случай $t \leqslant t_0$ разбирается аналогично.
+\end{proof}
+
+% TODO (сверить с лектором): случай $t \leqslant t_0$ в лемме Гронуолла был
+% оставлен слушателям; в конспекте он не разобран.
+
+\begin{Corollary}{Нулевая оценка}{гронуолл-следствие}
+	При $\lambda = 0$ из
+	\[
+	0 \leqslant \vphi(t) \leqslant \mu\abs{\int_{t_0}^{t} \vphi(s)\,\dd s}
+	\]
+	следует $\vphi(t) \equiv 0$.
+\end{Corollary}
+
+\subsection{Теорема Пикара}\label{sec:пикар}
+
+\begin{Theorem}{Пикара}{пикар}
+	Пусть $\dot x = f(t,x)$, где $f \in C(G)$ и
+	$f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$. Тогда $G$ --- область
+	существования и единственности.
+\end{Theorem}
+
+\subsubsection*{Существование: последовательные приближения Пикара}
+
+Пусть $\alpha, \beta > 0$ таковы, что
+\[
+R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
+\abs{x - x_0} \leqslant \beta\bigr\} \subset G,
+\]
+и пусть $\abs{f(t,x)} \leqslant M$ в $R$, $h = \min\bigl(\alpha, \beta/M\bigr)$ ---
+то же построение, что и на рис.~\ref{fig:промежуток-пеано}, с промежутком
+Пеано $[t_0-h,\ t_0+h]$.
+
+\textbf{Последовательные приближения Пикара:}
+\[
+\vphi_0(t) \equiv x_0, \qquad t \in [t_0-h,\ t_0+h],
+\]
+\[
+\vphi_{k+1}(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s,
+\qquad k \geqslant 0.
+\]
+
+\begin{Lemma}{Приближения определены и не выходят из $R$}{приближения-определены}
+	Все функции $\vphi_k(t)$ определены на $[t_0-h,\ t_0+h]$, причём
+	\[
+	(t, \vphi_k(t)) \in R, \qquad t \in [t_0-h,\ t_0+h].
+	\]
+\end{Lemma}
+
+\begin{proof}
+	При $k = 0$ утверждение очевидно. Переход $k \mapsto k+1$: из
+	$(t, \vphi_k(t)) \in R \subset G$ следует, что $f\bigl(t, \vphi_k(t)\bigr)$
+	определена при $t \in [t_0-h,\ t_0+h]$, и тогда
+	\[
+	\abs{\vphi_{k+1}(t) - x_0}
+	\leqslant \abs{\int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s}
+	\leqslant M\abs{t - t_0} \leqslant Mh \leqslant \beta.
+	\]
+\end{proof}
+
+% TODO (сверить с лектором): на этом месте запись обрывается —
+% доказательство теоремы Пикара (сходимость приближений и единственность)
+% в транскрипции не закончено.
