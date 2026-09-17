@@ -112,27 +112,28 @@ u(x,y) = \int_{x_0}^{x} m(s,y)\,\dd s + \int_{y_0}^{y} n(x_0,t)\,\dd t.
 		% область G
 		\fill[hlBlue, hlarea] (0.7,0.6) rectangle (3.6,2.7);
 		\draw[curvebd] (0.7,0.6) rectangle (3.6,2.7);
-		\node[slbl, below right] at (0.8,2.65) {$G$};
+		\node[slbl, below right] at (3.15,1.02) {$G$};
 
 		% путь интегрирования: вверх по x = x_0, затем вправо
 		\draw[curvehl, -{Stealth[length=2.4mm]}] (1.2,1.0) -- (1.2,2.1);
 		\draw[curvehl, -{Stealth[length=2.4mm]}] (1.2,2.1) -- (2.9,2.1);
 
-		\node[pt] at (1.2,1.0) {};
-		\node[pt] at (2.9,2.1) {};
-		\node[slbl, below left, fill=white, inner sep=1pt]
-			at (1.2,1.0) {$(x_0,y_0)$};
-		\node[slbl, above right] at (2.9,2.1) {$(x,y)$};
-
 		% проекции на оси
 		\draw[curveaux] (1.2,1.0) -- (0,1.0);
 		\draw[curveaux] (1.2,2.1) -- (0,2.1);
-		\draw[curveaux] (1.2,0.6) -- (1.2,0);
+		\draw[curveaux] (1.2,1.0) -- (1.2,0);
 		\draw[curveaux] (2.9,2.1) -- (2.9,0);
 		\node[slbl, left]  at (-0.06,1.0) {$y_0$};
 		\node[slbl, left]  at (-0.06,2.1) {$y$};
 		\node[slbl, below] at (1.2,-0.06) {$x_0$};
 		\node[slbl, below] at (2.9,-0.06) {$x$};
+
+		\node[pt] at (1.2,1.0) {};
+		\node[pt] at (1.2,2.1) {};
+		\node[pt] at (2.9,2.1) {};
+		\node[slbl, below right] at (1.16,1.05) {$(x_0,y_0)$};
+		\node[slbl, above right] at (1.16,2.12) {$(x_0,y)$};
+		\node[slbl, above right] at (2.7,2.12) {$(x,y)$};
 	\end{tikzpicture}
 	\caption{Прямоугольная область $G = (a,b)\times(\alpha,\beta)$ и путь
 		интегрирования: сначала вдоль прямой $x = x_0$ от $y_0$ до $y$, затем
@@ -435,12 +436,6 @@ g(t) = g(t_k) + f\bigl(t_k, g(t_k)\bigr)(t - t_k),
 		\draw[ax] (-0.4,0) -- (4.4,0) node[below right] {$t$};
 		\draw[ax] (0,-0.4) -- (0,2.6) node[above] {$x$};
 
-		% звенья ломаной
-		\draw[curvehl] (0.6,0.8) -- (1.6,1.25) -- (2.6,1.55) -- (3.6,2.25);
-		\foreach \p in {(0.6,0.8), (1.6,1.25), (2.6,1.55), (3.6,2.25)}{
-			\node[pt] at \p {};
-		}
-
 		% проекции узлов на ось t
 		\foreach \t/\lab in {0.6/{$t_0$}, 1.6/{$t_1$}, 2.6/{$t_2$}, 3.6/{$t_3$}}{
 			\draw[curveaux] (\t,0) -- (\t,{0.8 + 0.45*(\t-0.6)});
@@ -448,7 +443,14 @@ g(t) = g(t_k) + f\bigl(t_k, g(t_k)\bigr)(t - t_k),
 		}
 		\draw[curveaux] (0.6,0.8) -- (0,0.8);
 		\node[slbl, left] at (-0.06,0.8) {$x_0$};
-		\node[slbl, above left, fill=white, inner sep=1pt] at (3.55,2.3) {$g_N$};
+
+		% звенья ломаной
+		\draw[curvehl] (0.6,0.8) -- (1.6,1.25) -- (2.6,1.55) -- (3.6,2.25);
+		\foreach \p in {(0.6,0.8), (1.6,1.25), (2.6,1.55), (3.6,2.25)}{
+			\node[pt] at \p {};
+		}
+
+		\node[slbl, above left] at (3.55,2.3) {$g_N$};
 	\end{tikzpicture}
 	\caption{Ломаная Эйлера: на каждом отрезке $[t_k, t_{k+1}]$ она идёт по
 		прямой с угловым коэффициентом $f\bigl(t_k, g(t_k)\bigr)$, вычисленным
@@ -619,15 +621,11 @@ g(t) = x_0 + \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s,
 		\draw[ax] (0,-0.4) -- (0,3.1) node[above] {$x$};
 
 		% область G
+		\fill[hlBlue, hlarea] plot[smooth cycle, tension=0.85]
+		coordinates {(0.8,0.8) (2.3,0.5) (3.7,1.1) (3.9,2.4) (2.4,3.0) (1.0,2.4)};
 		\draw[curvebd] plot[smooth cycle, tension=0.85]
 		coordinates {(0.8,0.8) (2.3,0.5) (3.7,1.1) (3.9,2.4) (2.4,3.0) (1.0,2.4)};
-		\node[slbl, fill=white, inner sep=1pt] at (1.3,1.0) {$G$};
-
-		% вертикаль t = const и две точки на ней
-		\draw[curveaux] (2.3,0.65) -- (2.3,2.85);
-		\node[pt] at (2.3,2.25) {};
-		\node[pt] at (2.3,1.25) {};
-		\draw[curvehl] (2.3,1.25) -- (2.3,2.25);
+		\node[slbl] at (1.3,1.0) {$G$};
 
 		\draw[curveaux] (2.3,2.25) -- (0,2.25);
 		\draw[curveaux] (2.3,1.25) -- (0,1.25);
@@ -635,8 +633,12 @@ g(t) = x_0 + \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s,
 		\node[slbl, left]  at (-0.06,2.25) {$x$};
 		\node[slbl, left]  at (-0.06,1.25) {$x'$};
 		\node[slbl, below] at (2.3,-0.06) {$t$};
-		\node[slbl, right, fill=white, inner sep=1pt]
-			at (2.35,1.75) {$\abs{x-x'}$};
+		\node[slbl, right] at (2.35,1.75) {$\abs{x-x'}$};
+
+		% вертикаль t = const и две точки на ней
+		\draw[curvehl] (2.3,1.25) -- (2.3,2.25);
+		\node[pt] at (2.3,2.25) {};
+		\node[pt] at (2.3,1.25) {};
 	\end{tikzpicture}
 	\caption{Условие Липшица сравнивает значения $f$ в точках с одной и той же
 		первой координатой: приращение $f$ по $x$ оценивается через расстояние
