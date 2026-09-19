@@ -1,0 +1,470 @@
+% !TEX root = ../diff_equations.tex
+% =================================================================
+%  sections/lecture03.tex
+%  Лекция 3. Лемма Гронуолла. Теорема Пикара. Метод сжимающих отображений.
+% =================================================================
+
+\part*{Лекция 3}
+
+\section{Лемма Гронуолла. Теорема Пикара. Метод сжимающих отображений}
+
+\subsection{Лемма Гронуолла}\label{sec:гронуолл}
+
+\begin{Lemma}{Гронуолла}{гронуолл}
+	Пусть $\vphi(t) \geqslant 0$, $\vphi \in C(a,b)$, $t_0 \in (a,b)$ и
+	$\lambda, \mu \geqslant 0$, причём
+	\[
+	\vphi(t) \leqslant \lambda + \mu\abs{\int_{t_0}^{t} \vphi(s)\,\dd s},
+	\qquad t \in (a,b).
+	\]
+	Тогда
+	\[
+	\vphi(t) \leqslant \lambda e^{\mu\abs{t - t_0}}, \qquad t \in (a,b).
+	\]
+\end{Lemma}
+
+\begin{proof}
+	Разберём случай $t \geqslant t_0$. Положим
+	\[
+	\Phi(t) = \lambda + \mu\int_{t_0}^{t} \vphi(s)\,\dd s,
+	\qquad\text{так что}\qquad \vphi(t) \leqslant \Phi(t).
+	\]
+	Тогда $\dot\Phi(t) = \mu\vphi(t) \leqslant \mu\Phi(t)$, откуда
+	\[
+	e^{-\mu(t - t_0)}\dot\Phi - \mu e^{-\mu(t-t_0)}\Phi \leqslant 0,
+	\qquad
+	\dder{}{t}\Bigl(e^{-\mu(t-t_0)}\Phi\Bigr) \leqslant 0.
+	\]
+	Значит, функция $e^{-\mu(t-t_0)}\Phi(t)$ не возрастает, поэтому
+	\[
+	e^{-\mu(t-t_0)}\Phi(t) \leqslant \Phi(t_0) = \lambda,
+	\qquad
+	\vphi(t) \leqslant \Phi(t) \leqslant \lambda e^{\mu(t - t_0)}.
+	\]
+
+	\medskip
+	Случай $t \leqslant t_0$ разбирается аналогично.
+\end{proof}
+
+% TODO (сверить с лектором): случай $t \leqslant t_0$ в лемме Гронуолла был
+% оставлен слушателям; в конспекте он не разобран.
+
+% ---------------------------------------------------------------
+% РИСУНОК 1: «воронка» Гронуолла — область под барьером
+% lambda e^{mu |t - t_0|} (lambda = 0.7, mu = 1) и функция phi внутри неё.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=2.0cm, y=0.85cm, >=Stealth]
+		% допустимая область: под барьером
+		\fill[hlBlue, hlarea] (-1.5,0)
+		-- plot[domain=-1.5:1.5, samples=140] (\x,{0.7*exp(abs(\x))})
+		-- (1.5,0) -- cycle;
+
+		\draw[ax] (-1.75,0) -- (1.9,0) node[below right] {$t$};
+		\draw[ax] (0,-0.4) -- (0,3.75) node[above] {$\vphi$};
+
+		% барьер и сама функция
+		\draw[curvehl, domain=-1.5:1.5, samples=140]
+		plot (\x,{0.7*exp(abs(\x))});
+		\draw[curve, domain=-1.5:1.5, samples=100]
+		plot (\x,{0.7*(1 + 0.45*\x*\x)});
+
+		\draw[tickmark] (0.05,0.7) -- (-0.05,0.7);
+		\node[slbl, left]  at (-0.07,0.7) {$\lambda$};
+		\node[slbl, below] at (0,-0.12) {$t_0$};
+		\node[pt] at (0,0.7) {};
+
+		\node[Purple, slbl, right] at (1.55,3.15) {$\lambda e^{\mu\abs{t-t_0}}$};
+		\node[Blue, slbl, right]   at (1.55,1.42) {$\vphi(t)$};
+	\end{tikzpicture}
+	\caption{Лемма Гронуолла загоняет $\vphi$ в «воронку»: интегральное
+		неравенство означает, что график не может выйти из голубой области под
+		барьером $\lambda e^{\mu\abs{t-t_0}}$ (выделенная кривая). В точке $t_0$
+		воронка сужается до значения $\lambda$, а с удалением от неё расширяется
+		экспоненциально.}
+	\label{fig:гронуолл}
+\end{figure}
+
+\begin{Remark}[addon]{Оценка неулучшаема}{гронуолл-точность}
+	Барьер на рис.~\ref{fig:гронуолл} нельзя опустить: на функции
+	$\vphi(t) = \lambda e^{\mu(t-t_0)}$ исходное неравенство обращается в
+	равенство, потому что
+	\[
+	\lambda + \mu\int_{t_0}^{t} \lambda e^{\mu(s-t_0)}\,\dd s
+	= \lambda + \lambda\bigl(e^{\mu(t-t_0)} - 1\bigr)
+	= \lambda e^{\mu(t-t_0)} = \vphi(t).
+	\]
+	То есть заключение леммы достигается, и множитель $e^{\mu\abs{t-t_0}}$
+	заменить на меньший нельзя.
+\end{Remark}
+
+\begin{Corollary}{Нулевая оценка}{гронуолл-следствие}
+	При $\lambda = 0$ из
+	\[
+	0 \leqslant \vphi(t) \leqslant \mu\abs{\int_{t_0}^{t} \vphi(s)\,\dd s}
+	\]
+	следует $\vphi(t) \equiv 0$.
+\end{Corollary}
+
+\subsection{Теорема Пикара}\label{sec:пикар}
+
+\begin{Theorem}{Пикара}{пикар}
+	Пусть $\dot x = f(t,x)$, где $f \in C(G)$ и
+	$f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$. Тогда $G$ --- область
+	существования и единственности.
+\end{Theorem}
+
+\subsubsection*{Существование: последовательные приближения Пикара}
+
+Пусть $\alpha, \beta > 0$ таковы, что
+\[
+R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
+\abs{x - x_0} \leqslant \beta\bigr\} \subset G,
+\]
+и пусть $\abs{f(t,x)} \leqslant M$ в $R$, $h = \min\bigl(\alpha, \beta/M\bigr)$ ---
+то же построение, что и на рис.~\ref{fig:промежуток-пеано}, с промежутком
+Пеано $[t_0-h,\ t_0+h]$.
+
+\textbf{Последовательные приближения Пикара:}
+\[
+\vphi_0(t) \equiv x_0, \qquad t \in [t_0-h,\ t_0+h],
+\]
+\[
+\vphi_{k+1}(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s,
+\qquad k \geqslant 0.
+\]
+
+\begin{Lemma}{Приближения определены и не выходят из $R$}{приближения-определены}
+	Все функции $\vphi_k(t)$ определены на $[t_0-h,\ t_0+h]$, причём
+	\[
+	(t, \vphi_k(t)) \in R, \qquad t \in [t_0-h,\ t_0+h].
+	\]
+\end{Lemma}
+
+\begin{proof}
+	При $k = 0$ утверждение очевидно. Переход $k \mapsto k+1$: из
+	$(t, \vphi_k(t)) \in R \subset G$ следует, что $f\bigl(t, \vphi_k(t)\bigr)$
+	определена при $t \in [t_0-h,\ t_0+h]$, и тогда
+	\[
+	\abs{\vphi_{k+1}(t) - x_0}
+	\leqslant \abs{\int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s}
+	\leqslant M\abs{t - t_0} \leqslant Mh \leqslant \beta.
+	\]
+\end{proof}
+
+\begin{Example}[addon]{Приближения Пикара для $\dot x = x$}{приближения-пример}
+	Пусть $\dot x = x$, $x(0) = 1$. Тогда $\vphi_0 \equiv 1$ и
+	\[
+	\vphi_{k+1}(t) = 1 + \int_0^t \vphi_k(s)\,\dd s ,
+	\]
+	откуда
+	\[
+	\vphi_1 = 1 + t, \qquad
+	\vphi_2 = 1 + t + \frac{t^2}{2}, \qquad
+	\vphi_3 = 1 + t + \frac{t^2}{2} + \frac{t^3}{6} .
+	\]
+
+	\medskip
+	Индукцией получаем $\vphi_k(t) = \sum_{j=0}^{k} \dfrac{t^j}{j!}$ --- частичные
+	суммы ряда для $e^t$. Приближения Пикара здесь в точности воспроизводят
+	разложение точного решения $x(t) = e^t$ (рис.~\ref{fig:приближения-пикара}).
+\end{Example}
+
+% ---------------------------------------------------------------
+% РИСУНОК 2: приближения Пикара phi_0, ..., phi_3 для x' = x, x(0) = 1
+% на [0; 2] и точное решение e^t.
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[x=2.0cm, y=0.4cm, >=Stealth]
+		\draw[ax] (-0.15,0) -- (2.5,0) node[below right] {$t$};
+		\draw[ax] (0,-0.6) -- (0,8.4) node[above] {$x$};
+
+		% точное решение
+		\draw[curvehl, domain=0:2, samples=120] plot (\x,{exp(\x)});
+
+		% приближения Пикара
+		\draw[curve] (0,1) -- (2,1);
+		\draw[curve] (0,1) -- (2,3);
+		\draw[curve, domain=0:2, samples=80]
+		plot (\x,{1 + \x + 0.5*\x*\x});
+		\draw[curve, domain=0:2, samples=80]
+		plot (\x,{1 + \x + 0.5*\x*\x + \x*\x*\x/6});
+
+		\node[pt] at (0,1) {};
+		\draw[tickmark] (0.04,1) -- (-0.04,1);
+		\node[slbl, left] at (-0.06,1) {$1$};
+		\node[slbl, below] at (2,-0.15) {$2$};
+
+		\node[Purple, slbl, right] at (2.06,7.389) {$e^t$};
+		\node[Blue, slbl, right]   at (2.06,6.333) {$\vphi_3$};
+		\node[Blue, slbl, right]   at (2.06,5.0)   {$\vphi_2$};
+		\node[Blue, slbl, right]   at (2.06,3.0)   {$\vphi_1$};
+		\node[Blue, slbl, right]   at (2.06,1.0)   {$\vphi_0$};
+	\end{tikzpicture}
+	\caption{Приближения Пикара для $\dot x = x$, $x(0) = 1$: каждое следующее
+		добавляет один член ряда, и $\vphi_k$ --- это частичная сумма для $e^t$
+		(выделенная кривая). С ростом $k$ приближения поднимаются к точному
+		решению, причём быстрее всего вблизи начальной точки.}
+	\label{fig:приближения-пикара}
+\end{figure}
+
+\subsubsection*{Сходимость последовательных приближений}
+
+\begin{Lemma}{Сходимость приближений Пикара}{сходимость-приближений}
+	Приближения $\vphi_k(t)$ равномерно сходятся на $[t_0-h,\ t_0+h]$.
+\end{Lemma}
+
+\begin{proof}
+	\textbf{Шаг 1 (переход к ряду).} Положим
+	\[
+	\psi_0(t) = \vphi_0(t), \qquad
+	\psi_k(t) = \vphi_k(t) - \vphi_{k-1}(t), \quad k \geqslant 1,
+	\]
+	и рассмотрим ряд
+	\begin{equation}\label{eq:ряд-пикара}
+		\sum_{k=0}^{\infty} \psi_k(t).
+	\end{equation}
+	Его частичная сумма телескопируется:
+	\[
+	\Sigma_m(t) = \sum_{k=0}^{m} \psi_k(t)
+	= \vphi_0 + (\vphi_1 - \vphi_0) + \dots + (\vphi_m - \vphi_{m-1})
+	= \vphi_m(t),
+	\]
+	поэтому сходимость последовательности $\{\vphi_k\}$ равносильна сходимости
+	ряда~\eqref{eq:ряд-пикара}.
+
+	\medskip
+	\textbf{Шаг 2 (оценка членов ряда).} Пусть $L > 0$ --- константа Липшица
+	функции $f$ по $x$ на $R$ (она существует по лемме об условии Липшица на
+	компакте). Докажем, что для $k \geqslant 1$ и $t \in [t_0-h,\ t_0+h]$
+	\begin{equation}\label{eq:оценка-psi}
+		\abs{\psi_k(t)} \leqslant \frac{M}{L}\,\frac{L^k\abs{t-t_0}^k}{k!} .
+	\end{equation}
+	Разберём случай $t \in [t_0,\ t_0+h]$; при $t \leqslant t_0$ рассуждение
+	такое же. Индукция по $k$.
+
+	\medskip
+	\textbf{База $k = 1$.} Так как $\vphi_0 \equiv x_0$,
+	\[
+	\abs{\psi_1(t)} = \abs{\int_{t_0}^{t} f(s, x_0)\,\dd s}
+	\leqslant M\abs{t - t_0} = \frac{M}{L}\,\frac{L\abs{t-t_0}}{1!} .
+	\]
+
+	\medskip
+	\textbf{Переход $k \mapsto k+1$.} По определению приближений и условию
+	Липшица
+	\[
+	\abs{\psi_{k+1}(t)}
+	= \abs{\int_{t_0}^{t} \bigl[f\bigl(s, \vphi_k(s)\bigr)
+	- f\bigl(s, \vphi_{k-1}(s)\bigr)\bigr]\,\dd s}
+	\leqslant L\int_{t_0}^{t} \abs{\vphi_k(s) - \vphi_{k-1}(s)}\,\dd s ,
+	\]
+	а подынтегральное выражение --- это $\abs{\psi_k(s)}$. Подставляя
+	предположение индукции~\eqref{eq:оценка-psi}, получаем
+	\[
+	\abs{\psi_{k+1}(t)}
+	\leqslant L\int_{t_0}^{t} \frac{M}{L}\,\frac{L^k(s-t_0)^k}{k!}\,\dd s
+	= \frac{M}{L}\,L^{k+1}\,\frac{(t-t_0)^{k+1}}{(k+1)!} .
+	\]
+
+	\medskip
+	\textbf{Шаг 3 (мажорирование).} На всём промежутке
+	$\abs{t - t_0} \leqslant h$, поэтому
+	\[
+	\abs{\psi_k(t)} \leqslant A_k := \frac{M}{L}\,\frac{(Lh)^k}{k!} ,
+	\]
+	а числовой ряд $\sum_k A_k$ сходится: его сумма не превосходит
+	$\dfrac{M}{L}e^{Lh}$. По признаку Вейерштрасса
+	ряд~\eqref{eq:ряд-пикара} сходится равномерно, то есть
+	$\vphi_k(t) \rightrightarrows \vphi(t)$ на $[t_0-h,\ t_0+h]$.
+
+	\medskip
+	\textbf{Шаг 4 (предельный переход).} Прямоугольник $R$ --- компакт,
+	поэтому $f$ на нём равномерно непрерывна, и из $\vphi_k \rightrightarrows \vphi$
+	следует $f\bigl(t, \vphi_k(t)\bigr) \rightrightarrows f\bigl(t, \vphi(t)\bigr)$.
+	Переходя к пределу в равенстве
+	\[
+	\vphi_{k+1}(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s ,
+	\]
+	получаем
+	\[
+	\vphi(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi(s)\bigr)\,\dd s ,
+	\]
+	то есть $\vphi$ --- решение интегрального уравнения~\eqref{eq:эиу}, а значит
+	и решение задачи Коши.
+\end{proof}
+
+\subsubsection*{Единственность}
+
+Пусть $(t_0,x_0) \in G$, прямоугольник $R$ --- тот же, что и выше, а $L$ ---
+константа Липшица $f$ по $x$ в $R$. Пусть $x_1(t)$ и $x_2(t)$ --- решения
+задачи Коши с начальными данными $(t_0,x_0)$. По непрерывности найдётся
+$(a,b) \ni t_0$, на котором графики обоих решений лежат в $R$:
+\[
+\bigl(t, x_1(t)\bigr),\ \bigl(t, x_2(t)\bigr) \in R,
+\qquad t \in (a,b).
+\]
+
+Оба решения удовлетворяют интегральному уравнению:
+\[
+x_i(t) = x_0 + \int_{t_0}^{t} f\bigl(s, x_i(s)\bigr)\,\dd s,
+\qquad i = 1,2 .
+\]
+
+Положим $\vphi(t) = \abs{x_1(t) - x_2(t)}$; эта функция неотрицательна и
+непрерывна, и
+\[
+\vphi(t)
+= \abs{\int_{t_0}^{t} \bigl[f\bigl(s, x_1(s)\bigr)
+- f\bigl(s, x_2(s)\bigr)\bigr]\,\dd s}
+\leqslant \abs{\int_{t_0}^{t} \abs{f\bigl(s, x_1(s)\bigr)
+- f\bigl(s, x_2(s)\bigr)}\,\dd s}
+\leqslant L\abs{\int_{t_0}^{t} \vphi(s)\,\dd s} .
+\]
+
+Это в точности посылка следствия~\ref{cor:гронуолл-следствие} из леммы
+Гронуолла при $\lambda = 0$, $\mu = L$, поэтому $\vphi(t) \equiv 0$, то есть
+$x_1(t) \equiv x_2(t)$.
+
+\begin{Remark}[addon]{Пеано и Пикар: что даёт каждая}{пеано-пикар}
+	\textbf{Условие.} Пеано требует только $f \in C(G)$; Пикар добавляет к
+	этому локальное условие Липшица по $x$.
+
+	\medskip
+	\textbf{Вывод.} Пеано --- существование решения задачи Коши; Пикар ---
+	существование и единственность, то есть $G$ оказывается областью
+	существования и единственности.
+
+	\medskip
+	\textbf{Метод.} У Пеано --- ломаные Эйлера и компактность, причём сходится
+	лишь подпоследовательность. У Пикара --- последовательные приближения,
+	сходящиеся все сразу, а единственность вытекает из леммы Гронуолла.
+
+	\medskip
+	\textbf{Где видна разница.} У уравнения $\dot x = 3x^{2/3}$ правая часть
+	непрерывна, но не липшицева в нуле: решение через начало координат
+	существует по Пеано, однако оно не одно (лекция~1). Условие Липшица такую
+	картину исключает.
+\end{Remark}
+
+\subsection{Глобальная теорема единственности}\label{sec:глобальная-единственность}
+
+\begin{Theorem}{Глобальная единственность}{глобальная-единственность}
+	Пусть $G$ --- область существования и единственности, а $x_1(t)$ и $x_2(t)$
+	--- решения на $(a,b)$, совпадающие в одной точке:
+	\[
+	\exists\, t_0 \in (a,b) \colon \quad x_1(t_0) = x_2(t_0).
+	\]
+	Тогда $x_1(t) \equiv x_2(t)$ на всём $(a,b)$.
+\end{Theorem}
+
+\begin{proof}
+	Разберём $t \geqslant t_0$; случай $t \leqslant t_0$ симметричен. Положим
+	\[
+	T = \bigl\{t' \in [t_0, b) \colon\ x_1(t) = x_2(t) \text{ на } [t_0, t']\bigr\}.
+	\]
+	Множество $T$ непусто, так как $t_0 \in T$, и ограничено сверху числом $b$;
+	пусть $t^{*} = \sup T$.
+
+	\medskip
+	Если $t^{*} = b$, то решения совпадают на всём $[t_0, b)$ и доказывать
+	нечего. Пусть $t^{*} < b$. По непрерывности $x_1$ и $x_2$ из равенства на
+	$[t_0, t^{*})$ следует $x_1(t^{*}) = x_2(t^{*})$.
+
+	\medskip
+	Точка $t^{*}$ внутренняя для $(a,b)$, поэтому
+	$\bigl(t^{*}, x_1(t^{*})\bigr) \in G$ --- точка единственности. Значит,
+	найдётся $t' > t^{*}$, для которого $x_1(t) = x_2(t)$ на $[t^{*}, t')$, а
+	вместе с равенством на $[t_0, t^{*}]$ это даёт $t' \in T$ --- противоречие с
+	тем, что $t^{*} = \sup T$.
+\end{proof}
+
+\subsubsection*{Скалярный случай}
+
+Для уравнения $y' = f(x,y)$ условие
+\[
+f,\ \pder{f}{y} \in C(G)
+\]
+влечёт $f \in \mathrm{Lip}_{y,\mathrm{loc}}(G)$, то есть выполнены условия
+теоремы Пикара. Так обосновываются теоремы существования и единственности,
+которыми мы пользовались без доказательства в первой лекции.
+
+\subsection{Метод сжимающих отображений}\label{sec:сжимающие}
+
+Существование решения можно получить и вторым способом --- как неподвижную
+точку подходящего оператора.
+
+\begin{Theorem}{Принцип сжимающих отображений (Банах)}{банах}
+	Пусть $(X, \rho)$ --- полное метрическое пространство, а $T \colon X \to X$
+	--- \textbf{сжимающий оператор}:
+	\[
+	\exists\, \lambda \in (0,1) \colon \quad
+	\rho\bigl(T(x), T(x')\bigr) \leqslant \lambda\,\rho(x,x')
+	\qquad \forall x, x' \in X .
+	\]
+	Тогда у $T$ существует единственная неподвижная точка.
+\end{Theorem}
+
+Пусть, как и выше, $\dot x = f(t,x)$, где $f \in C(G)$ и
+$f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$, $(t_0,x_0) \in G$, а
+$R = \bigl\{\abs{t - t_0} \leqslant \alpha,\ \abs{x - x_0} \leqslant \beta\bigr\}
+\subset G$, $\abs{f} \leqslant M$ в $R$, $L$ --- константа Липшица в $R$ и
+$h = \min(\alpha, \beta/M)$. Возьмём дополнительно число $h_0$ так, что
+\[
+h_0 < h, \qquad L h_0 < 1,
+\]
+и положим $\Pi = [t_0 - h_0,\ t_0 + h_0]$.
+
+\begin{Statement}{Существование на $\Pi$}{сжатие-существование}
+	Существует решение задачи Коши с начальными данными $(t_0,x_0)$
+	на промежутке $\Pi$.
+\end{Statement}
+
+\begin{proof}
+	\textbf{Шаг 1 (пространство).} Положим
+	\[
+	X = \bigl\{\vphi \colon \Pi \to \RR^n \ \big|\ \vphi \in C(\Pi),\
+	(t, \vphi(t)) \in R \text{ при } t \in \Pi\bigr\},
+	\qquad
+	\rho(\vphi, \vphi') = \max_{t \in \Pi} \abs{\vphi(t) - \vphi'(t)} .
+	\]
+	Стандартное утверждение анализа: $(X, \rho)$ --- полное метрическое
+	пространство.
+
+	\medskip
+	\textbf{Шаг 2 (оператор).} Для $\vphi \in X$ положим $\psi = T(\vphi)$, где
+	\[
+	\psi(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi(s)\bigr)\,\dd s .
+	\]
+	Оператор действительно переводит $X$ в себя: непрерывность $\vphi$ даёт
+	непрерывность $\psi$, а
+	\[
+	\abs{\psi(t) - x_0} \leqslant M\abs{t - t_0}
+	\leqslant M h_0 \leqslant M h \leqslant \beta
+	\qquad\text{на } \Pi .
+	\]
+
+	\medskip
+	\textbf{Шаг 3 (сжатие).} Для $\vphi, \vphi' \in X$
+	\[
+	\rho\bigl(T(\vphi), T(\vphi')\bigr)
+	= \max_{t \in \Pi} \abs{\int_{t_0}^{t}
+	\bigl[f\bigl(s, \vphi(s)\bigr) - f\bigl(s, \vphi'(s)\bigr)\bigr]\,\dd s}
+	\leqslant L h_0 \max_{t \in \Pi} \abs{\vphi(t) - \vphi'(t)}
+	= L h_0\,\rho(\vphi, \vphi') ,
+	\]
+	а $L h_0 < 1$ по выбору $h_0$. По принципу сжимающих отображений у $T$ есть
+	единственная неподвижная точка $\vphi$, а равенство $\vphi = T(\vphi)$ ---
+	это и есть интегральное уравнение~\eqref{eq:эиу}.
+\end{proof}
+
+\begin{Remark}[addon]{Чем этот способ отличается}{сжатие-сравнение}
+	Сравнение с последовательными приближениями поучительно: итерации
+	$\vphi_{k+1} = T(\vphi_k)$ --- это в точности итерации того же оператора, а
+	лемма о сходимости приближений --- «ручное» доказательство сходимости этих
+	итераций. Плата за ссылку на готовый принцип --- лишнее условие
+	$L h_0 < 1$: промежуток приходится укорачивать, тогда как оценка
+	из~\eqref{eq:оценка-psi} работает на всём промежутке Пеано.
+\end{Remark}
