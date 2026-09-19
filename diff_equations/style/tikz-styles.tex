@@ -24,13 +24,16 @@
 	% серые штрихи: поле направлений и штриховка областей
 	curvehatch/.style = {black!40, line width=0.4pt},
 	% --- заливки-штриховки под кривой / прямоугольники сумм ---
-	hatchA/.style    = {pattern=north east lines, pattern color=violet, opacity=0.35},
-	hatchB/.style    = {pattern=north east lines, pattern color=blue,   opacity=0.25},
+	hatchBlue/.style    = {pattern=north east lines, pattern color=hlBlue, opacity=0.85},
+	hatchPurple/.style    = {pattern=north east lines, pattern color=hlPurple,   opacity=0.85},
 	hatchGray/.style = {pattern=north east lines, pattern color=black!60, opacity=0.25},
 	% --- векторы и проекции ---
 	vecarr/.style    = {->, very thick},
 	vecaux/.style    = {->, dashed},
 	pt/.style        = {circle, fill, inner sep=1.3pt},
+	% выколотая точка: белый кружок с серым контуром
+	ptopen/.style    = {circle, draw=black!50, fill=white,
+	                    line width=0.6pt, inner sep=1.5pt},
 	% --- подписи ---
 	llbl/.style       = {font=\large},
 	lbl/.style       = {font=\small},
