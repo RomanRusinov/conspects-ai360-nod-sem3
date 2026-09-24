@@ -463,56 +463,58 @@ f(t,x) = \begin{pmatrix}
 % так что h = beta/M = 0.9 < alpha. Масштабы по осям равны: важен наклон M.
 % ---------------------------------------------------------------
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[x=1.6cm, y=1.6cm, >=Stealth]
-		\draw[ax] (-0.3,0) -- (4.6,0) node[below right] {$t$};
-		\draw[ax] (0,-0.3) -- (0,3.05) node[above] {$x$};
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=1.6cm, y=1.6cm, >=Stealth]
+			\draw[ax] (-0.3,0) -- (4.6,0) node[below right] {$t$};
+			\draw[ax] (0,-0.3) -- (0,3.05) node[above] {$x$};
 
-		% прямоугольник R
-		\fill[hlBlue, hlarea] (0.9,0.7) rectangle (3.9,2.5);
+			% прямоугольник R
+			\fill[hlBlue, hlarea] (0.9,0.7) rectangle (3.9,2.5);
 
-		% конус |x - x_0| <= M|t - t_0|, пересечённый с R
-		\fill[hlPurple, hlarea] (0.9,0.7) -- (1.5,0.7) -- (2.4,1.6)
-			-- (1.5,2.5) -- (0.9,2.5) -- cycle;
-		\fill[hlPurple, hlarea] (3.9,0.7) -- (3.3,0.7) -- (2.4,1.6)
-			-- (3.3,2.5) -- (3.9,2.5) -- cycle;
+			% конус |x - x_0| <= M|t - t_0|, пересечённый с R
+			\fill[hlPurple, hlarea] (0.9,0.7) -- (1.5,0.7) -- (2.4,1.6)
+				-- (1.5,2.5) -- (0.9,2.5) -- cycle;
+			\fill[hlPurple, hlarea] (3.9,0.7) -- (3.3,0.7) -- (2.4,1.6)
+				-- (3.3,2.5) -- (3.9,2.5) -- cycle;
 
-		% R замкнут, поэтому граница сплошная
-		\draw[region] (0.9,0.7) rectangle (3.9,2.5);
-		\node[slbl, below left] at (3.85,2.45) {$R$};
+			% R замкнут, поэтому граница сплошная
+			\draw[region] (0.9,0.7) rectangle (3.9,2.5);
+			\node[slbl, below left] at (3.85,2.45) {$R$};
 
-		% выносные линии
-		\draw[curveaux] (0,1.6) -- (3.9,1.6);
-		\foreach \t in {1.5,2.4,3.3} \draw[curveaux] (\t,0) -- (\t,2.5);
-		\draw[curveaux] (0.9,0) -- (0.9,0.7);
-		\draw[curveaux] (3.9,0) -- (3.9,0.7);
-		\draw[curveaux] (0,0.7) -- (0.9,0.7);
-		\draw[curveaux] (0,2.5) -- (0.9,2.5);
+			% выносные линии
+			\draw[curveaux] (0,1.6) -- (3.9,1.6);
+			\foreach \t in {1.5,2.4,3.3} \draw[curveaux] (\t,0) -- (\t,2.5);
+			\draw[curveaux] (0.9,0) -- (0.9,0.7);
+			\draw[curveaux] (3.9,0) -- (3.9,0.7);
+			\draw[curveaux] (0,0.7) -- (0.9,0.7);
+			\draw[curveaux] (0,2.5) -- (0.9,2.5);
 
-		% промежуток Пеано
-		\draw[curvehl] (1.5,0) -- (3.3,0);
+			% промежуток Пеано
+			\draw[curvehl] (1.5,0) -- (3.3,0);
 
-		\node[pt] at (2.4,1.6) {};
-		\node[slbl, above right] at (2.46,1.66) {$(t_0,x_0)$};
+			\node[pt] at (2.4,1.6) {};
+			\node[slbl, above right] at (2.46,1.66) {$(t_0,x_0)$};
 
-		\foreach \y in {0.7,1.6,2.5} \draw[tickmark] (0.07,\y) -- (-0.07,\y);
-		\node[slbl, left] at (-0.09,2.5) {$x_0+\beta$};
-		\node[slbl, left] at (-0.09,1.6) {$x_0$};
-		\node[slbl, left] at (-0.09,0.7) {$x_0-\beta$};
+			\foreach \y in {0.7,1.6,2.5} \draw[tickmark] (0.07,\y) -- (-0.07,\y);
+			\node[slbl, left] at (-0.09,2.5) {$x_0+\beta$};
+			\node[slbl, left] at (-0.09,1.6) {$x_0$};
+			\node[slbl, left] at (-0.09,0.7) {$x_0-\beta$};
 
-		\node[slbl, above, fill=white, inner sep=1pt] at (1.5,0.12) {$t_0-h$};
-		\node[slbl, above, fill=white, inner sep=1pt] at (2.4,0.12) {$t_0$};
-		\node[slbl, above, fill=white, inner sep=1pt] at (3.3,0.12) {$t_0+h$};
-		\node[slbl, below] at (0.9,-0.12) {$t_0-\alpha$};
-		\node[slbl, below] at (3.9,-0.12) {$t_0+\alpha$};
-	\end{tikzpicture}
-	\caption{Прямоугольник $R$ (голубой) и конус
-		$\abs{x - x_0} \leqslant M\abs{t - t_0}$ (фиолетовый): график решения
-		не может выйти из конуса, потому что $\abs{\dot x} \leqslant M$. Конус
-		покидает $R$ через верхнюю и нижнюю стороны при
-		$\abs{t - t_0} = \beta/M$, поэтому длина промежутка Пеано
-		(выделенный отрезок на оси $t$) равна $h = \min(\alpha, \beta/M)$.}
-	\label{fig:промежуток-пеано}
+			\node[slbl, above, fill=white, inner sep=1pt] at (1.5,0.12) {$t_0-h$};
+			\node[slbl, above, fill=white, inner sep=1pt] at (2.4,0.12) {$t_0$};
+			\node[slbl, above, fill=white, inner sep=1pt] at (3.3,0.12) {$t_0+h$};
+			\node[slbl, below] at (0.9,-0.12) {$t_0-\alpha$};
+			\node[slbl, below] at (3.9,-0.12) {$t_0+\alpha$};
+		\end{tikzpicture}
+		\caption{Прямоугольник $R$ (голубой) и конус
+			$\abs{x - x_0} \leqslant M\abs{t - t_0}$ (фиолетовый): график решения
+			не может выйти из конуса, потому что $\abs{\dot x} \leqslant M$. Конус
+			покидает $R$ через верхнюю и нижнюю стороны при
+			$\abs{t - t_0} = \beta/M$, поэтому длина промежутка Пеано
+			(выделенный отрезок на оси $t$) равна $h = \min(\alpha, \beta/M)$.}
+		\label{fig:промежуток-пеано}
+	\end{Addon}
 \end{figure}
 
 \begin{Example}[addon]{Почему промежуток конечен}{промежуток-конечен}
@@ -541,32 +543,34 @@ f(t,x) = \begin{pmatrix}
 % и вертикальные асимптоты t = ± pi/2 — границы его существования.
 % ---------------------------------------------------------------
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[x=1.55cm, y=0.6cm, >=Stealth]
-		\draw[ax] (-2.15,0) -- (2.3,0) node[below right] {$t$};
-		\draw[ax] (0,-3.5) -- (0,3.7) node[above] {$x$};
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=1.55cm, y=0.6cm, >=Stealth]
+			\draw[ax] (-2.15,0) -- (2.3,0) node[below right] {$t$};
+			\draw[ax] (0,-3.5) -- (0,3.7) node[above] {$x$};
 
-		% асимптоты t = ± pi/2
-		\draw[curveaux] (-1.5708,-3.4) -- (-1.5708,3.5);
-		\draw[curveaux] (1.5708,-3.4) -- (1.5708,3.5);
+			% асимптоты t = ± pi/2
+			\draw[curveaux] (-1.5708,-3.4) -- (-1.5708,3.5);
+			\draw[curveaux] (1.5708,-3.4) -- (1.5708,3.5);
 
-		% решение x = tan t
-		\begin{scope}
-			\clip (-1.8,-3.4) rectangle (1.8,3.4);
-			\draw[curvehl, domain=-1.48:1.48, samples=200]
-			plot (\x,{tan(\x r)});
-		\end{scope}
+			% решение x = tan t
+			\begin{scope}
+				\clip (-1.8,-3.4) rectangle (1.8,3.4);
+				\draw[curvehl, domain=-1.48:1.48, samples=200]
+				plot (\x,{tan(\x r)});
+			\end{scope}
 
-		\node[pt] at (0,0) {};
-		\foreach \t in {-1.5708,1.5708} \draw[tickmark] (\t,0.14) -- (\t,-0.14);
-		\node[slbl, below left]  at (-1.52,-0.2) {$-\pi/2$};
-		\node[slbl, below right] at (1.62,-0.2) {$\pi/2$};
-	\end{tikzpicture}
-	\caption{Решение задачи Коши $\dot x = 1 + x^2$, $x(0) = 0$: правая часть
-		гладка во всей плоскости, а решение $x = \tan t$ живёт лишь между
-		асимптотами $t = \pm\pi/2$ (пунктир). Продолжить его нельзя --- поэтому
-		в теореме Пеано и появляется конечный промежуток.}
-	\label{fig:тангенс}
+			\node[pt] at (0,0) {};
+			\foreach \t in {-1.5708,1.5708} \draw[tickmark] (\t,0.14) -- (\t,-0.14);
+			\node[slbl, below left]  at (-1.52,-0.2) {$-\pi/2$};
+			\node[slbl, below right] at (1.62,-0.2) {$\pi/2$};
+		\end{tikzpicture}
+		\caption{Решение задачи Коши $\dot x = 1 + x^2$, $x(0) = 0$: правая часть
+			гладка во всей плоскости, а решение $x = \tan t$ живёт лишь между
+			асимптотами $t = \pm\pi/2$ (пунктир). Продолжить его нельзя --- поэтому
+			в теореме Пеано и появляется конечный промежуток.}
+		\label{fig:тангенс}
+	\end{Addon}
 \end{figure}
 
 \begin{Statement}{Существование решения интегрального уравнения}{существование-эиу}
@@ -728,40 +732,42 @@ g(t) = g(t_k) + f\bigl(t_k, g(t_k)\bigr)(t - t_k),
 % на [0; 1,2] и их предел x = tan t. Узлы равномерны с шагом 1,2/N.
 % ---------------------------------------------------------------
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[x=3.7cm, y=1.25cm, >=Stealth]
-		\draw[ax] (-0.1,0) -- (1.5,0) node[below right] {$t$};
-		\draw[ax] (0,-0.15) -- (0,2.95) node[above] {$x$};
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=3.7cm, y=1.25cm, >=Stealth]
+			\draw[ax] (-0.1,0) -- (1.5,0) node[below right] {$t$};
+			\draw[ax] (0,-0.15) -- (0,2.95) node[above] {$x$};
 
-		% предельное решение x = tan t
-		\draw[curvehl, domain=0:1.2, samples=120] plot (\x,{tan(\x r)});
+			% предельное решение x = tan t
+			\draw[curvehl, domain=0:1.2, samples=120] plot (\x,{tan(\x r)});
 
-		% ломаные Эйлера
-		\draw[curve] (0,0) -- (0.6,0.6) -- (1.2,1.416);
-		\draw[curve] (0,0) -- (0.3,0.3) -- (0.6,0.627) -- (0.9,1.045)
-		-- (1.2,1.673);
-		\draw[curve] (0,0) -- (0.15,0.15) -- (0.3,0.303) -- (0.45,0.467)
-		-- (0.6,0.650) -- (0.75,0.863) -- (0.9,1.125) -- (1.05,1.465)
-		-- (1.2,1.937);
-		\foreach \q in {(0.6,0.6), (1.2,1.416)} \node[pt, inner sep=1pt] at \q {};
-		\foreach \q in {(0.3,0.3), (0.6,0.627), (0.9,1.045), (1.2,1.673)} \node[pt, inner sep=1pt] at \q {};
-		\foreach \q in {(0.15,0.15), (0.3,0.303), (0.45,0.467), (0.6,0.650), (0.75,0.863),
-		(0.9,1.125), (1.05,1.465), (1.2,1.937)} \node[pt, inner sep=1pt] at \q {};
+			% ломаные Эйлера
+			\draw[curve] (0,0) -- (0.6,0.6) -- (1.2,1.416);
+			\draw[curve] (0,0) -- (0.3,0.3) -- (0.6,0.627) -- (0.9,1.045)
+			-- (1.2,1.673);
+			\draw[curve] (0,0) -- (0.15,0.15) -- (0.3,0.303) -- (0.45,0.467)
+			-- (0.6,0.650) -- (0.75,0.863) -- (0.9,1.125) -- (1.05,1.465)
+			-- (1.2,1.937);
+			\foreach \q in {(0.6,0.6), (1.2,1.416)} \node[pt, inner sep=1pt] at \q {};
+			\foreach \q in {(0.3,0.3), (0.6,0.627), (0.9,1.045), (1.2,1.673)} \node[pt, inner sep=1pt] at \q {};
+			\foreach \q in {(0.15,0.15), (0.3,0.303), (0.45,0.467), (0.6,0.650), (0.75,0.863),
+			(0.9,1.125), (1.05,1.465), (1.2,1.937)} \node[pt, inner sep=1pt] at \q {};
 
-		\node[pt] at (0,0) {};
-		\node[Purple, slbl, right] at (1.23,2.572) {$x = \tan t$};
-		\node[Blue, slbl, right]   at (1.23,1.937) {$g_8$};
-		\node[Blue, slbl, right]   at (1.23,1.673) {$g_4$};
-		\node[Blue, slbl, right]   at (1.23,1.416) {$g_2$};
-	\end{tikzpicture}
-	\caption{Ломаные Эйлера $g_2$, $g_4$, $g_8$ для уравнения
-		$\dot x = 1 + x^2$ с начальным условием $x(0) = 0$ при
-		$0 \leqslant t \leqslant 1{,}2$. С измельчением разбиения они
-		поднимаются к решению $x = \tan t$ (выделенная кривая). Лемма
-		Арцела --- Асколи гарантирует лишь сходимость подпоследовательности;
-		здесь начальная точка --- точка единственности, поэтому предел один и
-		тот же для всей последовательности.}
-	\label{fig:сходимость-ломаных}
+			\node[pt] at (0,0) {};
+			\node[Purple, slbl, right] at (1.23,2.572) {$x = \tan t$};
+			\node[Blue, slbl, right]   at (1.23,1.937) {$g_8$};
+			\node[Blue, slbl, right]   at (1.23,1.673) {$g_4$};
+			\node[Blue, slbl, right]   at (1.23,1.416) {$g_2$};
+		\end{tikzpicture}
+		\caption{Ломаные Эйлера $g_2$, $g_4$, $g_8$ для уравнения
+			$\dot x = 1 + x^2$ с начальным условием $x(0) = 0$ при
+			$0 \leqslant t \leqslant 1{,}2$. С измельчением разбиения они
+			поднимаются к решению $x = \tan t$ (выделенная кривая). Лемма
+			Арцела --- Асколи гарантирует лишь сходимость подпоследовательности;
+			здесь начальная точка --- точка единственности, поэтому предел один и
+			тот же для всей последовательности.}
+		\label{fig:сходимость-ломаных}
+	\end{Addon}
 \end{figure}
 
 \begin{Statement}{Предел ломаных Эйлера}{предел-ломаных}
@@ -898,18 +904,6 @@ g(t) = x_0 + \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s,
 	\]
 \end{Definition}
 
-\begin{Remark}[addon]{Как её посчитать}{операторная-норма-формула}
-	Определение через максимум по шару неконструктивно, но для выбранной
-	максимум-нормы $\abs{x} = \max_i \abs{x_i}$ подчинённая операторная норма
-	выписывается явно --- это наибольшая сумма модулей по строке:
-	\[
-	\norma{A} = \max_{1 \leqslant i \leqslant n} \sum_{j=1}^{n} \abs{a_{ij}} .
-	\]
-	Действительно, $\abs{(Ax)_i} \leqslant \sum_j \abs{a_{ij}}\abs{x_j}
-	\leqslant \abs{x}\sum_j \abs{a_{ij}}$, а равенство достигается на векторе
-	из $\pm 1$, знаки которого совпадают со знаками элементов нужной строки.
-\end{Remark}
-
 \begin{Lemma}{Непрерывная матрица Якоби даёт локальное условие Липшица}{якоби-липшиц}
 	Если $\pder{f}{x} \in C(G)$, то $f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$.
 \end{Lemma}
@@ -924,9 +918,12 @@ g(t) = x_0 + \int_{t_0}^{t} f\bigl(s, g(s)\bigr)\,\dd s,
 	$\norma{\pder{f}{x}} \leqslant L$ в $R$.
 
 	\medskip
-	Положим $g(s) = f\bigl(t,\ sx + (1-s)x'\bigr)$, $s \in [0,1]$;
-	прямоугольник $R$ выпукл, поэтому при $(t,x), (t,x') \in R$ весь отрезок
-	$sx + (1-s)x'$ лежит в $R$ и $g$ определена. Тогда
+	Положим $g(s) = f\bigl(t,\ sx + (1-s)x'\bigr)$, $s \in [0,1]$.
+	\begin{Addon}
+		Прямоугольник $R$ выпукл, поэтому при $(t,x), (t,x') \in R$ весь отрезок
+		$sx + (1-s)x'$ лежит в $R$ и $g$ определена.
+	\end{Addon}
+	Тогда
 	\[
 	f(t,x) - f(t,x') = g(1) - g(0) = \int_0^1 \pder{g}{s}(s)\,\dd s
 	= \int_0^1 \pder{f}{x}\bigl(t,\ sx + (1-s)x'\bigr)\cdot(x - x')\,\dd s,

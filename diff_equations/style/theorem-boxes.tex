@@ -161,10 +161,20 @@
 % -----------------------------------------------------------------
 \definecolor{addoncolor}{HTML}{7E7E7E}
 
+% Перекрашивается вся утолщённая левая стенка вместе со скруглениями:
+% кольцо «рамка минус внутренность», обрезанное полосой шириной arc
+% (2.8mm) у левого края. Плашка заголовка из обрезки исключена, чтобы
+% серое скругление не ложилось поверх неё (оверлей рисуется после
+% заголовка).
 \newcommand{\conspectaddonband}{%
-	\begin{scope}
-		\clip[rounded corners=2.8mm] (frame.south west) rectangle (frame.north east);
-		\fill[addoncolor] (frame.south west) rectangle ([xshift=1.9pt]frame.north west);
+	\begin{scope}[even odd rule]
+		\clip (frame.south west) rectangle ([xshift=2.8mm]frame.north west);
+		\clip ([xshift=-1cm, yshift=-1cm]frame.south west)
+			rectangle ([xshift=1cm, yshift=1cm]frame.north east)
+			(title.south west) rectangle (title.north east);
+		\fill[addoncolor, rounded corners=2.8mm]
+			(frame.south west) rectangle (frame.north east)
+			(interior.south west) rectangle (interior.north east);
 	\end{scope}%
 }
 
@@ -182,6 +192,56 @@
 		overlay middle and last={\conspectaddonband},
 	}
 }
+
+% -----------------------------------------------------------------
+% Та же пометка для материала вне боксов: кусок доказательства,
+% абзац текста, рисунок. Без рамки и фона; серый пунктир слева, отступ
+% текста как у боксов, знак (+) на уровне первой строки. Переносится
+% между страницами. Наименьшая единица — абзац.
+%     \begin{Addon}
+%         Случай $t \leqslant t_0$ сводится к разобранному заменой ...
+%     \end{Addon}
+% Рисунок — внутри figure:
+%     \begin{figure}[H]
+%         \begin{Addon}
+%             \centering ... \caption{...} \label{fig:...}
+%         \end{Addon}
+%     \end{figure}
+% Если Addon завершает доказательство, в конце ставится \qedhere.
+% -----------------------------------------------------------------
+% Тонкий пунктир стоит по оси левой стенки боксов (0.95pt от края текста),
+% а текст отступает, как в боксах: leftrule + boxsep + left = 1.9pt + 1mm + 8pt.
+\newcommand{\conspectaddonmargin}{%
+	\draw[addoncolor, line width=0.8pt, dash pattern=on 2.5pt off 1.5pt]
+		([xshift=0.95pt]frame.south west) -- ([xshift=0.95pt]frame.north west);%
+}
+
+\newtcolorbox{AddonBox}[1][]{
+	enhanced,
+	blanker,
+	left=12.75pt,
+	before skip=3pt,
+	after skip=3pt,
+	overlay unbroken and first={
+		\conspectaddonmargin
+		\node[
+		anchor=north east,
+		inner sep=0pt,
+		font=\bfseries\large,
+		text=addoncolor
+		] at ([xshift=-8pt, yshift=1pt]frame.north west) {$(+)$};
+	},
+	overlay middle and last={\conspectaddonmargin},
+	#1
+}
+
+% Вне плавающих окружений Addon переносится между страницами,
+% внутри figure — нет (разрывный бокс в плавающем теряет \label).
+\makeatletter
+\newenvironment{Addon}{%
+	\@ifundefined{@captype}{\AddonBox[breakable]}{\AddonBox[unbreakable]}%
+}{\endAddonBox}
+\makeatother
 
 % -----------------------------------------------------------------
 % Как добавить свой бокс, например «Приём» цвета stmtFrame:

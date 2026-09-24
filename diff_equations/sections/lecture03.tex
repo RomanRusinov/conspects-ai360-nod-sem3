@@ -27,7 +27,9 @@
 	Разберём случай $t \geqslant t_0$. Положим
 	\[
 	\Phi(t) = \lambda + \mu\int_{t_0}^{t} \vphi(s)\,\dd s,
-	\qquad\text{так что}\qquad \vphi(t) \leqslant \Phi(t).
+	\qquad\text{так что}\qquad \vphi(t) \leqslant \Phi(t)
+	\quad \Biggl(\abs{\int_{t_0}^{t}\vphi} = \int_{t_0}^{t}\vphi,
+	\text{ поскольку } \vphi \geqslant 0\Biggr).
 	\]
 	Тогда $\dot\Phi(t) = \mu\vphi(t) \leqslant \mu\Phi(t)$, откуда
 	\[
@@ -39,65 +41,66 @@
 	\[
 	e^{-\mu(t-t_0)}\Phi(t) \leqslant \Phi(t_0) = \lambda,
 	\qquad
-	\vphi(t) \leqslant \Phi(t) \leqslant \lambda e^{\mu(t - t_0)}.
+	\vphi(t) \leqslant \Phi(t) \leqslant \lambda e^{\mu(t - t_0)}
+	\quad (\text{рис.~\ref{fig:гронуолл}}).
 	\]
 
 	\medskip
 	Случай $t \leqslant t_0$ разбирается аналогично.
+	\begin{Addon}
+		Замена $\psi(\tau) = \vphi(2t_0 - \tau)$ сводит этот случай к разобранному:
+		так как $\abs{\int_{t_0}^{2t_0-\tau}\vphi} = \abs{\int_{t_0}^{\tau}\psi}$,
+		функция $\psi$ удовлетворяет посылке леммы, и при
+		$\tau = 2t_0 - t \geqslant t_0$ получаем
+		$\vphi(t) = \psi(\tau) \leqslant \lambda e^{\mu(t_0 - t)}$.\qedhere
+	\end{Addon}
 \end{proof}
 
-% TODO (сверить с лектором): случай $t \leqslant t_0$ в лемме Гронуолла был
-% оставлен слушателям; в конспекте он не разобран.
+\begin{Remark}[addon]{Дифференциальная форма}{гронуолл-дифференциальная}
+	Если $u \in C^1$ и $\dot u \leqslant \mu u$ при $t \geqslant t_0$, то
+	$u(t) \leqslant u(t_0)e^{\mu(t-t_0)}$: производная $e^{-\mu(t-t_0)}u$
+	неположительна. Доказательство леммы --- это рассуждение для $u = \Phi$;
+	интегральная форма нужна, потому что у самой $\vphi$ производной может не быть.
+\end{Remark}
 
 % ---------------------------------------------------------------
 % РИСУНОК 1: «воронка» Гронуолла — область под барьером
 % lambda e^{mu |t - t_0|} (lambda = 0.7, mu = 1) и функция phi внутри неё.
 % ---------------------------------------------------------------
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[x=2.0cm, y=0.85cm, >=Stealth]
-		% допустимая область: под барьером
-		\fill[hlBlue, hlarea] (-1.5,0)
-		-- plot[domain=-1.5:1.5, samples=140] (\x,{0.7*exp(abs(\x))})
-		-- (1.5,0) -- cycle;
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=2.0cm, y=0.85cm, >=Stealth]
+			% допустимая область: под барьером
+			\fill[hlBlue, hlarea] (-1.5,0)
+			-- plot[domain=-1.5:1.5, samples=140] (\x,{0.7*exp(abs(\x))})
+			-- (1.5,0) -- cycle;
 
-		\draw[ax] (-1.75,0) -- (1.9,0) node[below right] {$t$};
-		\draw[ax] (0,-0.4) -- (0,3.75) node[above] {$\vphi$};
+			\draw[ax] (-1.75,0) -- (1.9,0) node[below right] {$t$};
+			\draw[ax] (0,-0.4) -- (0,3.75) node[above] {$\vphi$};
 
-		% барьер и сама функция
-		\draw[curvehl, domain=-1.5:1.5, samples=140]
-		plot (\x,{0.7*exp(abs(\x))});
-		\draw[curve, domain=-1.5:1.5, samples=100]
-		plot (\x,{0.7*(1 + 0.45*\x*\x)});
+			% барьер и сама функция
+			\draw[curvehl, domain=-1.5:1.5, samples=140]
+			plot (\x,{0.7*exp(abs(\x))});
+			\draw[curve, domain=-1.5:1.5, samples=100]
+			plot (\x,{0.7*(1 + 0.45*\x*\x)});
 
-		\draw[tickmark] (0.05,0.7) -- (-0.05,0.7);
-		\node[slbl, left]  at (-0.07,0.7) {$\lambda$};
-		\node[slbl, below] at (0,-0.12) {$t_0$};
-		\node[pt] at (0,0.7) {};
+			\draw[tickmark] (0.05,0.7) -- (-0.05,0.7);
+			\node[slbl, left]  at (-0.07,0.7) {$\lambda$};
+			\node[slbl, below] at (0,-0.12) {$t_0$};
+			\node[pt] at (0,0.7) {};
 
-		\node[Purple, slbl, right] at (1.55,3.15) {$\lambda e^{\mu\abs{t-t_0}}$};
-		\node[Blue, slbl, right]   at (1.55,1.42) {$\vphi(t)$};
-	\end{tikzpicture}
-	\caption{Лемма Гронуолла загоняет $\vphi$ в «воронку»: интегральное
-		неравенство означает, что график не может выйти из голубой области под
-		барьером $\lambda e^{\mu\abs{t-t_0}}$ (выделенная кривая). В точке $t_0$
-		воронка сужается до значения $\lambda$, а с удалением от неё расширяется
-		экспоненциально.}
-	\label{fig:гронуолл}
+			\node[Purple, slbl, right] at (1.55,3.15) {$\lambda e^{\mu\abs{t-t_0}}$};
+			\node[Blue, slbl, right]   at (1.55,1.42) {$\vphi(t)$};
+		\end{tikzpicture}
+		\caption{Лемма Гронуолла загоняет $\vphi$ в «воронку»: интегральное
+			неравенство означает, что график не может выйти из голубой области под
+			барьером $\lambda e^{\mu\abs{t-t_0}}$ (выделенная кривая). В точке $t_0$
+			воронка сужается до значения $\lambda$, а с удалением от неё расширяется
+			экспоненциально.}
+		\label{fig:гронуолл}
+	\end{Addon}
 \end{figure}
-
-\begin{Remark}[addon]{Оценка неулучшаема}{гронуолл-точность}
-	Барьер на рис.~\ref{fig:гронуолл} нельзя опустить: на функции
-	$\vphi(t) = \lambda e^{\mu(t-t_0)}$ исходное неравенство обращается в
-	равенство, потому что
-	\[
-	\lambda + \mu\int_{t_0}^{t} \lambda e^{\mu(s-t_0)}\,\dd s
-	= \lambda + \lambda\bigl(e^{\mu(t-t_0)} - 1\bigr)
-	= \lambda e^{\mu(t-t_0)} = \vphi(t).
-	\]
-	То есть заключение леммы достигается, и множитель $e^{\mu\abs{t-t_0}}$
-	заменить на меньший нельзя.
-\end{Remark}
 
 \begin{Corollary}{Нулевая оценка}{гронуолл-следствие}
 	При $\lambda = 0$ из
@@ -138,13 +141,13 @@ R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
 \begin{Lemma}{Приближения определены и не выходят из $R$}{приближения-определены}
 	Все функции $\vphi_k(t)$ определены на $[t_0-h,\ t_0+h]$, причём
 	\[
-	(t, \vphi_k(t)) \in R, \qquad t \in [t_0-h,\ t_0+h].
+	\bigl(t, \vphi_k(t)\bigr) \in R, \qquad t \in [t_0-h,\ t_0+h].
 	\]
 \end{Lemma}
 
 \begin{proof}
 	При $k = 0$ утверждение очевидно. Переход $k \mapsto k+1$: из
-	$(t, \vphi_k(t)) \in R \subset G$ следует, что $f\bigl(t, \vphi_k(t)\bigr)$
+	$\bigl(t, \vphi_k(t)\bigr) \in R \subset G$ следует, что $f\bigl(t, \vphi_k(t)\bigr)$
 	определена при $t \in [t_0-h,\ t_0+h]$, и тогда
 	\[
 	\abs{\vphi_{k+1}(t) - x_0}
@@ -176,38 +179,40 @@ R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
 % на [0; 2] и точное решение e^t.
 % ---------------------------------------------------------------
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[x=2.0cm, y=0.4cm, >=Stealth]
-		\draw[ax] (-0.15,0) -- (2.5,0) node[below right] {$t$};
-		\draw[ax] (0,-0.6) -- (0,8.4) node[above] {$x$};
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=2.0cm, y=0.4cm, >=Stealth]
+			\draw[ax] (-0.15,0) -- (2.5,0) node[below right] {$t$};
+			\draw[ax] (0,-0.6) -- (0,8.4) node[above] {$x$};
 
-		% точное решение
-		\draw[curvehl, domain=0:2, samples=120] plot (\x,{exp(\x)});
+			% точное решение
+			\draw[curvehl, domain=0:2, samples=120] plot (\x,{exp(\x)});
 
-		% приближения Пикара
-		\draw[curve] (0,1) -- (2,1);
-		\draw[curve] (0,1) -- (2,3);
-		\draw[curve, domain=0:2, samples=80]
-		plot (\x,{1 + \x + 0.5*\x*\x});
-		\draw[curve, domain=0:2, samples=80]
-		plot (\x,{1 + \x + 0.5*\x*\x + \x*\x*\x/6});
+			% приближения Пикара
+			\draw[curve] (0,1) -- (2,1);
+			\draw[curve] (0,1) -- (2,3);
+			\draw[curve, domain=0:2, samples=80]
+			plot (\x,{1 + \x + 0.5*\x*\x});
+			\draw[curve, domain=0:2, samples=80]
+			plot (\x,{1 + \x + 0.5*\x*\x + \x*\x*\x/6});
 
-		\node[pt] at (0,1) {};
-		\draw[tickmark] (0.04,1) -- (-0.04,1);
-		\node[slbl, left] at (-0.06,1) {$1$};
-		\node[slbl, below] at (2,-0.15) {$2$};
+			\node[pt] at (0,1) {};
+			\draw[tickmark] (0.04,1) -- (-0.04,1);
+			\node[slbl, left] at (-0.06,1) {$1$};
+			\node[slbl, below] at (2,-0.15) {$2$};
 
-		\node[Purple, slbl, right] at (2.06,7.389) {$e^t$};
-		\node[Blue, slbl, right]   at (2.06,6.333) {$\vphi_3$};
-		\node[Blue, slbl, right]   at (2.06,5.0)   {$\vphi_2$};
-		\node[Blue, slbl, right]   at (2.06,3.0)   {$\vphi_1$};
-		\node[Blue, slbl, right]   at (2.06,1.0)   {$\vphi_0$};
-	\end{tikzpicture}
-	\caption{Приближения Пикара для $\dot x = x$, $x(0) = 1$: каждое следующее
-		добавляет один член ряда, и $\vphi_k$ --- это частичная сумма для $e^t$
-		(выделенная кривая). С ростом $k$ приближения поднимаются к точному
-		решению, причём быстрее всего вблизи начальной точки.}
-	\label{fig:приближения-пикара}
+			\node[Purple, slbl, right] at (2.06,7.389) {$e^t$};
+			\node[Blue, slbl, right]   at (2.06,6.333) {$\vphi_3$};
+			\node[Blue, slbl, right]   at (2.06,5.0)   {$\vphi_2$};
+			\node[Blue, slbl, right]   at (2.06,3.0)   {$\vphi_1$};
+			\node[Blue, slbl, right]   at (2.06,1.0)   {$\vphi_0$};
+		\end{tikzpicture}
+		\caption{Приближения Пикара для $\dot x = x$, $x(0) = 1$: каждое следующее
+			добавляет один член ряда, и $\vphi_k$ --- это частичная сумма для $e^t$
+			(выделенная кривая). С ростом $k$ приближения поднимаются к точному
+			решению, причём быстрее всего вблизи начальной точки.}
+		\label{fig:приближения-пикара}
+	\end{Addon}
 \end{figure}
 
 \subsubsection*{Сходимость последовательных приближений}
@@ -237,8 +242,8 @@ R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
 
 	\medskip
 	\textbf{Шаг 2 (оценка членов ряда).} Пусть $L > 0$ --- константа Липшица
-	функции $f$ по $x$ на $R$ (она существует по лемме об условии Липшица на
-	компакте). Докажем, что для $k \geqslant 1$ и $t \in [t_0-h,\ t_0+h]$
+	функции $f$ по $x$ на $R$ (она существует по
+	лемме~\ref{lem:липшиц-компакт}). Докажем, что для $k \geqslant 1$ и $t \in [t_0-h,\ t_0+h]$
 	\begin{equation}\label{eq:оценка-psi}
 		\abs{\psi_k(t)} \leqslant \frac{M}{L}\,\frac{L^k\abs{t-t_0}^k}{k!} .
 	\end{equation}
@@ -282,8 +287,10 @@ R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
 
 	\medskip
 	\textbf{Шаг 4 (предельный переход).} Прямоугольник $R$ --- компакт,
-	поэтому $f$ на нём равномерно непрерывна, и из $\vphi_k \rightrightarrows \vphi$
-	следует $f\bigl(t, \vphi_k(t)\bigr) \rightrightarrows f\bigl(t, \vphi(t)\bigr)$.
+	поэтому $f$ на нём равномерно непрерывна, а график $\vphi$, как предел
+	графиков $\vphi_k$, лежит в замкнутом $R$. Значит, из
+	$\vphi_k \rightrightarrows \vphi$ следует
+	$f\bigl(t, \vphi_k(t)\bigr) \rightrightarrows f\bigl(t, \vphi(t)\bigr)$.
 	Переходя к пределу в равенстве
 	\[
 	\vphi_{k+1}(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi_k(s)\bigr)\,\dd s ,
@@ -292,8 +299,8 @@ R = \bigl\{(t,x) \colon \abs{t - t_0} \leqslant \alpha,\
 	\[
 	\vphi(t) = x_0 + \int_{t_0}^{t} f\bigl(s, \vphi(s)\bigr)\,\dd s ,
 	\]
-	то есть $\vphi$ --- решение интегрального уравнения~\eqref{eq:эиу}, а значит
-	и решение задачи Коши.
+	то есть $\vphi$ --- решение интегрального уравнения~\eqref{eq:эиу}, а значит,
+	по лемме~\ref{lem:эквивалентность-эиу}, и решение задачи Коши.
 \end{proof}
 
 \subsubsection*{Единственность}
@@ -328,26 +335,88 @@ x_i(t) = x_0 + \int_{t_0}^{t} f\bigl(s, x_i(s)\bigr)\,\dd s,
 Гронуолла при $\lambda = 0$, $\mu = L$, поэтому $\vphi(t) \equiv 0$, то есть
 $x_1(t) \equiv x_2(t)$.
 
-\begin{Remark}[addon]{Пеано и Пикар: что даёт каждая}{пеано-пикар}
-	\textbf{Условие.} Пеано требует только $f \in C(G)$; Пикар добавляет к
-	этому локальное условие Липшица по $x$.
+% \begin{Statement}[addon]{Непрерывная зависимость от начальных данных}%
+% 	{непрерывная-зависимость}
+% 	Пусть $f \in C(G)$, $f \in \mathrm{Lip}_{x,\mathrm{loc}}(G)$, а $x_1(t)$ и
+% 	$x_2(t)$ --- решения уравнения $\dot x = f(t,x)$ на $(a,b) \ni t_0$, графики
+% 	которых лежат в компакте $K \subset G$. Если $L$ --- константа Липшица $f$
+% 	по $x$ на $K$, то
+% 	\[
+% 	\abs{x_1(t) - x_2(t)} \leqslant \abs{x_1(t_0) - x_2(t_0)}\,e^{L\abs{t - t_0}},
+% 	\qquad t \in (a,b).
+% 	\]
+% \end{Statement}
 
-	\medskip
-	\textbf{Вывод.} Пеано --- существование решения задачи Коши; Пикар ---
-	существование и единственность, то есть $G$ оказывается областью
-	существования и единственности.
+% \begin{Addon}
+% 	\begin{proof}
+% 		Повторим выкладку для единственности, но с разными начальными значениями.
+% 		Константа $L$ существует по лемме~\ref{lem:липшиц-компакт}. Каждое
+% 		решение удовлетворяет интегральному уравнению со своим начальным значением:
+% 		\[
+% 		x_i(t) = x_i(t_0) + \int_{t_0}^{t} f\bigl(s, x_i(s)\bigr)\,\dd s,
+% 		\qquad i = 1,2 .
+% 		\]
+% 		Вычитая и полагая $\vphi(t) = \abs{x_1(t) - x_2(t)}$, получаем
+% 		\[
+% 		\vphi(t)
+% 		\leqslant \vphi(t_0) + \abs{\int_{t_0}^{t} \abs{f\bigl(s, x_1(s)\bigr)
+% 		- f\bigl(s, x_2(s)\bigr)}\,\dd s}
+% 		\leqslant \vphi(t_0) + L\abs{\int_{t_0}^{t} \vphi(s)\,\dd s} .
+% 		\]
+% 		Это посылка леммы~\ref{lem:гронуолл} с $\lambda = \vphi(t_0)$ и $\mu = L$,
+% 		откуда $\vphi(t) \leqslant \vphi(t_0)\,e^{L\abs{t-t_0}}$
+% 		(рис.~\ref{fig:непрерывная-зависимость}).
+% 	\end{proof}
+% \end{Addon}
 
-	\medskip
-	\textbf{Метод.} У Пеано --- ломаные Эйлера и компактность, причём сходится
-	лишь подпоследовательность. У Пикара --- последовательные приближения,
-	сходящиеся все сразу, а единственность вытекает из леммы Гронуолла.
-
-	\medskip
-	\textbf{Где видна разница.} У уравнения $\dot x = 3x^{2/3}$ правая часть
-	непрерывна, но не липшицева в нуле: решение через начало координат
-	существует по Пеано, однако оно не одно (лекция~1). Условие Липшица такую
-	картину исключает.
-\end{Remark}
+% ---------------------------------------------------------------
+% РИСУНОК 3: пучок решений x' = sin x (L = 1) с начальными значениями
+% x_0 ± delta, x_0 = 0.5, delta = 0.15, и воронка |x - x_*| <= delta e^{t-t_0}
+% вокруг выделенного решения x_* = 2 arctan(tan(x_0/2) e^t).
+% ---------------------------------------------------------------
+% \begin{figure}[H]
+% 	\begin{Addon}
+% 		\centering
+% 		\begin{tikzpicture}[x=2.6cm, y=1.3cm, >=Stealth]
+% 			% воронка из оценки
+% 			\fill[hlBlue, hlarea]
+% 			plot[domain=0:1.6, samples=80]
+% 			(\x,{2*rad(atan(0.25534*exp(\x))) + 0.15*exp(\x)})
+% 			-- plot[domain=1.6:0, samples=80]
+% 			(\x,{2*rad(atan(0.25534*exp(\x))) - 0.15*exp(\x)}) -- cycle;
+% 			\draw[region, domain=0:1.6, samples=80]
+% 			plot (\x,{2*rad(atan(0.25534*exp(\x))) + 0.15*exp(\x)});
+% 			\draw[region, domain=0:1.6, samples=80]
+% 			plot (\x,{2*rad(atan(0.25534*exp(\x))) - 0.15*exp(\x)});
+% 
+% 			\draw[ax] (-0.1,0) -- (1.95,0) node[below right] {$t$};
+% 			\draw[ax] (0,-0.15) -- (0,2.85) node[above] {$x$};
+% 
+% 			% решения с соседними начальными значениями
+% 			\foreach \c in {0.17681, 0.21576, 0.29569, 0.33695}{
+% 				\draw[curve, domain=0:1.6, samples=80]
+% 				plot (\x,{2*rad(atan(\c*exp(\x)))});
+% 			}
+% 			% выделенное решение x_*
+% 			\draw[curvehl, domain=0:1.6, samples=80]
+% 			plot (\x,{2*rad(atan(0.25534*exp(\x)))});
+% 
+% 			\node[pt] at (0,0.5) {};
+% 			\node[slbl, left] at (-0.03,0.5) {$x_0$};
+% 			\node[slbl, below] at (0,-0.1) {$t_0$};
+% 
+% 			\node[Purple, slbl, right] at (1.63,1.804) {$x_*(t)$};
+% 			\node[slbl, black!50, right] at (1.63,2.546) {$x_* + \delta e^{t-t_0}$};
+% 			\node[slbl, black!50, right] at (1.63,1.061) {$x_* - \delta e^{t-t_0}$};
+% 		\end{tikzpicture}
+% 		\caption{Решения уравнения $\dot x = \sin x$ с начальными значениями из
+% 			отрезка $[x_0-\delta,\ x_0+\delta]$ при $x_0 = 0{,}5$, $\delta = 0{,}15$.
+% 			Здесь $L = 1$, и по утверждению о непрерывной зависимости все они
+% 			остаются в голубой воронке $\abs{x - x_*(t)} \leqslant \delta e^{t - t_0}$
+% 			вокруг выделенного решения $x_*$.}
+% 		\label{fig:непрерывная-зависимость}
+% 	\end{Addon}
+% \end{figure}
 
 \subsection{Глобальная теорема единственности}\label{sec:глобальная-единственность}
 
@@ -381,15 +450,75 @@ $x_1(t) \equiv x_2(t)$.
 	тем, что $t^{*} = \sup T$.
 \end{proof}
 
+Схема этого рассуждения показана на рис.~\ref{fig:глобальная-единственность}.
+
+% ---------------------------------------------------------------
+% РИСУНОК 4: схема доказательства глобальной единственности:
+% общий график x_1 = x_2 на [t_0, t^*], множество T на оси t и
+% пунктиром — расхождение после t^*, которое исключает единственность.
+% Общая часть: x = 0.7 + 0.6 sin(0.6 t) на [0.3; 2.1].
+% ---------------------------------------------------------------
+\begin{figure}[H]
+	\begin{Addon}
+		\centering
+		\begin{tikzpicture}[x=1.6cm, y=1.3cm, >=Stealth]
+			\draw[ax] (-0.2,0) -- (4.0,0) node[below right] {$t$};
+			\draw[ax] (0,-0.2) -- (0,2.35) node[above] {$x$};
+
+			% множество T = [t_0, t^*] на оси
+			\draw[curvehl] (0.3,0) -- (2.1,0);
+			\foreach \t in {0.3,2.1,3.5} \draw[tickmark] (\t,0.06) -- (\t,-0.06);
+			\node[slbl, below] at (0.3,-0.08) {$t_0$};
+			\node[slbl, below] at (2.1,-0.08) {$t^{*}$};
+			\node[slbl, below] at (3.5,-0.08) {$b$};
+			\node[slbl, below] at (1.2,-0.08) {$T$};
+
+			% гипотетическое расхождение после t^* — в области единственности
+			% его быть не может
+			\draw[curveaux, domain=2.1:3.3, samples=60]
+			plot (\x,{0.7 + 0.6*sin(0.6*\x r) + 0.5*(\x-2.1)*(\x-2.1)});
+			\draw[curveaux, domain=2.1:3.3, samples=60]
+			plot (\x,{0.7 + 0.6*sin(0.6*\x r) - 0.35*(\x-2.1)*(\x-2.1)});
+			\node[slbl, black!60, right] at (3.33,1.97) {$x_2$};
+			\node[slbl, black!60, right] at (3.33,0.75) {$x_1$};
+
+			% общий график: решения уже совпали
+			\draw[curvehl, domain=0.3:2.1, samples=80]
+			plot (\x,{0.7 + 0.6*sin(0.6*\x r)});
+			\node[Purple, slbl, above] at (1.2,1.16) {$x_1 = x_2$};
+
+			\draw[curveaux] (2.1,0) -- (2.1,1.271);
+			\node[pt] at (0.3,0.807) {};
+			\node[pt] at (2.1,1.271) {};
+		\end{tikzpicture}
+		\caption{Схема доказательства глобальной единственности. На множестве $T$
+			(выделенный отрезок оси) решения уже совпадают --- их общий график выделен.
+			Если бы при $t^{*} = \sup T < b$ они расходились (пунктир), точка
+			$\bigl(t^{*}, x_1(t^{*})\bigr)$ не была бы точкой единственности. В
+			области единственности совпадение продолжается правее $t^{*}$, что
+			противоречит определению супремума.}
+		\label{fig:глобальная-единственность}
+	\end{Addon}
+\end{figure}
+
 \subsubsection*{Скалярный случай}
 
 Для уравнения $y' = f(x,y)$ условие
 \[
 f,\ \pder{f}{y} \in C(G)
 \]
-влечёт $f \in \mathrm{Lip}_{y,\mathrm{loc}}(G)$, то есть выполнены условия
-теоремы Пикара. Так обосновываются теоремы существования и единственности,
-которыми мы пользовались без доказательства в первой лекции.
+влечёт $f \in \mathrm{Lip}_{y,\mathrm{loc}}(G)$ по лемме~\ref{lem:якоби-липшиц},
+то есть выполнены условия теоремы Пикара. Так обосновываются
+теоремы~\ref{thm:существование} и~\ref{thm:единственность}, которыми мы
+пользовались без доказательства.
+
+\begin{Remark}[addon]{Уравнения высших порядков}{пикар-высший-порядок}
+	Для уравнения~\eqref{eq:уравнение-порядка-m} теорема Пикара применяется к
+	нормальной системе~\eqref{eq:вспомогательная-система}: если $f$ и её
+	производные по всем аргументам, кроме $t$, непрерывны, то условия теоремы
+	выполнены по лемме~\ref{lem:якоби-липшиц}. Решение однозначно задаётся
+	значениями $x(t_0), \dot x(t_0), \dots, x^{(m-1)}(t_0)$.
+\end{Remark}
 
 \subsection{Метод сжимающих отображений}\label{sec:сжимающие}
 
@@ -426,7 +555,7 @@ h_0 < h, \qquad L h_0 < 1,
 	\textbf{Шаг 1 (пространство).} Положим
 	\[
 	X = \bigl\{\vphi \colon \Pi \to \RR^n \ \big|\ \vphi \in C(\Pi),\
-	(t, \vphi(t)) \in R \text{ при } t \in \Pi\bigr\},
+	\bigl(t, \vphi(t)\bigr) \in R \text{ при } t \in \Pi\bigr\},
 	\qquad
 	\rho(\vphi, \vphi') = \max_{t \in \Pi} \abs{\vphi(t) - \vphi'(t)} .
 	\]
@@ -457,7 +586,9 @@ h_0 < h, \qquad L h_0 < 1,
 	\]
 	а $L h_0 < 1$ по выбору $h_0$. По принципу сжимающих отображений у $T$ есть
 	единственная неподвижная точка $\vphi$, а равенство $\vphi = T(\vphi)$ ---
-	это и есть интегральное уравнение~\eqref{eq:эиу}.
+	это и есть интегральное уравнение~\eqref{eq:эиу}. Значит, по
+	лемме~\ref{lem:эквивалентность-эиу} функция $\vphi$ --- решение задачи Коши
+	на $\Pi$.
 \end{proof}
 
 \begin{Remark}[addon]{Чем этот способ отличается}{сжатие-сравнение}
